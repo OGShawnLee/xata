@@ -14,6 +14,8 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.5.0",
+		"@xata.io/client": "^0.22.1",
+		"dotenv": "^16.0.3",
 		"malachite-ui": "0.9.0-0",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
