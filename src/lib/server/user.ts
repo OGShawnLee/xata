@@ -10,3 +10,10 @@ export function create_user(
 		return user.toSerializable();
 	});
 }
+
+export function find_user(display_name: string) {
+	return use_await(async () => {
+		const user = await client.db.users.filter("displayName", display_name).getFirst();
+		return user?.toSerializable();
+	});
+}

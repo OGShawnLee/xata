@@ -26,7 +26,7 @@ export const user_schema = z.object({
 			required_error: error_message.required("Username"),
 			invalid_type_error: error_message.invalid_type("Username", "string")
 		})
-		.min(1, error_message.min("Username", 5))
+		.min(1, error_message.min("Username", 1))
 		.max(16, error_message.max("Username", 16))
 		.trim(),
 	email: z

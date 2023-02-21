@@ -7,6 +7,12 @@ declare global {
 		// interface PageData {}
 		// interface Platform {}
 	}
+
+	interface JWTPayloadState {
+		id: string;
+		display_name: string;
+		name: string;
+	}
 }
 
 export {};

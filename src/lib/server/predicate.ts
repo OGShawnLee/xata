@@ -1,5 +1,6 @@
-import { use_await } from "$lib/hooks";
 import client from "$lib/server/client";
+import { use_await } from "$lib/hooks";
+import { compare } from "bcrypt";
 
 export function is_duplicate_display_name_and_email(email: string, display_name: string) {
 	return use_await(() => {
@@ -15,4 +16,11 @@ async function is_duplicate_display_name(display_name: string) {
 async function is_duplicate_email(email: string) {
 	const user = await client.db.users.filter("email", email).getFirst();
 	return Boolean(user);
+}
+
+export function is_incorrect_password(password: string, password_hash: string) {
+	return use_await(async () => {
+		const is_correct = await compare(password, password_hash);
+		return !is_correct;
+	});
 }
