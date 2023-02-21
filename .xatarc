@@ -1,6 +1,6 @@
 {
   "databaseURL": "https://primera-vk1k74.us-east-1.xata.sh/db/twitter",
   "codegen": {
-    "output": "src/xata.ts"
+    "output": "src/lib/server/xata.ts"
   }
 }
