@@ -9,6 +9,7 @@ specifiers:
   bcrypt: ^5.1.0
   dotenv: ^16.0.3
   jsonwebtoken: ^9.0.0
+  lucide-svelte: ^0.115.0
   malachite-ui: 0.9.0-0
   prettier: ^2.8.0
   prettier-plugin-svelte: ^2.8.1
@@ -29,6 +30,7 @@ devDependencies:
   bcrypt: 5.1.0
   dotenv: 16.0.3
   jsonwebtoken: 9.0.0
+  lucide-svelte: 0.115.0_svelte@3.55.1
   malachite-ui: 0.9.0-0
   prettier: 2.8.4
   prettier-plugin-svelte: 2.9.0_jrsxveqmsx2uadbqiuq74wlc4u
@@ -859,6 +861,14 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
+    dev: true
+
+  /lucide-svelte/0.115.0_svelte@3.55.1:
+    resolution: {integrity: sha512-kR7XlwoSVjGX+jwOiHKjTCDMPcTKrsKGyYnJkgW55wyKmWAzfOSESDGuRHcfsRAIQgg133mDNtCm++S8V5rRjg==}
+    peerDependencies:
+      svelte: ^3.49.0
+    dependencies:
+      svelte: 3.55.1
     dev: true
 
   /magic-string/0.27.0:
