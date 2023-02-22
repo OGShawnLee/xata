@@ -2,7 +2,7 @@ import client from "$lib/server/client";
 import { use_await } from "$lib/hooks";
 import { compare } from "bcrypt";
 
-export function is_duplicate_display_name_and_email(email: string, display_name: string) {
+export function is_duplicate_display_name_and_email(display_name: string, email: string) {
 	return use_await(() => {
 		return Promise.all([is_duplicate_display_name(display_name), is_duplicate_email(email)]);
 	});
