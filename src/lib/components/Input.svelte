@@ -69,6 +69,7 @@
 				{placeholder}
 				{maxlength}
 				{minlength}
+				{value}
 				use:bind
 			/>
 		</div>
