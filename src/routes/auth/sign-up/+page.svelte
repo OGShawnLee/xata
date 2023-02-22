@@ -19,6 +19,15 @@
 	<div class="grid gap-4.5">
 		<header class="px-8 pb-4 | border-b-2 border-zinc-800">
 			<h1 class="text-3xl text-white font-bold font-poppins">Join Twitter</h1>
+			<span class="text-sm font-roboto text-zinc-300">
+				Already have an account
+				<a
+					class="text-sky-400 font-medium outline-none focus:underline hover:text-sky-300"
+					href="/auth/sign-in"
+				>
+					Sign in!
+				</a>
+			</span>
 		</header>
 		<form class="px-8 | grid gap-6" method="post">
 			<div class="grid gap-3">
