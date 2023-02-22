@@ -1,8 +1,8 @@
-import { use_await } from "$lib/hooks";
+import { useAwait } from "$lib/hooks";
 import { genSalt, hash } from "bcrypt";
 
-export function create_password_hash(password: string) {
-	return use_await(async () => {
+export function createPasswordHash(password: string) {
+	return useAwait(async () => {
 		return hash(password, await genSalt());
 	});
 }

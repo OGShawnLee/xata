@@ -10,18 +10,18 @@ const tables = [
   {
     name: "users",
     columns: [
-      { name: "display_name", type: "string", unique: true },
+      { name: "displayName", type: "string", unique: true },
       { name: "name", type: "string" },
+      { name: "email", type: "email", unique: true },
       { name: "password", type: "string" },
       {
-        name: "created_at",
+        name: "createdAt",
         type: "datetime",
         notNull: true,
         defaultValue: "now",
       },
-      { name: "email", type: "email", unique: true },
       {
-        name: "updated_at",
+        name: "updatedAt",
         type: "datetime",
         notNull: true,
         defaultValue: "now",

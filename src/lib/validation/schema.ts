@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-export const error_message = {
-	invalid_type: (name: string, type: string) => {
+export const errorMessage = {
+	invalidType: (name: string, type: string) => {
 		return `${name} must be ${type}`;
 	},
 	min: (name: string, amount: number) => {
@@ -20,38 +20,38 @@ export const error_message = {
 	}
 };
 
-export const user_schema = z.object({
-	display_name: z
+export const userSchema = z.object({
+	displayName: z
 		.string({
-			required_error: error_message.required("Username"),
-			invalid_type_error: error_message.invalid_type("Username", "string")
+			required_error: errorMessage.required("Username"),
+			invalid_type_error: errorMessage.invalidType("Username", "string")
 		})
-		.min(1, error_message.min("Username", 1))
-		.max(16, error_message.max("Username", 16))
+		.min(1, errorMessage.min("Username", 1))
+		.max(16, errorMessage.max("Username", 16))
 		.trim(),
 	email: z
 		.string({
-			required_error: error_message.required("Email"),
-			invalid_type_error: error_message.invalid_type("Email", "string")
+			required_error: errorMessage.required("Email"),
+			invalid_type_error: errorMessage.invalidType("Email", "string")
 		})
-		.min(1, error_message.min("Email", 1))
-		.max(64, error_message.max("Email", 64))
+		.min(1, errorMessage.min("Email", 1))
+		.max(64, errorMessage.max("Email", 64))
 		.email("Please type a valid email.")
 		.trim(),
 	name: z
 		.string({
-			required_error: error_message.required("Name"),
-			invalid_type_error: error_message.invalid_type("Name", "string")
+			required_error: errorMessage.required("Name"),
+			invalid_type_error: errorMessage.invalidType("Name", "string")
 		})
-		.min(1, error_message.min("Name", 1))
-		.max(50, error_message.max("Name", 50))
+		.min(1, errorMessage.min("Name", 1))
+		.max(50, errorMessage.max("Name", 50))
 		.trim(),
 	password: z
 		.string({
-			required_error: error_message.required("Password"),
-			invalid_type_error: error_message.invalid_type("Password", "string")
+			required_error: errorMessage.required("Password"),
+			invalid_type_error: errorMessage.invalidType("Password", "string")
 		})
-		.min(8, error_message.min("Password", 8))
-		.max(80, error_message.max("Password", 80))
+		.min(8, errorMessage.min("Password", 8))
+		.max(80, errorMessage.max("Password", 80))
 		.trim()
 });

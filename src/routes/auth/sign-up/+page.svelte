@@ -3,7 +3,7 @@
 	import { Input } from "$lib/components";
 
 	export let form: Nullable<{
-		display_name?: { value: string; error?: string };
+		displayName?: { value: string; error?: string };
 		email?: { value: string; error?: string };
 		name?: { value: string; error?: string };
 		password?: { error?: string };
@@ -47,8 +47,8 @@
 					placeholder="OGJohnDoe"
 					maxlength={16}
 					minlength={1}
-					value={form?.display_name?.value}
-					error={form?.display_name?.error}
+					value={form?.displayName?.value}
+					error={form?.displayName?.error}
 				/>
 				<Input
 					id="password"

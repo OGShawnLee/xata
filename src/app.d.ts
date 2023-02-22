@@ -10,7 +10,7 @@ declare global {
 
 	interface JWTPayloadState {
 		id: string;
-		display_name: string;
+		displayName: string;
 		name: string;
 	}
 }
