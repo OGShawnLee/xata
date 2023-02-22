@@ -9,6 +9,10 @@ function createUserJWT(payload: JWTPayloadState) {
 	return sign(payload, ACCESS_TOKEN, { expiresIn: "3d" });
 }
 
+export function deleteAuthCookie(cookies: Cookies) {
+	cookies.set(AUTH_COOKIE, "", { expires: new Date(Date.now() - 3600), httpOnly: true, path: "/" });
+}
+
 export async function getCurrentUser(cookies: Cookies): Promise<
 	| {
 			failed: true;
