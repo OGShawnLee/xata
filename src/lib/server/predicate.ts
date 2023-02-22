@@ -1,6 +1,19 @@
 import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
 import { compare } from "bcrypt";
+import { isInterface, isString } from "malachite-ui/predicate";
+
+export function isAuthRoute(pathname: string) {
+	return pathname.startsWith("/auth");
+}
+
+export function isAuthTokenState(value: unknown): value is JWTPayloadState {
+	return isInterface<JWTPayloadState>(value, {
+		id: isString,
+		displayName: isString,
+		name: isString
+	});
+}
 
 export function isDuplicateDisplayNameAndEmail(displayName: string, email: string) {
 	return useAwait(() => {
