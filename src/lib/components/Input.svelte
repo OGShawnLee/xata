@@ -15,10 +15,11 @@
 </script>
 
 <script lang="ts">
+	import type { SvelteComponent } from "svelte";
 	import { useListener } from "malachite-ui/hooks";
 
 	export let error: string | undefined = undefined;
-	export let icon: string | undefined = undefined;
+	export let icon: typeof SvelteComponent | undefined = undefined;
 	export let id: string;
 	export let label = id;
 	export let maxlength: number | undefined = undefined;
@@ -58,7 +59,7 @@
 		>
 			{#if icon}
 				<div class="w-12 min-w-12 h-12 | grid place-content-center | bg-zinc-700">
-					<i class="bx {icon} text-2xl group-focus-within:text-white" />
+					<svelte:component this={icon} class="group-focus-within:stroke-white" />
 				</div>
 			{/if}
 			<input

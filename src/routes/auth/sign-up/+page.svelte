@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Nullable } from "malachite-ui/types";
+	import { AtSign, Key, Mail, User } from "lucide-svelte";
 	import { Input } from "$lib/components";
 
 	export let form: Nullable<{
@@ -23,7 +24,7 @@
 			<div class="grid gap-3">
 				<Input
 					id="email"
-					icon="bx-envelope"
+					icon={Mail}
 					placeholder="OGJohnDoe@example.com"
 					minlength={5}
 					maxlength={64}
@@ -33,7 +34,7 @@
 				/>
 				<Input
 					id="name"
-					icon="bx-user-circle"
+					icon={User}
 					placeholder="John Doe"
 					maxlength={50}
 					minlength={1}
@@ -43,7 +44,7 @@
 				<Input
 					id="display-name"
 					label="Username"
-					icon="bx-at"
+					icon={AtSign}
 					placeholder="OGJohnDoe"
 					maxlength={16}
 					minlength={1}
@@ -52,7 +53,7 @@
 				/>
 				<Input
 					id="password"
-					icon="bx-lock"
+					icon={Key}
 					error={form?.password?.error}
 					maxlength={80}
 					minlength={8}
