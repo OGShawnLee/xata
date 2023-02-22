@@ -7,12 +7,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const user = await getCurrentUser(event.cookies);
 
 	if (user.failed) {
+		event.locals.user = { isAnonymous: true };
 		if (user.reason === "INVALID") {
 			deleteAuthCookie(event.cookies);
 			throw redirect(303, "/auth/sign-in");
 		}
 	} else {
-		if (isAuthRoute(event.url.pathname)) throw redirect(303, "/home");
+		event.locals.user = { isAnonymous: false, data: user.data };
+		if (isAuthRoute(event.url.pathname) && event.url.pathname !== "/auth/sign-out")
+			throw redirect(303, "/home");
 	}
 
 	return resolve(event);
