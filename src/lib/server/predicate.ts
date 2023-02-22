@@ -9,7 +9,7 @@ export function is_duplicate_display_name_and_email(email: string, display_name:
 }
 
 async function is_duplicate_display_name(display_name: string) {
-	const user = await client.db.users.filter("displayName", display_name).getFirst();
+	const user = await client.db.users.filter("display_name", display_name).getFirst();
 	return Boolean(user);
 }
 

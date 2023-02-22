@@ -48,7 +48,7 @@ export const actions: Actions = {
 
 		set_auth_cookie(cookies, {
 			id: found_user.data.id,
-			display_name: found_user.data.displayName!,
+			display_name: found_user.data.display_name!,
 			name: found_user.data.name!
 		});
 		throw redirect(303, "/home");

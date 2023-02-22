@@ -60,7 +60,7 @@ export const actions: Actions = {
 		if (hash.failed) return exit(user.data.display_name, user.data.email, user.data.name);
 
 		const new_user = await create_user({
-			displayName: user.data.display_name,
+			display_name: user.data.display_name,
 			email: user.data.email,
 			name: user.data.name,
 			password: hash.data
