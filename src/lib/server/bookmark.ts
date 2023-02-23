@@ -7,6 +7,15 @@ export function createBookmark(userId: string, tweetId: string) {
 	});
 }
 
+export function findBookmark(userId: string, tweetId: string) {
+	return useAwait(async () => {
+		const bookmark = await client.db.bookmarks
+			.filter({ "tweet.id": tweetId, "user.id": userId })
+			.getFirst();
+		return bookmark?.toSerializable();
+	});
+}
+
 export function getBookmarks(userId: string) {
 	return useAwait(async () => {
 		return client.db.bookmarks

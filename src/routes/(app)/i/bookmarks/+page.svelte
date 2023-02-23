@@ -19,6 +19,7 @@
 			id={tweet?.id}
 			displayName={tweet?.user?.displayName}
 			name={tweet?.user?.name}
+			isBookmarked
 		/>
 	{/each}
 </Feed>
