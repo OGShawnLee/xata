@@ -28,6 +28,19 @@ const tables = [
       },
     ],
   },
+  {
+    name: "tweets",
+    columns: [
+      { name: "text", type: "string", notNull: true, defaultValue: '""' },
+      { name: "user", type: "link", link: { table: "users" } },
+      {
+        name: "createdAt",
+        type: "datetime",
+        notNull: true,
+        defaultValue: "now",
+      },
+    ],
+  },
 ] as const;
 
 export type SchemaTables = typeof tables;
@@ -36,8 +49,12 @@ export type InferredTypes = SchemaInference<SchemaTables>;
 export type Users = InferredTypes["users"];
 export type UsersRecord = Users & XataRecord;
 
+export type Tweets = InferredTypes["tweets"];
+export type TweetsRecord = Tweets & XataRecord;
+
 export type DatabaseSchema = {
   users: UsersRecord;
+  tweets: TweetsRecord;
 };
 
 const DatabaseClient = buildClient();

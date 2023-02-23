@@ -20,6 +20,15 @@ export const errorMessage = {
 	}
 };
 
+export const tweetSchema = z
+	.string({
+		required_error: errorMessage.required("Tweet"),
+		invalid_type_error: errorMessage.invalidType("Tweet", "string")
+	})
+	.min(1, errorMessage.min("Tweet", 1))
+	.max(280, errorMessage.max("Tweet", 280))
+	.trim();
+
 export const userSchema = z.object({
 	displayName: z
 		.string({

@@ -7,7 +7,7 @@
 
 <div class="max-w-6xl min-h-screen mx-auto py-8 | grid grid-cols-12 items-start gap-8">
 	<Sidebar class="col-span-3 pr-8" user={data.user} />
-	<main class="col-span-6">
+	<main class="col-span-6 | grid gap-8">
 		<slot />
 	</main>
 </div>
