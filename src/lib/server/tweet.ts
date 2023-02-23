@@ -7,3 +7,12 @@ export function createTweet(id: string, text: string) {
 		return tweet.toSerializable();
 	});
 }
+
+export function getTweets() {
+	return useAwait(async () => {
+		return client.db.tweets
+			.select(["*", "user.displayName", "user.name"])
+			.sort("createdAt", "desc")
+			.getAll();
+	});
+}
