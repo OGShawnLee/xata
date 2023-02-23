@@ -1,7 +1,6 @@
 import type { Actions, PageServerLoad } from "./$types";
 import Action from "./Actions";
 import { error, redirect } from "@sveltejs/kit";
-import { getTweets } from "$lib/server/tweet";
 import { getUserFeed } from "$lib/server/user";
 
 export const load: PageServerLoad = async ({ locals: { user } }) => {
@@ -12,6 +11,6 @@ export const load: PageServerLoad = async ({ locals: { user } }) => {
 };
 
 export const actions: Actions = {
-	bookmark: Action.bookmark,
+	"bookmark-or-unbookmark": Action.handleBookmark,
 	tweet: Action.tweet
 };

@@ -6,13 +6,24 @@ import { useAwait } from "$lib/hooks";
 import { tweetSchema } from "$lib/validation/schema";
 import { createTweet, findTweet } from "$lib/server/tweet";
 import { isNullish } from "malachite-ui/predicate";
-import { createBookmark } from "$lib/server/bookmark";
+import { createBookmark, deleteBookmark, findBookmark } from "$lib/server/bookmark";
 
 export default class Action {
-	static async bookmark(event: RequestEvent) {
+	static async handleBookmark(event: RequestEvent) {
 		const { id, user } = await handleActionValidation(event);
-		const bookmark = await createBookmark(user.id, id);
+		const bookmark = await findBookmark(user.id, id);
 		if (bookmark.failed) throw error(500, { message: "Unable to Bookmark Tweet." });
+
+		if (bookmark.data) {
+			const deleted = await deleteBookmark(bookmark.data.id);
+			if (deleted.failed) throw error(500, { message: "Unable to Delete Bookmark." });
+		} else {
+			const createdBookmark = await createBookmark(user.id, id);
+			if (createdBookmark.failed) throw error(500, { message: "Unable to Bookmark Tweet." });
+		}
+
+		const location = event.url.searchParams.get("redirect");
+		if (location) throw redirect(303, location);
 	}
 
 	static async tweet(event: RequestEvent) {

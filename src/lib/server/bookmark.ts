@@ -7,6 +7,12 @@ export function createBookmark(userId: string, tweetId: string) {
 	});
 }
 
+export function deleteBookmark(id: string) {
+	return useAwait(() => {
+		return client.db.bookmarks.deleteOrThrow(id);
+	});
+}
+
 export function findBookmark(userId: string, tweetId: string) {
 	return useAwait(async () => {
 		const bookmark = await client.db.bookmarks
