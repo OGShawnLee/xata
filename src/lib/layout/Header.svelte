@@ -1,22 +1,13 @@
 <script lang="ts">
-	import { isNullish } from "malachite-ui/predicate";
-	import { clearString } from "malachite-ui/utils";
-
-	let className = "";
-
-	export { className as class };
 	export let title: string | undefined = undefined;
-
-	$: finalClassName = clearString("border-b-2 border-zinc-800" + className);
-
-	if ($$slots.default === false && isNullish(title))
-		throw new Error("Title must be provided if Header is rendered without default slot.");
+	export let displayName: string | undefined = undefined;
 </script>
 
-<header class={finalClassName}>
+<header class="border-b-2 border-zinc-800 leading-3">
 	<div class="px-8 pb-4">
-		<slot>
-			<h1 class="text-white text-2xl font-bold">{title}</h1>
-		</slot>
+		<h1 class="text-white text-2xl font-bold">{title}</h1>
+		{#if displayName}
+			<span class="text-sm text-zinc-500"> @{displayName} </span>
+		{/if}
 	</div>
 </header>

@@ -11,5 +11,6 @@ export const load: PageServerLoad = async ({ locals: { user } }) => {
 };
 
 export const actions: Actions = {
+	bookmark: Action.bookmark,
 	tweet: Action.tweet
 };

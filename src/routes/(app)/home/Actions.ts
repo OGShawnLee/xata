@@ -1,11 +1,20 @@
 import type { ZodError } from "zod";
 import type { RequestEvent } from "@sveltejs/kit";
-import { fail, redirect } from "@sveltejs/kit";
+import { string } from "zod";
+import { error, fail, redirect } from "@sveltejs/kit";
 import { useAwait } from "$lib/hooks";
 import { tweetSchema } from "$lib/validation/schema";
-import { createTweet } from "$lib/server/tweet";
+import { createTweet, findTweet } from "$lib/server/tweet";
+import { isNullish } from "malachite-ui/predicate";
+import { createBookmark } from "$lib/server/bookmark";
 
 export default class Action {
+	static async bookmark(event: RequestEvent) {
+		const { id, user } = await handleActionValidation(event);
+		const bookmark = await createBookmark(user.id, id);
+		if (bookmark.failed) throw error(500, { message: "Unable to Bookmark Tweet." });
+	}
+
 	static async tweet(event: RequestEvent) {
 		if (event.locals.user.isAnonymous) throw redirect(303, "/auth/sign-up");
 
@@ -28,4 +37,21 @@ export default class Action {
 			});
 		}
 	}
+}
+
+async function handleActionValidation({ locals: { user }, request }: RequestEvent) {
+	if (user.isAnonymous) throw error(400, { message: "User not logged in." });
+
+	const data = await request.formData();
+	const input = data.get("tweet-id");
+
+	const id = await useAwait(() => string().trim().parse(input));
+	if (id.failed) throw error(400, { message: "Invalid Tweet ID." });
+
+	const tweet = await findTweet(id.data);
+	if (tweet.failed) throw error(500, { message: "Unable to Validate Tweet." });
+	if (isNullish(tweet.data))
+		throw error(400, { message: "Can't Bookmark a Tweet that does not exist." });
+
+	return { id: id.data, user: user.data };
 }
