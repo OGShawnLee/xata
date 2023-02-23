@@ -50,8 +50,7 @@ async function handleActionValidation({ locals: { user }, request }: RequestEven
 
 	const tweet = await findTweet(id.data);
 	if (tweet.failed) throw error(500, { message: "Unable to Validate Tweet." });
-	if (isNullish(tweet.data))
-		throw error(400, { message: "Can't Bookmark a Tweet that does not exist." });
+	if (isNullish(tweet.data)) throw error(400, { message: "Tweet does not exist." });
 
 	return { id: id.data, user: user.data };
 }
