@@ -6,7 +6,7 @@
 	let className: string;
 
 	export { className as class };
-	export let user: JWTPayloadState;
+	export let user: JWTPayloadState | undefined;
 </script>
 
 <nav class="{className} | grid gap-12">
@@ -15,5 +15,7 @@
 		<Link icon={Home} href="/home" text="Home" />
 		<Link icon={Bookmark} href="/i/bookmarks" text="Bookmarks" />
 	</div>
-	<UserStatus displayName={user.displayName} name={user.name} />
+	{#if user}
+		<UserStatus displayName={user.displayName} name={user.name} />
+	{/if}
 </nav>

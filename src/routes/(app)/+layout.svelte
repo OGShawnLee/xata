@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { LayoutData } from "./$types";
 	import { Sidebar } from "$lib/layout";
+	import { currentUser } from "$lib/state";
 
 	export let data: LayoutData;
+
+	currentUser.set(data.user);
 </script>
 
 <div class="max-w-6xl min-h-screen mx-auto py-8 | grid grid-cols-12 items-start gap-8">

@@ -4,7 +4,9 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			user: { isAnonymous: false; data: JWTPayloadState } | { isAnonymous: true };
+			user:
+				| { isAnonymous: false; isSignedIn: true; data: JWTPayloadState }
+				| { isAnonymous: true; isSignedIn: false };
 		}
 		// interface PageData {}
 		// interface Platform {}
