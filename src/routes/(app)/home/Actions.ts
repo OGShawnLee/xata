@@ -7,7 +7,7 @@ import { tweetSchema } from "$lib/validation/schema";
 import { createTweet, findTweet } from "$lib/server/tweet";
 import { isNullish } from "malachite-ui/predicate";
 import { createBookmark, deleteBookmark, findBookmark } from "$lib/server/bookmark";
-import { likeTweet } from "$lib/server/like";
+import { findLike, likeTweet, unlikeTweet } from "$lib/server/like";
 
 export default class Action {
 	static async handleBookmark(event: RequestEvent) {
@@ -57,6 +57,16 @@ export default class Action {
 				text: { value: text.data }
 			});
 		}
+	}
+
+	static async unlikeTweet(event: RequestEvent) {
+		const { id, user, tweet } = await handleActionValidation(event);
+		const like = await findLike(user.id, id);
+		if (like.failed) throw error(500, { message: "Unable to unlike Tweet." });
+		if (isNullish(like.data)) throw fail(400, { error: "Can't unlike a Tweet that is not liked." });
+
+		const deleted = await unlikeTweet(like.data.id, tweet.id, tweet.likeCount ?? 1);
+		if (deleted.failed) throw error(500, { message: "Unable to unlike Tweet." });
 	}
 }
 

@@ -13,5 +13,6 @@ export const load: PageServerLoad = async ({ locals: { user } }) => {
 export const actions: Actions = {
 	"bookmark-or-unbookmark": Action.handleBookmark,
 	"like-tweet": Action.likeTweet,
-	tweet: Action.tweet
+	tweet: Action.tweet,
+	"unlike-tweet": Action.unlikeTweet
 };

@@ -15,3 +15,12 @@ export function likeTweet(userId: string, tweetId: string, likeCount: number) {
 		]);
 	});
 }
+
+export function unlikeTweet(id: string, tweetId: string, likeCount: number) {
+	return useAwait(() => {
+		return client.transactions.run([
+			{ delete: { table: "likes", id } },
+			{ update: { table: "tweets", id: tweetId, fields: { likeCount: likeCount - 1 } } }
+		]);
+	});
+}
