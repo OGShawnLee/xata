@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { SvelteComponent } from "svelte";
 	import { isNumber } from "malachite-ui/predicate";
+	import { enhance } from "$app/forms";
 
 	export let action: string;
 	export let count: number | undefined = undefined;
@@ -9,7 +10,7 @@
 	export let icon: typeof SvelteComponent;
 </script>
 
-<form {action} method="post">
+<form {action} method="post" use:enhance>
 	<input type="hidden" name="tweet-id" value={id} />
 	<button class="flex items-center gap-3 | group" aria-label={label} title={label}>
 		<svelte:component this={icon} class="group-focus:stroke-white" />
