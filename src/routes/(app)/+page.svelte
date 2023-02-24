@@ -15,6 +15,7 @@
 			displayName={user?.displayName}
 			name={user?.name}
 			isBookmarked={false}
+			isLiked={false}
 		/>
 	{/each}
 </Feed>

@@ -1,6 +1,12 @@
 import client from "./client";
 import { useAwait } from "$lib/hooks";
 
+export function findLike(userId: string, tweetId: string) {
+	return useAwait(() => {
+		return client.db.likes.filter({ "tweet.id": tweetId, "user.id": userId }).getFirst();
+	});
+}
+
 export function likeTweet(userId: string, tweetId: string, likeCount: number) {
 	return useAwait(() => {
 		return client.transactions.run([

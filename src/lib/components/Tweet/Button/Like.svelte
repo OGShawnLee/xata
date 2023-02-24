@@ -12,9 +12,10 @@
 
 	export let id: string;
 	export let likeCount = 0;
+	export let isLiked: boolean;
 
 	$: action = getLikeAction(isBookmarkPage);
 	$: isBookmarkPage = $page.url.pathname.includes("i/bookmarks");
 </script>
 
-<Button {action} {id} label="Like Tweet" icon={Heart} count={likeCount} />
+<Button {action} {id} label="Like Tweet" icon={Heart} count={likeCount} fill={isLiked} />

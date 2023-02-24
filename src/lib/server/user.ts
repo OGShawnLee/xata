@@ -4,6 +4,7 @@ import { useAwait } from "$lib/hooks";
 import { getTweets } from "./tweet";
 import { findBookmark } from "./bookmark";
 import { isDefined } from "$lib/utils/predicate";
+import { findLike } from "./like";
 
 export function createUser(data: Pick<UsersRecord, "displayName" | "email" | "name" | "password">) {
 	return useAwait(async () => {
@@ -25,9 +26,13 @@ export function getUserFeed(id: string) {
 		if (tweets.failed) throw tweets.error;
 		return Promise.all(
 			tweets.data.map(async (tweet) => {
-				const bookmark = await findBookmark(id, tweet.id);
+				const [bookmark, like] = await Promise.all([
+					findBookmark(id, tweet.id),
+					findLike(id, tweet.id)
+				]);
 				const isBookmarked = bookmark.failed ? false : isDefined(bookmark.data);
-				return { ...tweet, isBookmarked };
+				const isLiked = like.failed ? false : isDefined(like.data);
+				return { ...tweet, isBookmarked, isLiked };
 			})
 		);
 	});

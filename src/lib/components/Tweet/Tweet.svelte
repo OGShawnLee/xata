@@ -10,6 +10,7 @@
 	export let id: string;
 	export let text: string;
 	export let isBookmarked: boolean;
+	export let isLiked: boolean;
 	export let likeCount = 0;
 </script>
 
@@ -20,7 +21,7 @@
 		{#if $currentUser}
 			<div class="grid items-center grid-cols-4">
 				<Bookmark {id} {isBookmarked} />
-				<Like {id} {likeCount} />
+				<Like {id} {likeCount} {isLiked} />
 			</div>
 		{/if}
 	</div>

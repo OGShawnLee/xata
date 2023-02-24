@@ -1,5 +1,7 @@
 import client from "./client";
 import { useAwait } from "$lib/hooks";
+import { findLike } from "./like";
+import { isDefined } from "$lib/utils/predicate";
 
 export function createBookmark(userId: string, tweetId: string) {
 	return useAwait(() => {
@@ -24,10 +26,18 @@ export function findBookmark(userId: string, tweetId: string) {
 
 export function getBookmarks(userId: string) {
 	return useAwait(async () => {
-		return client.db.bookmarks
+		const bookmarks = await client.db.bookmarks
 			.filter("user.id", userId)
 			.select(["*", "tweet.*", "tweet.user.displayName", "tweet.user.name"])
 			.sort("createdAt", "desc")
 			.getAll();
+
+		return Promise.all(
+			bookmarks.map(async (bookmark) => {
+				const like = await findLike(userId, bookmark?.tweet?.id!);
+				const isLiked = like.failed ? false : isDefined(like.data);
+				return { ...bookmark, tweet: { ...bookmark.tweet, isLiked } };
+			})
+		);
 	});
 }

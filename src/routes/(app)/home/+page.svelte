@@ -14,7 +14,7 @@
 <Header title="Home" />
 <TweetTextArea value={form?.text?.value} />
 <Feed>
-	{#each data.tweets as { id, createdAt, text, user, isBookmarked, likeCount } (id)}
+	{#each data.tweets as { id, createdAt, text, user, isBookmarked, isLiked, likeCount } (id)}
 		<Tweet
 			{createdAt}
 			{text}
@@ -23,6 +23,7 @@
 			name={user?.name}
 			{isBookmarked}
 			{likeCount}
+			{isLiked}
 		/>
 	{/each}
 </Feed>

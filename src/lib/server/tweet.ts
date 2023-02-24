@@ -16,7 +16,7 @@ export function findTweet(id: string) {
 }
 
 export function getTweets() {
-	return useAwait(async () => {
+	return useAwait(() => {
 		return client.db.tweets
 			.select(["*", "user.displayName", "user.name"])
 			.sort("createdAt", "desc")

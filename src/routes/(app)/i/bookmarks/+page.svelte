@@ -20,6 +20,7 @@
 			displayName={tweet?.user?.displayName}
 			name={tweet?.user?.name}
 			isBookmarked
+			isLiked={tweet.isLiked}
 			likeCount={tweet?.likeCount}
 		/>
 	{/each}
