@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Nullable } from "malachite-ui/types";
 	import Header from "./Header.svelte";
-	import { Bookmark } from "./Button";
+	import { Bookmark, Like } from "./Button";
 	import { currentUser } from "$lib/state";
 
 	export let displayName: Nullable<string>;
@@ -10,6 +10,7 @@
 	export let id: string;
 	export let text: string;
 	export let isBookmarked: boolean;
+	export let likeCount = 0;
 </script>
 
 <article class="pb-4 | border-b-2 border-zinc-800">
@@ -17,7 +18,10 @@
 		<Header {displayName} {name} {createdAt} />
 		<p class="whitespace-pre-line" class:pb-2.75={$currentUser}>{text}</p>
 		{#if $currentUser}
-			<Bookmark {id} {isBookmarked} />
+			<div class="grid items-center grid-cols-4">
+				<Bookmark {id} {isBookmarked} />
+				<Like {id} {likeCount} />
+			</div>
 		{/if}
 	</div>
 </article>

@@ -7,6 +7,7 @@ import { tweetSchema } from "$lib/validation/schema";
 import { createTweet, findTweet } from "$lib/server/tweet";
 import { isNullish } from "malachite-ui/predicate";
 import { createBookmark, deleteBookmark, findBookmark } from "$lib/server/bookmark";
+import { likeTweet } from "$lib/server/like";
 
 export default class Action {
 	static async handleBookmark(event: RequestEvent) {
@@ -21,6 +22,15 @@ export default class Action {
 			const createdBookmark = await createBookmark(user.id, id);
 			if (createdBookmark.failed) throw error(500, { message: "Unable to Bookmark Tweet." });
 		}
+
+		const location = event.url.searchParams.get("redirect");
+		if (location) throw redirect(303, location);
+	}
+
+	static async likeTweet(event: RequestEvent) {
+		const { id, user, tweet } = await handleActionValidation(event);
+		const like = await likeTweet(user.id, id, tweet.likeCount ?? 0);
+		if (like.failed) throw error(500, { message: "Unable to like Tweet." });
 
 		const location = event.url.searchParams.get("redirect");
 		if (location) throw redirect(303, location);
@@ -63,5 +73,5 @@ async function handleActionValidation({ locals: { user }, request }: RequestEven
 	if (tweet.failed) throw error(500, { message: "Unable to Validate Tweet." });
 	if (isNullish(tweet.data)) throw error(400, { message: "Tweet does not exist." });
 
-	return { id: id.data, user: user.data };
+	return { id: id.data, user: user.data, tweet: tweet.data };
 }

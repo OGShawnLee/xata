@@ -39,6 +39,7 @@ const tables = [
         notNull: true,
         defaultValue: "now",
       },
+      { name: "likeCount", type: "int", notNull: true, defaultValue: "0" },
     ],
   },
   {
@@ -52,6 +53,14 @@ const tables = [
         notNull: true,
         defaultValue: "now",
       },
+    ],
+  },
+  {
+    name: "likes",
+    columns: [
+      { name: "user", type: "link", link: { table: "users" } },
+      { name: "tweet", type: "link", link: { table: "tweets" } },
+      { name: "likedAt", type: "datetime", notNull: true, defaultValue: "now" },
     ],
   },
 ] as const;
@@ -68,10 +77,14 @@ export type TweetsRecord = Tweets & XataRecord;
 export type Bookmarks = InferredTypes["bookmarks"];
 export type BookmarksRecord = Bookmarks & XataRecord;
 
+export type Likes = InferredTypes["likes"];
+export type LikesRecord = Likes & XataRecord;
+
 export type DatabaseSchema = {
   users: UsersRecord;
   tweets: TweetsRecord;
   bookmarks: BookmarksRecord;
+  likes: LikesRecord;
 };
 
 const DatabaseClient = buildClient();
