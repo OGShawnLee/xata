@@ -18,6 +18,7 @@
 		"@types/jsonwebtoken": "^9.0.1",
 		"@xata.io/client": "^0.22.1",
 		"bcrypt": "^5.1.0",
+		"devalue": "^4.3.0",
 		"dotenv": "^16.0.3",
 		"jsonwebtoken": "^9.0.0",
 		"lucide-svelte": "^0.115.0",
