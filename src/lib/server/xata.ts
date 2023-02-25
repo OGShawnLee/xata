@@ -63,6 +63,20 @@ const tables = [
       { name: "likedAt", type: "datetime", notNull: true, defaultValue: "now" },
     ],
   },
+  {
+    name: "notifications",
+    columns: [
+      { name: "from", type: "link", link: { table: "users" } },
+      { name: "to", type: "link", link: { table: "users" } },
+      {
+        name: "createdAt",
+        type: "datetime",
+        notNull: true,
+        defaultValue: "now",
+      },
+      { name: "tweet", type: "link", link: { table: "tweets" } },
+    ],
+  },
 ] as const;
 
 export type SchemaTables = typeof tables;
@@ -80,11 +94,15 @@ export type BookmarksRecord = Bookmarks & XataRecord;
 export type Likes = InferredTypes["likes"];
 export type LikesRecord = Likes & XataRecord;
 
+export type Notifications = InferredTypes["notifications"];
+export type NotificationsRecord = Notifications & XataRecord;
+
 export type DatabaseSchema = {
   users: UsersRecord;
   tweets: TweetsRecord;
   bookmarks: BookmarksRecord;
   likes: LikesRecord;
+  notifications: NotificationsRecord;
 };
 
 const DatabaseClient = buildClient();

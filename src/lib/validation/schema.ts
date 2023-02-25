@@ -20,6 +20,15 @@ export const errorMessage = {
 	}
 };
 
+export const notificationSchema = z.object({
+	type: z.enum(["LIKE"]),
+	data: z.object({
+		"from.id": z.string(),
+		"to.id": z.string(),
+		"tweet.id": z.string()
+	})
+});
+
 export const tweetSchema = z
 	.string({
 		required_error: errorMessage.required("Tweet"),

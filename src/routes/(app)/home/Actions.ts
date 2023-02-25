@@ -8,6 +8,8 @@ import { createTweet, findTweet } from "$lib/server/tweet";
 import { isNullish } from "malachite-ui/predicate";
 import { createBookmark, deleteBookmark, findBookmark } from "$lib/server/bookmark";
 import { findLike, likeTweet, unlikeTweet } from "$lib/server/like";
+import { triggerNotificationEvent } from "$lib/server/notification";
+import { isDefined } from "$lib/utils/predicate";
 
 export default class Action {
 	static async handleBookmark(event: RequestEvent) {
@@ -31,6 +33,16 @@ export default class Action {
 		const { id, user, tweet } = await handleActionValidation(event);
 		const like = await likeTweet(user.id, id, tweet.likeCount ?? 0);
 		if (like.failed) throw error(500, { message: "Unable to like Tweet." });
+
+		if (isDefined(tweet.user) && tweet.user !== user.id)
+			triggerNotificationEvent(event, {
+				type: "LIKE",
+				data: {
+					"from.id": user.id,
+					"to.id": tweet.user,
+					"tweet.id": tweet.id
+				}
+			});
 
 		const location = event.url.searchParams.get("redirect");
 		if (location) throw redirect(303, location);

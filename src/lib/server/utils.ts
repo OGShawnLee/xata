@@ -6,3 +6,7 @@ export function createPasswordHash(password: string) {
 		return hash(password, await genSalt());
 	});
 }
+
+export function response(status: number) {
+	return new Response(null, { status });
+}

@@ -17,6 +17,15 @@ declare global {
 		displayName: string;
 		name: string;
 	}
+
+	interface NotificationEvent {
+		type: "LIKE";
+		data: {
+			"from.id": string;
+			"to.id": string;
+			"tweet.id": string;
+		};
+	}
 }
 
 export {};

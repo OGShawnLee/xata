@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Link from "./Link.svelte";
 	import UserStatus from "./UserStatus.svelte";
-	import { Bookmark, Home } from "lucide-svelte";
+	import { Bookmark, Home, Bell } from "lucide-svelte";
 
 	let className: string;
 
@@ -14,6 +14,7 @@
 	<div class="grid gap-6">
 		<Link icon={Home} href="/home" text="Home" />
 		<Link icon={Bookmark} href="/i/bookmarks" text="Bookmarks" />
+		<Link icon={Bell} href="/i/notifications" text="Notifications" />
 	</div>
 	{#if user}
 		<UserStatus displayName={user.displayName} name={user.name} />
