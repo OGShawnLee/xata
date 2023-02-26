@@ -21,7 +21,7 @@ export function findUser(displayName: string) {
 	});
 }
 
-async function findUserPublic(displayName: string) {
+export async function findUserPublic(displayName: string) {
 	return client.db.users
 		.filter("displayName", displayName)
 		.select(["createdAt", "displayName", "name"])
@@ -31,6 +31,26 @@ async function findUserPublic(displayName: string) {
 export function getUserPublicPage(displayName: string, currentUser: string | undefined) {
 	return useAwait(async () => {
 		return Promise.all([findUserPublic(displayName), getUserTweets(displayName, currentUser)]);
+	});
+}
+
+export function getUserLikes(displayName: string, currentUser: string | undefined) {
+	return useAwait(async () => {
+		const likes = await client.db.likes
+			.filter("user.displayName", displayName)
+			.select(["likedAt", "tweet.*", "tweet.user.displayName", "tweet.user.name"])
+			.sort("likedAt", "desc")
+			.getAll();
+
+		if (isNullish(currentUser)) return likes;
+
+		return Promise.all(
+			likes.map(async (like) => {
+				if (isNullish(like.tweet)) return likes;
+				const state = await getTweetState(currentUser, like.tweet.id);
+				return { ...like, ...state };
+			})
+		);
 	});
 }
 
@@ -50,6 +70,13 @@ export function getUserFeed(id: string) {
 			})
 		);
 	});
+}
+
+export async function getTweetState(uid: string, tid: string) {
+	const [bookmark, like] = await Promise.all([findBookmark(uid, tid), findLike(uid, tid)]);
+	const isLiked = like.failed ? false : isDefined(like.data);
+	const isBookmarked = bookmark.failed ? false : isDefined(bookmark.data);
+	return { isLiked, isBookmarked };
 }
 
 export async function getUserTweets(displayName: string, currentUser: string | undefined) {
