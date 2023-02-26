@@ -83,6 +83,7 @@ export async function getUserTweets(displayName: string, currentUser: string | u
 	const tweets = await client.db.tweets
 		.filter("user.displayName", displayName)
 		.select(["*", "user.displayName", "user.name", "user.id"])
+		.sort("createdAt", "desc")
 		.getAll();
 
 	if (isNullish(currentUser)) return tweets;
