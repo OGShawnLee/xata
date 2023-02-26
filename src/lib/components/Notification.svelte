@@ -2,7 +2,7 @@
 	import type { Nullable } from "malachite-ui/types";
 	import { Heart } from "lucide-svelte";
 
-	export let from: Nullable<string>;
+	export let from: Nullable<{ displayName: Nullable<string>; name: Nullable<string> }>;
 	export let createdAt: Date;
 	export let text: Nullable<string>;
 
@@ -15,7 +15,10 @@
 			<Heart class="fill-white stroke-white" />
 			<div class="w-full flex items-baseline justify-between">
 				<h3>
-					<strong class="text-white">{from}</strong> liked your Tweet.
+					<a class="hover:underline focus:underline" href="/{from?.displayName}">
+						<strong class="text-white"> {from?.name} </strong>
+					</a>
+					liked your Tweet.
 				</h3>
 				<time class="text-xs text-zinc-500" datetime={createdAt.toISOString()}>
 					{formatter.format(createdAt)}
