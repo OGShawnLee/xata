@@ -12,6 +12,7 @@
 	import { isNullish, isWhitespace } from "malachite-ui/predicate";
 	import { handleExpandableArea } from "$lib/actions";
 	import { useClassNameResolver } from "malachite-ui/hooks";
+	import { enhance } from "$app/forms";
 
 	export let value: Nullable<string>;
 
@@ -25,7 +26,7 @@
 
 <div class="border-b-2 border-zinc-800">
 	<div class="px-8 pb-4">
-		<form class="flex flex-col items-end gap-3" action="/home?/tweet" method="post">
+		<form class="flex flex-col items-end gap-3" action="/home?/tweet" method="post" use:enhance>
 			<label class="sr-only" for="tweet">Tweet</label>
 			<textarea
 				class="w-full py-2.5 | border-b-2 border-zinc-800 bg-transparent outline-none text-white placeholder-zinc-500 resize-none"
