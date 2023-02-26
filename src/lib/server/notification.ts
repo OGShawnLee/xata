@@ -13,6 +13,7 @@ export function getNotifications(id: string) {
 		return client.db.notifications
 			.filter("to", id)
 			.select(["createdAt", "from.displayName", "from.name", "tweet.text"])
+			.sort("createdAt", "desc")
 			.getAll();
 	});
 }
