@@ -22,6 +22,7 @@
 			isBookmarked
 			isLiked={tweet.isLiked}
 			likeCount={tweet?.likeCount}
+			retweetCount={tweet?.retweetCount}
 		/>
 	{/each}
 </Feed>

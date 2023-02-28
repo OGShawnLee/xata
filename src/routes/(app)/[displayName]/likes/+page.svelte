@@ -19,6 +19,7 @@
 			displayName={tweet?.user?.displayName}
 			name={tweet?.user?.name}
 			likeCount={tweet?.likeCount}
+			retweetCount={tweet?.retweetCount}
 			{isBookmarked}
 			{isLiked}
 		/>

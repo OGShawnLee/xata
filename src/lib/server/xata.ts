@@ -40,6 +40,8 @@ const tables = [
         defaultValue: "now",
       },
       { name: "likeCount", type: "int", notNull: true, defaultValue: "0" },
+      { name: "retweetOf", type: "link", link: { table: "tweets" } },
+      { name: "retweetCount", type: "int", notNull: true, defaultValue: "0" },
     ],
   },
   {

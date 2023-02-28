@@ -10,6 +10,7 @@ import { createBookmark, deleteBookmark, findBookmark } from "$lib/server/bookma
 import { findLike, likeTweet, unlikeTweet } from "$lib/server/like";
 import { triggerNotificationEvent } from "$lib/server/notification";
 import { isDefined } from "$lib/utils/predicate";
+import { createRetweet } from "$lib/server/retweet";
 
 export default class Action {
 	static async handleBookmark(event: RequestEvent) {
@@ -43,6 +44,15 @@ export default class Action {
 					"tweet.id": tweet.id
 				}
 			});
+
+		const location = event.url.searchParams.get("redirect");
+		if (location) throw redirect(303, location);
+	}
+
+	static async retweet(event: RequestEvent) {
+		const { id, user, tweet } = await handleActionValidation(event);
+		const retweet = await createRetweet(user.id, id, tweet.retweetCount);
+		if (retweet.failed) throw error(500, { message: "Unable to retweet Tweet." });
 
 		const location = event.url.searchParams.get("redirect");
 		if (location) throw redirect(303, location);
