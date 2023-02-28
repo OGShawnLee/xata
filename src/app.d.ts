@@ -18,13 +18,13 @@ declare global {
 		name: string;
 	}
 
+	type NotificationEventType = "LIKE" | "RETWEET";
+
 	interface NotificationEvent {
-		type: "LIKE";
-		data: {
-			"from.id": string;
-			"to.id": string;
-			"tweet.id": string;
-		};
+		"from.id": string;
+		"to.id": string;
+		"tweet.id": string;
+		type: NotificationEventType;
 	}
 }
 

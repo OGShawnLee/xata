@@ -77,6 +77,7 @@ const tables = [
         defaultValue: "now",
       },
       { name: "tweet", type: "link", link: { table: "tweets" } },
+      { name: "type", type: "string" },
     ],
   },
 ] as const;

@@ -4,15 +4,22 @@ import { INTERNAL_HEADER, INTERNAL_TOKEN } from "$env/static/private";
 import { useAwait } from "$lib/hooks";
 import { stringify } from "devalue";
 
-export function createLikeNotification(from: string, to: string, tweet: string) {
-	return useAwait(() => client.db.notifications.create({ from, to, tweet }));
+export function createNotification(event: NotificationEvent) {
+	return useAwait(() =>
+		client.db.notifications.create({
+			type: event.type,
+			from: event["from.id"],
+			to: event["to.id"],
+			tweet: event["tweet.id"]
+		})
+	);
 }
 
 export function getNotifications(id: string) {
 	return useAwait(() => {
 		return client.db.notifications
 			.filter("to", id)
-			.select(["createdAt", "from.displayName", "from.name", "tweet.text"])
+			.select(["*", "from.displayName", "from.name", "tweet.text"])
 			.sort("createdAt", "desc")
 			.getAll();
 	});

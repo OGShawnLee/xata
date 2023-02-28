@@ -38,11 +38,9 @@ export default class Action {
 		if (isDefined(tweet.user) && tweet.user !== user.id)
 			triggerNotificationEvent(event, {
 				type: "LIKE",
-				data: {
-					"from.id": user.id,
-					"to.id": tweet.user,
-					"tweet.id": tweet.id
-				}
+				"from.id": user.id,
+				"to.id": tweet.user,
+				"tweet.id": tweet.id
 			});
 
 		const location = event.url.searchParams.get("redirect");
@@ -53,6 +51,14 @@ export default class Action {
 		const { id, user, tweet } = await handleActionValidation(event);
 		const retweet = await createRetweet(user.id, id, tweet.retweetCount);
 		if (retweet.failed) throw error(500, { message: "Unable to retweet Tweet." });
+
+		if (isDefined(tweet.user) && tweet.user !== user.id)
+			triggerNotificationEvent(event, {
+				type: "RETWEET",
+				"from.id": user.id,
+				"to.id": tweet.user,
+				"tweet.id": id
+			});
 
 		const location = event.url.searchParams.get("redirect");
 		if (location) throw redirect(303, location);

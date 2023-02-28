@@ -12,7 +12,7 @@
 
 <Header title="Notifications" displayName={data.user.displayName} />
 <Feed>
-	{#each data.notifications as { from, tweet, createdAt, id } (id)}
-		<Notification {from} {createdAt} text={tweet?.text} />
+	{#each data.notifications as notification (notification.id)}
+		<Notification {notification} />
 	{/each}
 </Feed>
