@@ -82,7 +82,16 @@ export async function getTweetState(uid: string, tid: string) {
 export async function getUserTweets(displayName: string, currentUser: string | undefined) {
 	const tweets = await client.db.tweets
 		.filter("user.displayName", displayName)
-		.select(["*", "user.displayName", "user.name", "user.id"])
+		.select([
+			"*",
+			"user.displayName",
+			"user.name",
+			"user.id",
+			"retweetOf.text",
+			"retweetOf.user.displayName",
+			"retweetOf.user.name",
+			"retweetOf.createdAt"
+		])
 		.sort("createdAt", "desc")
 		.getAll();
 

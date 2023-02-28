@@ -18,7 +18,15 @@ export function findTweet(id: string) {
 export function getTweets() {
 	return useAwait(() => {
 		return client.db.tweets
-			.select(["*", "user.displayName", "user.name"])
+			.select([
+				"*",
+				"user.displayName",
+				"user.name",
+				"retweetOf.text",
+				"retweetOf.user.displayName",
+				"retweetOf.user.name",
+				"retweetOf.createdAt"
+			])
 			.sort("createdAt", "desc")
 			.getAll();
 	});
