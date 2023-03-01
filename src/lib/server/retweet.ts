@@ -9,3 +9,9 @@ export function createRetweet(uid: string, tid: string, retweetCount = 0) {
 		]);
 	});
 }
+
+export function findRetweet(uid: string, tid: string) {
+	return useAwait(() => {
+		return client.db.tweets.filter({ "user.id": uid, "retweetOf.id": tid }).getFirst();
+	});
+}

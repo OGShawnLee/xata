@@ -10,7 +10,7 @@ import { createBookmark, deleteBookmark, findBookmark } from "$lib/server/bookma
 import { findLike, likeTweet, unlikeTweet } from "$lib/server/like";
 import { triggerNotificationEvent } from "$lib/server/notification";
 import { isDefined } from "$lib/utils/predicate";
-import { createRetweet } from "$lib/server/retweet";
+import { createRetweet, findRetweet } from "$lib/server/retweet";
 
 export default class Action {
 	static async handleBookmark(event: RequestEvent) {
@@ -49,8 +49,12 @@ export default class Action {
 
 	static async retweet(event: RequestEvent) {
 		const { id, user, tweet } = await handleActionValidation(event);
-		const retweet = await createRetweet(user.id, id, tweet.retweetCount);
+		const retweet = await findRetweet(user.id, id);
 		if (retweet.failed) throw error(500, { message: "Unable to retweet Tweet." });
+		if (retweet.data) throw fail(400, { error: "Tweet has been already retweeted." });
+
+		const created = await createRetweet(user.id, id, tweet.retweetCount);
+		if (created.failed) throw error(500, { message: "Unable to retweet Tweet." });
 
 		if (isDefined(tweet.user) && tweet.user !== user.id)
 			triggerNotificationEvent(event, {
