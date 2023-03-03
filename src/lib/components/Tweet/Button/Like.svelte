@@ -11,7 +11,7 @@
 	import { page } from "$app/stores";
 
 	export let id: string;
-	export let likeCount = 0;
+	export let likeCount: number | undefined = undefined;
 	export let isLiked: boolean;
 
 	$: action = getLikeAction(isBookmarkPage, isLiked);

@@ -35,11 +35,11 @@ export default class Action {
 		const like = await likeTweet(user.id, id, tweet.likeCount ?? 0);
 		if (like.failed) throw error(500, { message: "Unable to like Tweet." });
 
-		if (isDefined(tweet.user) && tweet.user !== user.id)
+		if (isDefined(tweet.user.id) && tweet.user.id !== user.id)
 			triggerNotificationEvent(event, {
 				type: "LIKE",
 				"from.id": user.id,
-				"to.id": tweet.user,
+				"to.id": tweet.user.id,
 				"tweet.id": tweet.id
 			});
 
@@ -56,11 +56,11 @@ export default class Action {
 		const created = await createRetweet(user.id, id, tweet.retweetCount);
 		if (created.failed) throw error(500, { message: "Unable to retweet Tweet." });
 
-		if (isDefined(tweet.user) && tweet.user !== user.id)
+		if (isDefined(tweet.user.id) && tweet.user.id !== user.id)
 			triggerNotificationEvent(event, {
 				type: "RETWEET",
 				"from.id": user.id,
-				"to.id": tweet.user,
+				"to.id": tweet.user.id,
 				"tweet.id": id
 			});
 

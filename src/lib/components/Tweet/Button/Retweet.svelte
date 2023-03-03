@@ -11,7 +11,7 @@
 	import { page } from "$app/stores";
 
 	export let id: string;
-	export let retweetCount = 0;
+	export let retweetCount: number | undefined = undefined;
 
 	$: action = getRetweetAction(isBookmarkPage);
 	$: isBookmarkPage = $page.url.pathname.includes("i/bookmarks");

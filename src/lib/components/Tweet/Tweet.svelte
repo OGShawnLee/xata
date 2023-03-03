@@ -2,6 +2,7 @@
 	import type { Nullable } from "malachite-ui/types";
 	import Header from "./Header.svelte";
 	import Badge from "./Badge.svelte";
+	import { ArrowRight } from "lucide-svelte";
 	import { Bookmark, Like, Retweet } from "./Button";
 	import { currentUser } from "$lib/state";
 	import { isNullish } from "malachite-ui/predicate";
@@ -35,10 +36,14 @@
 		<Header displayName={finalDisplayName} name={finalName} createdAt={finalCreatedAt} />
 		<p class="whitespace-pre-line">{finalText}</p>
 		{#if $currentUser && isNullish(retweetOf)}
-			<div class="grid items-center grid-cols-4 | pt-2.75">
+			<div class="flex items-center justify-between | pt-2.75">
 				<Bookmark {id} {isBookmarked} />
 				<Like {id} {likeCount} {isLiked} />
 				<Retweet {id} {retweetCount} />
+				<a href="/{displayName}/status/{id}" title="View Tweet">
+					<ArrowRight />
+					<span class="sr-only"> View Tweet </span>
+				</a>
 			</div>
 		{/if}
 	</div>

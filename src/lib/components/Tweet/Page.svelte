@@ -1,0 +1,23 @@
+<script lang="ts">
+	import { Bookmark, Like, Retweet } from "./Button";
+	import Header from "./Header.svelte";
+	import Stats from "./Stats.svelte";
+
+	export let tweet: TweetObject;
+
+	const formatter = Intl.DateTimeFormat("en", { dateStyle: "full", timeStyle: "medium" });
+</script>
+
+<div class="px-8 | grid gap-2.25">
+	<Header displayName={tweet.user.displayName} name={tweet.user.name} big />
+	<p>{tweet.text}</p>
+	<time class="text-sm text-zinc-500" datetime={tweet.createdAt.toISOString()}>
+		{formatter.format(tweet.createdAt)}
+	</time>
+	<Stats likeCount={tweet.likeCount} retweetCount={tweet.retweetCount} />
+	<div class="flex items-center justify-around | pt-2.75">
+		<Bookmark id={tweet.id} isBookmarked={tweet.isBookmarked} />
+		<Like id={tweet.id} isLiked={tweet.isLiked} />
+		<Retweet id={tweet.id} />
+	</div>
+</div>

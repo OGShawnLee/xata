@@ -26,6 +26,22 @@ declare global {
 		"tweet.id": string;
 		type: NotificationEventType;
 	}
+
+	interface TweetObject {
+		id: string;
+		createdAt: Date;
+		text: string;
+		likeCount: number;
+		retweetCount: number;
+		retweetOf: string | undefined;
+		isBookmarked: boolean;
+		isLiked: boolean;
+		user: {
+			id: string | undefined;
+			name: Nullable<string>;
+			displayName: Nullable<string>;
+		};
+	}
 }
 
 export {};

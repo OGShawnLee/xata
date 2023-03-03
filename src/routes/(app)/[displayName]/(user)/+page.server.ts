@@ -1,4 +1,4 @@
-import type { PageServerLoad } from "./$types";
+import type { PageServerLoad } from "../$types";
 import { getUserTweets } from "$lib/server/user";
 import { error } from "@sveltejs/kit";
 import { useAwait } from "$lib/hooks";
