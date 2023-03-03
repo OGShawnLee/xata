@@ -1,7 +1,6 @@
 import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
 import { isNullish } from "malachite-ui/predicate";
-import type { Nullable } from "malachite-ui/types";
 import { getTweetState } from "./user";
 
 export function createTweet(id: string, text: string) {
