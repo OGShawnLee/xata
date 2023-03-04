@@ -7,6 +7,29 @@ export function findLike(userId: string, tweetId: string) {
 	});
 }
 
+export function findUsersWhoLikedTweet(id: string) {
+	return useAwait(async () => {
+		const likes = await client.db.likes
+			.filter("tweet.id", id)
+			.select(["*", "user.description", "user.displayName", "user.name"])
+			.sort("likedAt", "desc")
+			.getAll();
+
+		return likes.map((like) => {
+			return {
+				id: like.id,
+				likedAt: like.likedAt,
+				user: {
+					id: like.user?.id,
+					description: like.user?.description,
+					displayName: like.user?.displayName,
+					name: like.user?.name
+				}
+			};
+		});
+	});
+}
+
 export function likeTweet(userId: string, tweetId: string, likeCount: number) {
 	return useAwait(() => {
 		return client.transactions.run([

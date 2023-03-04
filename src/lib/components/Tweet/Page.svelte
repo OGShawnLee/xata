@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { Bookmark, Like, Retweet } from "./Button";
+	import Context from "./Context";
 	import Header from "./Header.svelte";
 	import Stats from "./Stats.svelte";
 
 	export let tweet: TweetObject;
+
+	Context.setContext(tweet);
 
 	const formatter = Intl.DateTimeFormat("en", { dateStyle: "full", timeStyle: "medium" });
 </script>
@@ -14,7 +17,7 @@
 	<time class="text-sm text-zinc-500" datetime={tweet.createdAt.toISOString()}>
 		{formatter.format(tweet.createdAt)}
 	</time>
-	<Stats likeCount={tweet.likeCount} retweetCount={tweet.retweetCount} />
+	<Stats />
 	<div class="flex items-center justify-around | pt-2.75">
 		<Bookmark id={tweet.id} isBookmarked={tweet.isBookmarked} />
 		<Like id={tweet.id} isLiked={tweet.isLiked} />

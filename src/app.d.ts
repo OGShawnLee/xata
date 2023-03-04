@@ -35,6 +35,17 @@ declare global {
 		type: NotificationEventType;
 	}
 
+	interface TweetLikeUserObject {
+		id: string;
+		likedAt: Date;
+		user: {
+			id: string | undefined;
+			description: Nullable<string>;
+			displayName: Nullable<string>;
+			name: Nullable<string>;
+		};
+	}
+
 	interface TweetObject {
 		id: string;
 		createdAt: Date;
