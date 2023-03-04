@@ -15,7 +15,7 @@
 		<Tweet
 			createdAt={tweet?.createdAt}
 			text={tweet?.text}
-			{id}
+			id={tweet.id}
 			displayName={tweet?.user?.displayName}
 			name={tweet?.user?.name}
 			likeCount={tweet?.likeCount}
