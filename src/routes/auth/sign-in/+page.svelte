@@ -4,6 +4,7 @@
 	import { Input } from "$lib/components";
 
 	export let form: Nullable<{
+		error?: string;
 		displayName?: { value: string; error?: string };
 		password?: { error?: string };
 	}>;
@@ -26,6 +27,7 @@
 					Sign up!
 				</a>
 			</span>
+			{form?.error}
 		</header>
 		<form class="px-8 | grid gap-6" method="post">
 			<div class="grid gap-3">

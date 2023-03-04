@@ -15,7 +15,7 @@
 	$: pathname = $page.url.pathname;
 </script>
 
-<Navigable class="flex items-center justify-around | border-b-2 border-zinc-800">
+<Navigable class="flex items-center justify-around | border-y-2 border-zinc-800">
 	<NavigableItem class={className} as="a" href="/{displayName}">
 		<span
 			class="relative h-full | grid place-content-center after:(bg-cyan-500)"

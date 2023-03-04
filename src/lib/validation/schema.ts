@@ -45,6 +45,20 @@ export const userSchema = z.object({
 		.min(1, errorMessage.min("Username", 1))
 		.max(16, errorMessage.max("Username", 16))
 		.trim(),
+	description: z
+		.string({
+			required_error: errorMessage.required("Description"),
+			invalid_type_error: errorMessage.invalidType("Description", "string")
+		})
+		.max(160, errorMessage.max("Description", 160))
+		.trim(),
+	location: z
+		.string({
+			required_error: errorMessage.required("Location"),
+			invalid_type_error: errorMessage.invalidType("Location", "string")
+		})
+		.max(30, errorMessage.max("Location", 30))
+		.trim(),
 	email: z
 		.string({
 			required_error: errorMessage.required("Email"),

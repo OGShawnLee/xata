@@ -8,12 +8,15 @@ export default defineConfig({
 		"button--sky":
 			"bg-sky-600 text-white font-medium hover:(bg-sky-500) focus:(ring-2 ring-sky-200)",
 		"button--white":
-			"bg-white text-zinc-900 font-medium hover:(opacity-85) focus:(ring-2 ring-sky-500)"
+			"bg-white text-zinc-900 font-medium hover:(opacity-85) focus:(ring-2 ring-sky-500)",
+		"button-zinc":
+			"px-8 py-3 | border-2 border-zinc-800 rounded-full outline-none text-zinc-100 font-medium hover:(bg-zinc-800 text-white) focus:border-white"
 	},
 	theme: {
 		extend: {
 			colors: {
 				zinc: {
+					1000: "#121217",
 					900: "#18181B",
 					800: "#212127",
 					700: "#2A2A37",

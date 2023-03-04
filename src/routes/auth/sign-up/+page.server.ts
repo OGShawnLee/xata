@@ -7,6 +7,8 @@ import { isDuplicateDisplayNameAndEmail } from "$lib/server/predicate";
 import { createUser } from "$lib/server/user";
 import { createPasswordHash } from "$lib/server/utils";
 
+const schema = userSchema.pick({ displayName: true, email: true, name: true, password: true });
+
 export const actions: Actions = {
 	default: async (event) => {
 		const data = await event.request.formData();
@@ -16,7 +18,7 @@ export const actions: Actions = {
 		const password = data.get("password");
 
 		const user = await useAwait(() => {
-			return userSchema.parse({ displayName, email, name, password });
+			return schema.parse({ displayName, email, name, password });
 		});
 		if (user.failed) {
 			const errors = (user.error as ZodError).flatten().fieldErrors;

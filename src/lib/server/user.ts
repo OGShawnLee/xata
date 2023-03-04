@@ -22,10 +22,19 @@ export function findUser(displayName: string) {
 }
 
 export async function findUserPublic(displayName: string) {
-	return client.db.users
+	const user = await client.db.users
 		.filter("displayName", displayName)
-		.select(["createdAt", "displayName", "name"])
+		.select(["createdAt", "displayName", "name", "description", "location"])
 		.getFirst();
+	if (isNullish(user)) return null;
+	return {
+		id: user.id,
+		displayName: user.displayName,
+		name: user.name,
+		description: user.description,
+		location: user.location,
+		createdAt: user.createdAt
+	};
 }
 
 export function getUserPublicPage(displayName: string, currentUser: string | undefined) {
@@ -108,4 +117,13 @@ export async function getUserTweets(displayName: string, currentUser: string | u
 			return { ...tweet, isLiked, isBookmarked };
 		})
 	);
+}
+
+export function updateUserProfile(
+	id: string,
+	data: { name: string; description: string; location: string }
+) {
+	return useAwait(() => {
+		return client.db.users.updateOrThrow(id, data);
+	});
 }

@@ -1,17 +1,43 @@
 <script lang="ts">
 	import type { LayoutData } from "./$types";
+	import DialogEditProfile from "./DialogEditProfile.svelte";
 	import TabGroup from "./TabGroup.svelte";
+	import UserInfo from "./UserInfo.svelte";
 	import { Header } from "$lib/layout";
+	import { useSwitch } from "malachite-ui/hooks";
+	import { currentUser } from "$lib/state";
 
 	export let data: LayoutData;
 
-	$: displayName = data.foundUser.displayName;
-	$: title = data.foundUser.name;
-	$: createdAt = data.foundUser.createdAt;
+	$: foundUser = data.foundUser;
+	$: isOwner = data.user?.id === foundUser.id;
+	$: if (isOwner && foundUser.name && $currentUser) {
+		$currentUser.name = foundUser.name;
+	}
+
+	const open = useSwitch(false);
 </script>
 
+<DialogEditProfile
+	{open}
+	description={foundUser.description}
+	location={foundUser.location}
+	name={foundUser.name}
+/>
+
 <div>
-	<Header {title} {displayName} {createdAt} />
-	<TabGroup {displayName} />
+	<Header title={foundUser.name} displayName={foundUser.displayName}>
+		<svelte:fragment slot="button">
+			{#if isOwner}
+				<button class="button-zinc" on:click={open.toggle}> Edit Profile </button>
+			{/if}
+		</svelte:fragment>
+	</Header>
+	<UserInfo
+		createdAt={foundUser.createdAt}
+		description={foundUser.description}
+		location={foundUser.location}
+	/>
+	<TabGroup displayName={foundUser.displayName} />
 </div>
 <slot />

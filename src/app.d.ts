@@ -1,4 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
+
+import type { Nullable } from "malachite-ui/types";
+
 // for information about these interfaces
 declare global {
 	namespace App {
@@ -16,6 +19,11 @@ declare global {
 		id: string;
 		displayName: string;
 		name: string;
+	}
+
+	interface UserState extends JWTPayloadState {
+		description?: Nullable<string>;
+		location?: Nullable<string>;
 	}
 
 	type NotificationEventType = "LIKE" | "RETWEET";

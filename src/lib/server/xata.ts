@@ -26,6 +26,8 @@ const tables = [
         notNull: true,
         defaultValue: "now",
       },
+      { name: "description", type: "string" },
+      { name: "location", type: "string" },
     ],
   },
   {

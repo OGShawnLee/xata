@@ -1,3 +1,3 @@
 import { writable } from "svelte/store";
 
-export const currentUser = writable<JWTPayloadState | undefined>();
+export const currentUser = writable<UserState | undefined>();

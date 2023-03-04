@@ -1,6 +1,7 @@
+import type { Action } from "svelte/action";
 import { isNullish } from "malachite-ui/predicate";
 
-interface HTMLExpandableTextArea extends HTMLTextAreaElement {
+export interface HTMLExpandableTextArea extends HTMLTextAreaElement {
 	baseScrollHeight: number;
 }
 
@@ -19,6 +20,15 @@ export function handleExpandableArea(this: HTMLExpandableTextArea) {
 	rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 28);
 	this.rows = finalMinimum + rows;
 }
+
+export const hideScrollbar: Action = () => {
+	const body = document.body;
+	const initialOverflow = body.style.overflow;
+	body.style.overflow = "hidden";
+	return {
+		destroy: () => (body.style.overflow = initialOverflow)
+	};
+};
 
 function setScrollHeight(element: HTMLExpandableTextArea) {
 	const value = element.value;
