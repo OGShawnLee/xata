@@ -10,7 +10,7 @@ interface State<T> {
 	data: T[];
 }
 
-export function usePageDialog<T, E>(
+export default function usePageDialog<T, E>(
 	load: (pathname: string) => Promise<{ failed: true; error: E } | { failed: false; data: T[] }>
 ) {
 	const store = ref<State<T>>({ open: false, state: "IDLE", data: [] });

@@ -1,6 +1,5 @@
 import { writable } from "svelte/store";
-import { usePageDialog } from "./usePageDialog";
-import { useAwait } from "$lib/hooks";
+import { useAwait, usePageDialog } from "$lib/hooks";
 import { parse } from "devalue";
 
 export const currentUser = writable<UserState | undefined>();

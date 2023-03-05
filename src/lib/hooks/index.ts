@@ -8,3 +8,5 @@ export async function useAwait<T, E = unknown>(
 		return { failed: true, error: error as E };
 	}
 }
+
+export { default as usePageDialog } from "./usePageDialog";
