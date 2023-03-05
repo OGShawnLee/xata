@@ -27,7 +27,6 @@
 					Sign up!
 				</a>
 			</span>
-			{form?.error}
 		</header>
 		<form class="px-8 | grid gap-6" method="post">
 			<div class="grid gap-3">
