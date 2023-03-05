@@ -1,5 +1,22 @@
 import { writable } from "svelte/store";
-import { useTweetLikesDialog } from "./useTweetLikesDialog";
+import { usePageDialog } from "./usePageDialog";
+import { useAwait } from "$lib/hooks";
+import { parse } from "devalue";
 
 export const currentUser = writable<UserState | undefined>();
-export const tweetLikesDialog = useTweetLikesDialog();
+
+export const tweetLikesDialog = usePageDialog((pathname) => {
+	return useAwait(async () => {
+		const response = await fetch(pathname);
+		const text = await response.text();
+		return parse(text) as TweetLikeUserObject[];
+	});
+});
+
+export const tweetRetweetsDialog = usePageDialog((pathname) => {
+	return useAwait(async () => {
+		const response = await fetch(pathname);
+		const text = await response.text();
+		return parse(text) as TweetRetweetUserObject[];
+	});
+});

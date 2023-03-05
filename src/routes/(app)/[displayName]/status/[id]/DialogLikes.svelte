@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { Dialog, DialogContent, DialogOverlay, DialogTitle } from "malachite-ui";
+	import { CardUser } from "$lib/components";
 	import { X } from "lucide-svelte";
 	import { hideScrollbar } from "$lib/actions";
 	import { tweetLikesDialog } from "$lib/state";
-	import { CardUser } from "$lib/components";
 </script>
 
 <Dialog class="fixed inset-0 | grid place-content-center" bind:open={$tweetLikesDialog.open}>
@@ -23,7 +23,7 @@
 				<DialogTitle class="text-xl text-white font-medium">Tweet liked by</DialogTitle>
 			</header>
 			<div class="grid gap-3 px-8">
-				{#each $tweetLikesDialog.likes as { id, user } (id)}
+				{#each $tweetLikesDialog.data as { id, user } (id)}
 					<CardUser {...user} />
 				{/each}
 			</div>

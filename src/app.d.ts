@@ -46,6 +46,17 @@ declare global {
 		};
 	}
 
+	interface TweetRetweetUserObject {
+		id: string;
+		retweetedAt: Date;
+		user: {
+			id: string | undefined;
+			description: Nullable<string>;
+			displayName: Nullable<string>;
+			name: Nullable<string>;
+		};
+	}
+
 	interface TweetObject {
 		id: string;
 		createdAt: Date;

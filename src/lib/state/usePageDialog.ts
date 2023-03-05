@@ -1,34 +1,26 @@
 import type { Nullable } from "malachite-ui/types";
 import { useCleanup, useListener } from "malachite-ui/hooks";
-import { useAwait } from "$lib/hooks";
-import { parse } from "devalue";
 import { onDestroy } from "svelte";
 import { ref } from "malachite-ui/utils";
 import { isNullish } from "malachite-ui/predicate";
 
-interface State {
+interface State<T> {
 	open: boolean;
 	state: "FAILED" | "SUCCESS" | "LOADING" | "IDLE";
-	likes: TweetLikeUserObject[];
+	data: T[];
 }
 
-export function useTweetLikesDialog() {
-	const store = ref<State>({ open: false, state: "IDLE", likes: [] });
+export function usePageDialog<T, E>(
+	load: (pathname: string) => Promise<{ failed: true; error: E } | { failed: false; data: T[] }>
+) {
+	const store = ref<State<T>>({ open: false, state: "IDLE", data: [] });
 
-	function getTweetLikeUsers(pathname: string) {
-		return useAwait(async () => {
-			const response = await fetch(pathname);
-			const text = await response.text();
-			return parse(text) as TweetLikeUserObject[];
-		});
-	}
-
-	function getLinkAction(this: void, displayName: Nullable<string>, id: string) {
+	function getLinkAction(this: void, displayName: Nullable<string>, id: string, route: string) {
 		if (isNullish(displayName)) throw TypeError("Tweet user displayName cannot be nullish!");
 
 		onDestroy(() => reset());
 
-		const pathname = "/" + displayName + "/status/" + id + "/likes";
+		const pathname = "/" + displayName + "/status/" + id + route;
 		return (element: HTMLAnchorElement) => {
 			return {
 				destroy: useCleanup(handleClick(element), handleMouseEnter(element, pathname))
@@ -55,8 +47,8 @@ export function useTweetLikesDialog() {
 				return store;
 			});
 
-			const likes = await getTweetLikeUsers(pathname);
-			if (likes.failed) {
+			const result = await load(pathname);
+			if (result.failed) {
 				store.update((state) => {
 					state.state = "FAILED";
 					return state;
@@ -64,7 +56,7 @@ export function useTweetLikesDialog() {
 			} else {
 				store.update((state) => {
 					state.state = "SUCCESS";
-					state.likes = likes.data;
+					state.data = result.data;
 					return state;
 				});
 			}
@@ -75,7 +67,7 @@ export function useTweetLikesDialog() {
 		store.update((store) => {
 			store.open = false;
 			store.state = "IDLE";
-			store.likes = [];
+			store.data = [];
 			return store;
 		});
 	}
