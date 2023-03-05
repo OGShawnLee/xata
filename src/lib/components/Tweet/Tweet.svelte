@@ -37,9 +37,9 @@
 		<p class="whitespace-pre-line">{finalText}</p>
 		{#if $currentUser && isNullish(retweetOf)}
 			<div class="flex items-center justify-between | pt-2.75">
-				<Bookmark {id} {isBookmarked} />
 				<Like {id} {likeCount} {isLiked} />
 				<Retweet {id} {retweetCount} />
+				<Bookmark {id} {isBookmarked} />
 				<a href="/{displayName}/status/{id}" title="View Tweet">
 					<ArrowRight />
 					<span class="sr-only"> View Tweet </span>

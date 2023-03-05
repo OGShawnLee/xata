@@ -19,8 +19,8 @@
 	</time>
 	<Stats />
 	<div class="flex items-center justify-around | pt-2.75">
-		<Bookmark id={tweet.id} isBookmarked={tweet.isBookmarked} />
 		<Like id={tweet.id} isLiked={tweet.isLiked} />
 		<Retweet id={tweet.id} />
+		<Bookmark id={tweet.id} isBookmarked={tweet.isBookmarked} />
 	</div>
 </div>
