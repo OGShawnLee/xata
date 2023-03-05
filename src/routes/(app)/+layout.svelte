@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { LayoutData } from "./$types";
-	import { Sidebar } from "$lib/layout";
+	import { RelevantPeople, Sidebar } from "$lib/layout";
 	import { currentUser } from "$lib/state";
 
 	export let data: LayoutData;
@@ -13,4 +13,7 @@
 	<main class="col-span-6 | grid gap-8">
 		<slot />
 	</main>
+	<aside class="col-span-3">
+		<RelevantPeople />
+	</aside>
 </div>

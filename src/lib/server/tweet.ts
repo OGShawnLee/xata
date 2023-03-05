@@ -14,7 +14,7 @@ export function findTweet(id: string, displayName?: string) {
 	return useAwait<TweetObject | null>(async () => {
 		const tweet = await client.db.tweets
 			.filter(displayName ? { id: id, "user.displayName": displayName } : { id: id })
-			.select(["*", "user.displayName", "user.name"])
+			.select(["*", "user.description", "user.displayName", "user.name"])
 			.getFirst();
 
 		if (isNullish(tweet)) return null;
@@ -30,8 +30,9 @@ export function findTweet(id: string, displayName?: string) {
 			isLiked: false,
 			user: {
 				id: tweet.user?.id,
-				name: tweet.user?.name,
-				displayName: tweet.user?.displayName
+				description: tweet.user?.description,
+				displayName: tweet.user?.displayName,
+				name: tweet.user?.name
 			}
 		};
 	});

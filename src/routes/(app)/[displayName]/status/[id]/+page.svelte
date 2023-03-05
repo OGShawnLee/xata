@@ -5,8 +5,14 @@
 	import { TweetPage } from "$lib/components";
 	import { Header } from "$lib/layout";
 	import { clearString } from "malachite-ui/utils";
+	import { layout } from "$lib/state";
+	import { onDestroy } from "svelte";
 
 	export let data: PageData;
+
+	layout.set("RELEVANT-PEOPLE", [data.tweet.user]);
+
+	onDestroy(() => layout.set("NONE", undefined));
 </script>
 
 <svelte:head>

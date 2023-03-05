@@ -21,6 +21,13 @@ declare global {
 		name: string;
 	}
 
+	interface UserObject {
+		id: string | undefined;
+		name: Nullable<string>;
+		displayName: Nullable<string>;
+		description: Nullable<string>;
+	}
+
 	interface UserState extends JWTPayloadState {
 		description?: Nullable<string>;
 		location?: Nullable<string>;
@@ -68,8 +75,9 @@ declare global {
 		isLiked: boolean;
 		user: {
 			id: string | undefined;
-			name: Nullable<string>;
+			description: Nullable<string>;
 			displayName: Nullable<string>;
+			name: Nullable<string>;
 		};
 	}
 }

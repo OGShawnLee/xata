@@ -9,4 +9,5 @@ export async function useAwait<T, E = unknown>(
 	}
 }
 
+export { default as useAsideLayout } from "./useAsideLayout";
 export { default as usePageDialog } from "./usePageDialog";
