@@ -24,6 +24,11 @@ type TweetRecordComplete = SelectedPick<
 	)[]
 >;
 
+type TweetRecordMinimal = SelectedPick<
+	TweetsRecord,
+	("*" | "user.displayName" | "user.id" | "user.name" | "user.description")[]
+>;
+
 type TweetRecordNoRetweet = SelectedPick<
 	TweetsRecord,
 	(
@@ -44,6 +49,27 @@ export function createPasswordHash(password: string) {
 	return useAwait(async () => {
 		return hash(password, await genSalt());
 	});
+}
+
+export function createTweetObjectMinimal(tweet: TweetRecordMinimal) {
+	return {
+		id: tweet.id,
+		createdAt: tweet.createdAt,
+		text: tweet.text,
+		likeCount: tweet.likeCount,
+		quoteCount: tweet.quoteCount,
+		quoteOf: undefined,
+		retweetCount: tweet.retweetCount,
+		retweetOf: undefined,
+		isBookmarked: false,
+		isLiked: false,
+		user: {
+			id: tweet.user?.id,
+			description: tweet.user?.description,
+			displayName: tweet.user?.displayName,
+			name: tweet.user?.name
+		}
+	};
 }
 
 export function createTweetObjectNoRetweet(tweet: TweetRecordNoRetweet) {

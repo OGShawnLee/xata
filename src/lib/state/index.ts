@@ -4,6 +4,8 @@ import { parse } from "devalue";
 
 export const currentUser = writable<UserState | undefined>();
 
+export const currentTweet = writable<TweetObject | undefined>();
+
 export const composeDialog = useComposeDialog();
 
 export const layout = useAsideLayout();

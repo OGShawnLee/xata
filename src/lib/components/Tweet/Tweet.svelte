@@ -11,6 +11,9 @@
 	import { isNullish, isObject } from "malachite-ui/predicate";
 
 	export let tweet: TweetObject;
+	export let quoteOf: QuoteTweetObject | undefined = undefined;
+
+	if (quoteOf) tweet.quoteOf = quoteOf;
 
 	Context.setContext(tweet);
 
