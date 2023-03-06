@@ -3,7 +3,7 @@ import { defineConfig } from "vite-plugin-windicss";
 export default defineConfig({
 	shortcuts: {
 		button: "px-8 py-2 | rounded-xl outline-none",
-		"button--disabled": "opacity-50",
+		"button--disabled": "opacity-50 cursor-auto",
 		"button-small": "px-6 py-1.75 | rounded-full outline-none",
 		"button--sky":
 			"bg-sky-600 text-white font-medium hover:(bg-sky-500) focus:(ring-2 ring-sky-200)",

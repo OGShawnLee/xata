@@ -1,9 +1,11 @@
 <script lang="ts">
 	import type { Nullable } from "malachite-ui/types";
-	import Header from "./Header.svelte";
+	import Context from "./Context";
 	import Badge from "./Badge.svelte";
+	import Header from "./Header.svelte";
+	import Menu from "./Menu.svelte";
 	import { ArrowRight } from "lucide-svelte";
-	import { Bookmark, Like, Retweet } from "./Button";
+	import { Bookmark, Like } from "./Button";
 	import { currentUser } from "$lib/state";
 	import { isNullish } from "malachite-ui/predicate";
 
@@ -38,7 +40,13 @@
 		{#if $currentUser && isNullish(retweetOf)}
 			<div class="flex items-center justify-between | pt-2.75">
 				<Like {id} {likeCount} {isLiked} />
-				<Retweet {id} {retweetCount} />
+				<Menu
+					{id}
+					{createdAt}
+					{text}
+					{retweetCount}
+					user={{ id: undefined, description: undefined, displayName, name }}
+				/>
 				<Bookmark {id} {isBookmarked} />
 				<a href="/{displayName}/status/{id}" title="View Tweet">
 					<ArrowRight />

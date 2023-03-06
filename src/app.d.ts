@@ -33,6 +33,13 @@ declare global {
 		location?: Nullable<string>;
 	}
 
+	interface QuoteTweet {
+		id: string;
+		createdAt: Date;
+		text: string;
+		user: UserObject;
+	}
+
 	type NotificationEventType = "LIKE" | "RETWEET";
 
 	interface NotificationEvent {
@@ -69,6 +76,8 @@ declare global {
 		createdAt: Date;
 		text: string;
 		likeCount: number;
+		quoteOf: string | undefined;
+		quoteCount: number;
 		retweetCount: number;
 		retweetOf: string | undefined;
 		isBookmarked: boolean;

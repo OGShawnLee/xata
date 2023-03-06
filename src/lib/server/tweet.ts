@@ -24,6 +24,8 @@ export function findTweet(id: string, displayName?: string) {
 			createdAt: tweet.createdAt,
 			text: tweet.text,
 			likeCount: tweet.likeCount,
+			quoteOf: tweet.quoteOf?.id,
+			quoteCount: tweet.quoteCount,
 			retweetCount: tweet.retweetCount,
 			retweetOf: tweet.retweetOf?.id,
 			isBookmarked: false,

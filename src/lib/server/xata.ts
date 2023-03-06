@@ -44,6 +44,8 @@ const tables = [
       { name: "likeCount", type: "int", notNull: true, defaultValue: "0" },
       { name: "retweetOf", type: "link", link: { table: "tweets" } },
       { name: "retweetCount", type: "int", notNull: true, defaultValue: "0" },
+      { name: "quoteOf", type: "link", link: { table: "tweets" } },
+      { name: "quoteCount", type: "int", notNull: true, defaultValue: "0" },
     ],
   },
   {

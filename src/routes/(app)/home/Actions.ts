@@ -11,6 +11,7 @@ import { findLike, likeTweet, unlikeTweet } from "$lib/server/like";
 import { triggerNotificationEvent } from "$lib/server/notification";
 import { isDefined } from "$lib/utils/predicate";
 import { createRetweet, findRetweet } from "$lib/server/retweet";
+import { quote } from "$lib/server/quote";
 
 export default class Action {
 	static async handleBookmark(event: RequestEvent) {
@@ -45,6 +46,22 @@ export default class Action {
 
 		const location = event.url.searchParams.get("redirect");
 		if (location) throw redirect(303, location);
+	}
+
+	static async quote(event: RequestEvent) {
+		const { user, tweet, data } = await handleActionValidation(event);
+
+		const input = data.get("tweet-text");
+		const text = await useAwait<string, ZodError>(() => tweetSchema.parse(input));
+		if (text.failed) {
+			const errors = text.error.flatten().formErrors;
+			return fail(400, {
+				text: { value: input as string | null, error: errors[0] }
+			});
+		}
+
+		const quotedTweet = await quote({ text: text.data, user, tweet });
+		if (quotedTweet.failed) return error(500, { message: "Unable to quote Tweet." });
 	}
 
 	static async retweet(event: RequestEvent) {
@@ -115,5 +132,5 @@ async function handleActionValidation({ locals: { user }, request }: RequestEven
 	if (tweet.failed) throw error(500, { message: "Unable to Validate Tweet." });
 	if (isNullish(tweet.data)) throw error(400, { message: "Tweet does not exist." });
 
-	return { id: id.data, user: user.data, tweet: tweet.data };
+	return { id: id.data, user: user.data, tweet: tweet.data, data };
 }

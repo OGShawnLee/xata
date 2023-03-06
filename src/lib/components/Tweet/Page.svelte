@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { Bookmark, Like, Retweet } from "./Button";
+	import { Bookmark, Like } from "./Button";
 	import Context from "./Context";
+	import Menu from "./Menu.svelte";
 	import Header from "./Header.svelte";
 	import Stats from "./Stats.svelte";
 
@@ -20,7 +21,7 @@
 	<Stats />
 	<div class="flex items-center justify-around | pt-2.75">
 		<Like id={tweet.id} isLiked={tweet.isLiked} />
-		<Retweet id={tweet.id} />
+		<Menu id={tweet.id} createdAt={tweet.createdAt} text={tweet.text} user={tweet.user} />
 		<Bookmark id={tweet.id} isBookmarked={tweet.isBookmarked} />
 	</div>
 </div>
