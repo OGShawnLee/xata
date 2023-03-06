@@ -4,7 +4,7 @@ interface State {
 	event: "NONE" | "QUOTE";
 	open: boolean;
 	data: {
-		quoteTweet: QuoteTweet | undefined;
+		quoteTweet: QuoteTweetObject | undefined;
 	};
 }
 
@@ -27,9 +27,9 @@ export default function useComposeDialog() {
 	}
 
 	function trigger(this: void, type: "NONE"): void;
-	function trigger(this: void, type: "QUOTE", data: QuoteTweet): void;
+	function trigger(this: void, type: "QUOTE", data: QuoteTweetObject): void;
 
-	function trigger(this: void, type: "NONE" | "QUOTE", data?: QuoteTweet) {
+	function trigger(this: void, type: "NONE" | "QUOTE", data?: QuoteTweetObject) {
 		update((state) => {
 			state.event = type;
 			if (type === "NONE") {

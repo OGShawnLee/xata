@@ -2,7 +2,7 @@ import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
 import { isNullish } from "malachite-ui/predicate";
 import { getTweetState } from "./user";
-import { createTweetObject, createTweetObjectWithRetweet } from "./utils";
+import { createTweetObject, createTweetObjectNoRetweet } from "./utils";
 
 export function createTweet(id: string, text: string) {
 	return useAwait(async () => {
@@ -15,10 +15,20 @@ export function findTweet(id: string, displayName?: string) {
 	return useAwait<TweetObject | null>(async () => {
 		const tweet = await client.db.tweets
 			.filter(displayName ? { id: id, "user.displayName": displayName } : { id: id })
-			.select(["*", "user.description", "user.displayName", "user.name"])
+			.select([
+				"*",
+				"user.description",
+				"user.displayName",
+				"user.name",
+				"quoteOf.createdAt",
+				"quoteOf.text",
+				"quoteOf.user.description",
+				"quoteOf.user.displayName",
+				"quoteOf.user.name"
+			])
 			.getFirst();
 
-		return isNullish(tweet) ? null : createTweetObject(tweet);
+		return isNullish(tweet) ? null : createTweetObjectNoRetweet(tweet);
 	});
 }
 
@@ -56,6 +66,11 @@ export function getTweets() {
 				"user.displayName",
 				"user.name",
 				"user.id",
+				"quoteOf.createdAt",
+				"quoteOf.text",
+				"quoteOf.user.description",
+				"quoteOf.user.displayName",
+				"quoteOf.user.name",
 				"retweetOf.text",
 				"retweetOf.user.description",
 				"retweetOf.user.displayName",
@@ -65,6 +80,6 @@ export function getTweets() {
 			.sort("createdAt", "desc")
 			.getAll();
 
-		return tweets.map(createTweetObjectWithRetweet);
+		return tweets.map(createTweetObject);
 	});
 }

@@ -53,7 +53,10 @@ export function getUserLikes(displayName: string, cuid: string | undefined) {
 				"tweet.*",
 				"tweet.user.description",
 				"tweet.user.displayName",
-				"tweet.user.name"
+				"tweet.user.name",
+				"tweet.quoteOf.createdAt",
+				"tweet.quoteOf.text",
+				"tweet.quoteOf.user"
 			])
 			.sort("likedAt", "desc")
 			.getAll();
@@ -119,6 +122,11 @@ export async function getUserTweets(
 			"user.displayName",
 			"user.name",
 			"user.id",
+			"quoteOf.createdAt",
+			"quoteOf.text",
+			"quoteOf.user.description",
+			"quoteOf.user.displayName",
+			"quoteOf.user.name",
 			"retweetOf.text",
 			"retweetOf.user.description",
 			"retweetOf.user.displayName",
@@ -132,7 +140,7 @@ export async function getUserTweets(
 
 	return Promise.all(
 		tweets.map(async (tweet) => {
-			const finalTweet = createTweetObjectWithRetweet(tweet);
+			const finalTweet = createTweetObject(tweet);
 			const [like, bookmark] = await Promise.all([
 				findLike(cuid, tweet.id),
 				findBookmark(cuid, tweet.id)

@@ -37,12 +37,7 @@ declare global {
 		description: Nullable<string>;
 	}
 
-	interface QuoteTweet {
-		id: string;
-		createdAt: Date;
-		text: string;
-		user: UserObject;
-	}
+	type QuoteTweetObject = Pick<TweetObject, "id" | "createdAt" | "text" | "user">;
 
 	type RetweetObject = Pick<TweetObject, "id" | "createdAt" | "text" | "user">;
 
@@ -63,7 +58,7 @@ declare global {
 		user: UserObject;
 		text: string;
 		likeCount: number;
-		quoteOf: string | undefined;
+		quoteOf: QuoteTweetObject | undefined;
 		quoteCount: number;
 		retweetCount: number;
 		retweetOf: RetweetObject | undefined;

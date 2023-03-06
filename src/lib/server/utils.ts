@@ -3,27 +3,80 @@ import type { TweetsRecord } from "./xata";
 import { useAwait } from "$lib/hooks";
 import { genSalt, hash } from "bcrypt";
 
-type RawTweetRecord =
-	| SelectedPick<
-			TweetsRecord,
-			(
-				| "*"
-				| "user.displayName"
-				| "user.id"
-				| "user.name"
-				| "user.description"
-				| "retweetOf.createdAt"
-				| "retweetOf.text"
-				| "retweetOf.user.displayName"
-				| "retweetOf.user.name"
-			)[]
-	  >
-	| SelectedPick<TweetsRecord, ("*" | "user.displayName" | "user.name" | "user.description")[]>;
+type TweetRecordComplete = SelectedPick<
+	TweetsRecord,
+	(
+		| "*"
+		| "user.displayName"
+		| "user.id"
+		| "user.name"
+		| "user.description"
+		| "quoteOf.createdAt"
+		| "quoteOf.text"
+		| "quoteOf.user.description"
+		| "quoteOf.user.displayName"
+		| "quoteOf.user.name"
+		| "retweetOf.createdAt"
+		| "retweetOf.text"
+		| "retweetOf.user.description"
+		| "retweetOf.user.displayName"
+		| "retweetOf.user.name"
+	)[]
+>;
+
+type TweetRecordNoRetweet = SelectedPick<
+	TweetsRecord,
+	(
+		| "*"
+		| "user.displayName"
+		| "user.id"
+		| "user.name"
+		| "user.description"
+		| "quoteOf.createdAt"
+		| "quoteOf.text"
+		| "quoteOf.user.description"
+		| "quoteOf.user.displayName"
+		| "quoteOf.user.name"
+	)[]
+>;
 
 export function createPasswordHash(password: string) {
 	return useAwait(async () => {
 		return hash(password, await genSalt());
 	});
+}
+
+export function createTweetObjectNoRetweet(tweet: TweetRecordNoRetweet) {
+	return {
+		id: tweet.id,
+		createdAt: tweet.createdAt,
+		text: tweet.text,
+		likeCount: tweet.likeCount,
+		quoteOf: tweet.quoteOf
+			? {
+					id: tweet.quoteOf.id,
+					text: tweet.quoteOf.text,
+					user: {
+						id: tweet.quoteOf.user?.id,
+						description: tweet.quoteOf.user?.description,
+						displayName: tweet.quoteOf.user?.displayName,
+						name: tweet.quoteOf.user?.name
+					},
+					createdAt: tweet.quoteOf.createdAt
+			  }
+			: undefined,
+		quoteCount: tweet.quoteCount,
+		retweetCount: tweet.retweetCount,
+		retweetOf: undefined,
+		isBookmarked: false,
+		isLiked: false,
+		user: {
+			id: tweet.user?.id,
+			description: tweet.user?.description,
+			displayName: tweet.user?.displayName,
+			name: tweet.user?.name
+		}
+	};
 }
 
 export function createTweetObjectWithRetweet(
@@ -74,16 +127,40 @@ export function createTweetObjectWithRetweet(
 	};
 }
 
-export function createTweetObject(tweet: RawTweetRecord): TweetObject {
+export function createTweetObject(tweet: TweetRecordComplete): TweetObject {
 	return {
 		id: tweet.id,
 		createdAt: tweet.createdAt,
 		text: tweet.text,
 		likeCount: tweet.likeCount,
-		quoteOf: tweet.quoteOf?.id,
+		quoteOf: tweet.quoteOf
+			? {
+					id: tweet.quoteOf.id,
+					text: tweet.quoteOf.text,
+					user: {
+						id: tweet.quoteOf.user?.id,
+						description: tweet.quoteOf.user?.description,
+						displayName: tweet.quoteOf.user?.displayName,
+						name: tweet.quoteOf.user?.name
+					},
+					createdAt: tweet.quoteOf.createdAt
+			  }
+			: undefined,
 		quoteCount: tweet.quoteCount,
 		retweetCount: tweet.retweetCount,
-		retweetOf: undefined,
+		retweetOf: tweet.retweetOf
+			? {
+					id: tweet.retweetOf.id,
+					text: tweet.retweetOf.text,
+					user: {
+						id: tweet.retweetOf.user?.id,
+						description: tweet.retweetOf.user?.description,
+						displayName: tweet.retweetOf.user?.displayName,
+						name: tweet.retweetOf.user?.name
+					},
+					createdAt: tweet.retweetOf.createdAt
+			  }
+			: undefined,
 		isBookmarked: false,
 		isLiked: false,
 		user: {

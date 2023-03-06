@@ -4,6 +4,7 @@
 	import Badge from "./Badge.svelte";
 	import Header from "./Header.svelte";
 	import Menu from "./Menu.svelte";
+	import Quote from "./Quote.svelte";
 	import { ArrowRight } from "lucide-svelte";
 	import { Bookmark, Like } from "./Button";
 	import { currentUser } from "$lib/state";
@@ -29,6 +30,9 @@
 		{/if}
 		<Header displayName={finalDisplayName} name={finalName} createdAt={finalCreatedAt} />
 		<p class="whitespace-pre-line">{finalText}</p>
+		{#if tweet.quoteOf}
+			<Quote tweet={tweet.quoteOf} isLink />
+		{/if}
 		{#if $currentUser && isNullish(retweetOf)}
 			<div class="flex items-center justify-between | pt-2.75">
 				<Like />

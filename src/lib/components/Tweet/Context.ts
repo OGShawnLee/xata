@@ -15,7 +15,7 @@ export default useContext({
 			isLiked: isBoolean,
 			quoteCount: isNumber,
 			quoteOf: (value): value is TweetObject["quoteOf"] => {
-				return value === undefined || isString(value);
+				return value === undefined || isObject(value, ["id", "createdAt", "text", "user"]);
 			},
 			retweetOf: (value): value is TweetObject["retweetOf"] => {
 				return value === undefined || isObject(value, ["id", "createdAt", "text", "user"]);
