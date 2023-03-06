@@ -6,6 +6,7 @@ import { findBookmark } from "./bookmark";
 import { isDefined } from "$lib/utils/predicate";
 import { findLike } from "./like";
 import { isNullish } from "malachite-ui/predicate";
+import { createTweetObject, createTweetObjectWithRetweet } from "./utils";
 
 export function createUser(data: Pick<UsersRecord, "displayName" | "email" | "name" | "password">) {
 	return useAwait(async () => {
@@ -43,28 +44,46 @@ export function getUserPublicPage(displayName: string, currentUser: string | und
 	});
 }
 
-export function getUserLikes(displayName: string, currentUser: string | undefined) {
+export function getUserLikes(displayName: string, cuid: string | undefined) {
 	return useAwait(async () => {
 		const likes = await client.db.likes
 			.filter("user.displayName", displayName)
-			.select(["likedAt", "tweet.*", "tweet.user.displayName", "tweet.user.name"])
+			.select([
+				"*",
+				"tweet.*",
+				"tweet.user.description",
+				"tweet.user.displayName",
+				"tweet.user.name"
+			])
 			.sort("likedAt", "desc")
 			.getAll();
 
-		if (isNullish(currentUser)) return likes;
+		if (isNullish(cuid))
+			return likes.map((like) => {
+				if (isNullish(like.tweet)) throw TypeError("Like Tweet is not defined.");
+				return {
+					id: like.id,
+					likedAt: like.likedAt,
+					tweet: createTweetObject(like.tweet)
+				};
+			});
 
 		return Promise.all(
 			likes.map(async (like) => {
-				if (isNullish(like.tweet)) return likes;
-				const state = await getTweetState(currentUser, like.tweet.id);
-				return { ...like, ...state };
+				if (isNullish(like.tweet)) throw TypeError("Like Tweet is not defined.");
+
+				const tweet = createTweetObject(like.tweet);
+				const state = await getTweetState(cuid, like.tweet.id);
+				tweet.isBookmarked = state.isBookmarked;
+				tweet.isLiked = state.isLiked;
+				return { id: like.id, likedAt: like.likedAt, tweet };
 			})
 		);
 	});
 }
 
 export function getUserFeed(id: string) {
-	return useAwait(async () => {
+	return useAwait<TweetObject[]>(async () => {
 		const tweets = await getTweets();
 		if (tweets.failed) throw tweets.error;
 		return Promise.all(
@@ -73,9 +92,9 @@ export function getUserFeed(id: string) {
 					findBookmark(id, tweet.id),
 					findLike(id, tweet.id)
 				]);
-				const isBookmarked = bookmark.failed ? false : isDefined(bookmark.data);
-				const isLiked = like.failed ? false : isDefined(like.data);
-				return { ...tweet, isBookmarked, isLiked };
+				tweet.isBookmarked = bookmark.failed ? false : isDefined(bookmark.data);
+				tweet.isLiked = like.failed ? false : isDefined(like.data);
+				return tweet;
 			})
 		);
 	});
@@ -88,15 +107,20 @@ export async function getTweetState(uid: string, tid: string) {
 	return { isLiked, isBookmarked };
 }
 
-export async function getUserTweets(displayName: string, currentUser: string | undefined) {
+export async function getUserTweets(
+	displayName: string,
+	cuid: string | undefined
+): Promise<TweetObject[]> {
 	const tweets = await client.db.tweets
 		.filter("user.displayName", displayName)
 		.select([
 			"*",
+			"user.description",
 			"user.displayName",
 			"user.name",
 			"user.id",
 			"retweetOf.text",
+			"retweetOf.user.description",
 			"retweetOf.user.displayName",
 			"retweetOf.user.name",
 			"retweetOf.createdAt"
@@ -104,17 +128,18 @@ export async function getUserTweets(displayName: string, currentUser: string | u
 		.sort("createdAt", "desc")
 		.getAll();
 
-	if (isNullish(currentUser)) return tweets;
+	if (isNullish(cuid)) return tweets.map(createTweetObject);
+
 	return Promise.all(
 		tweets.map(async (tweet) => {
+			const finalTweet = createTweetObjectWithRetweet(tweet);
 			const [like, bookmark] = await Promise.all([
-				findLike(currentUser, tweet?.id!),
-				findBookmark(currentUser, tweet.id!)
+				findLike(cuid, tweet.id),
+				findBookmark(cuid, tweet.id)
 			]);
-			const isLiked = like.failed ? false : isDefined(like.data);
-			const isBookmarked = bookmark.failed ? false : isDefined(bookmark.data);
-
-			return { ...tweet, isLiked, isBookmarked };
+			finalTweet.isBookmarked = bookmark.failed ? false : isDefined(bookmark.data);
+			finalTweet.isLiked = like.failed ? false : isDefined(like.data);
+			return finalTweet;
 		})
 	);
 }

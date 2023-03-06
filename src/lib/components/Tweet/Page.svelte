@@ -20,8 +20,8 @@
 	</time>
 	<Stats />
 	<div class="flex items-center justify-around | pt-2.75">
-		<Like id={tweet.id} isLiked={tweet.isLiked} />
-		<Menu id={tweet.id} createdAt={tweet.createdAt} text={tweet.text} user={tweet.user} />
-		<Bookmark id={tweet.id} isBookmarked={tweet.isBookmarked} />
+		<Like />
+		<Menu />
+		<Bookmark />
 	</div>
 </div>

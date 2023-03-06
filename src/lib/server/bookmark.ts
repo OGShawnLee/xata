@@ -2,6 +2,8 @@ import client from "./client";
 import { useAwait } from "$lib/hooks";
 import { findLike } from "./like";
 import { isDefined } from "$lib/utils/predicate";
+import { isNullish } from "malachite-ui/predicate";
+import { createTweetObject } from "./utils";
 
 export function createBookmark(userId: string, tweetId: string) {
 	return useAwait(() => {
@@ -24,19 +26,29 @@ export function findBookmark(userId: string, tweetId: string) {
 	});
 }
 
-export function getBookmarks(userId: string) {
+export function getBookmarks(uid: string) {
 	return useAwait(async () => {
 		const bookmarks = await client.db.bookmarks
-			.filter("user.id", userId)
-			.select(["*", "tweet.*", "tweet.user.displayName", "tweet.user.name"])
+			.filter("user.id", uid)
+			.select([
+				"*",
+				"tweet.*",
+				"tweet.user.description",
+				"tweet.user.displayName",
+				"tweet.user.name"
+			])
 			.sort("createdAt", "desc")
 			.getAll();
 
 		return Promise.all(
 			bookmarks.map(async (bookmark) => {
-				const like = await findLike(userId, bookmark?.tweet?.id!);
-				const isLiked = like.failed ? false : isDefined(like.data);
-				return { ...bookmark, tweet: { ...bookmark.tweet, isLiked } };
+				if (isNullish(bookmark.tweet)) throw TypeError("Bookmark Tweet is not defined.");
+
+				const tweet = createTweetObject(bookmark.tweet);
+				const like = await findLike(uid, bookmark.tweet.id);
+				tweet.isBookmarked = true;
+				tweet.isLiked = like.failed ? false : isDefined(like.data);
+				return { id: bookmark.id, createdAt: bookmark.createdAt, tweet };
 			})
 		);
 	});

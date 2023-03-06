@@ -11,18 +11,7 @@
 </svelte:head>
 
 <Feed>
-	{#each data.tweets as { id, createdAt, text, user, likeCount, retweetCount, retweetOf, isLiked, isBookmarked } (id)}
-		<Tweet
-			{createdAt}
-			{text}
-			{id}
-			displayName={user?.displayName}
-			name={user?.name}
-			{likeCount}
-			{retweetCount}
-			{isLiked}
-			{isBookmarked}
-			{retweetOf}
-		/>
+	{#each data.tweets as tweet (tweet.id)}
+		<Tweet {tweet} />
 	{/each}
 </Feed>

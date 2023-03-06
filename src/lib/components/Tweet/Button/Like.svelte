@@ -6,13 +6,12 @@
 </script>
 
 <script lang="ts">
+	import Context from "../Context";
 	import Button from "./Button.svelte";
 	import { Heart } from "lucide-svelte";
 	import { page } from "$app/stores";
 
-	export let id: string;
-	export let likeCount: number | undefined = undefined;
-	export let isLiked: boolean;
+	const { id, likeCount, isLiked } = Context.getContext();
 
 	$: action = getLikeAction(isBookmarkPage, isLiked);
 	$: isBookmarkPage = $page.url.pathname.includes("i/bookmarks");

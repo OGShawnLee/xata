@@ -21,16 +21,20 @@ declare global {
 		name: string;
 	}
 
+	interface NotificationEvent {
+		"from.id": string;
+		"to.id": string;
+		"tweet.id": string;
+		type: NotificationEventType;
+	}
+
+	type NotificationEventType = "LIKE" | "RETWEET";
+
 	interface UserObject {
 		id: string | undefined;
 		name: Nullable<string>;
 		displayName: Nullable<string>;
 		description: Nullable<string>;
-	}
-
-	interface UserState extends JWTPayloadState {
-		description?: Nullable<string>;
-		location?: Nullable<string>;
 	}
 
 	interface QuoteTweet {
@@ -40,14 +44,7 @@ declare global {
 		user: UserObject;
 	}
 
-	type NotificationEventType = "LIKE" | "RETWEET";
-
-	interface NotificationEvent {
-		"from.id": string;
-		"to.id": string;
-		"tweet.id": string;
-		type: NotificationEventType;
-	}
+	type RetweetObject = Pick<TweetObject, "id" | "createdAt" | "text" | "user">;
 
 	interface TweetLikeUserObject {
 		id: string;
@@ -58,6 +55,20 @@ declare global {
 			displayName: Nullable<string>;
 			name: Nullable<string>;
 		};
+	}
+
+	interface TweetObject {
+		id: string;
+		createdAt: Date;
+		user: UserObject;
+		text: string;
+		likeCount: number;
+		quoteOf: string | undefined;
+		quoteCount: number;
+		retweetCount: number;
+		retweetOf: RetweetObject | undefined;
+		isBookmarked: boolean;
+		isLiked: boolean;
 	}
 
 	interface TweetRetweetUserObject {
@@ -71,23 +82,9 @@ declare global {
 		};
 	}
 
-	interface TweetObject {
-		id: string;
-		createdAt: Date;
-		text: string;
-		likeCount: number;
-		quoteOf: string | undefined;
-		quoteCount: number;
-		retweetCount: number;
-		retweetOf: string | undefined;
-		isBookmarked: boolean;
-		isLiked: boolean;
-		user: {
-			id: string | undefined;
-			description: Nullable<string>;
-			displayName: Nullable<string>;
-			name: Nullable<string>;
-		};
+	interface UserState extends JWTPayloadState {
+		description?: Nullable<string>;
+		location?: Nullable<string>;
 	}
 }
 

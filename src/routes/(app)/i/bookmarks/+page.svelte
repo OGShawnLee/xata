@@ -12,17 +12,7 @@
 
 <Header title="Bookmarks" displayName={data.user?.displayName} />
 <Feed>
-	{#each data.bookmarks as { id, tweet } (id)}
-		<Tweet
-			createdAt={tweet?.createdAt}
-			text={tweet?.text}
-			id={tweet?.id}
-			displayName={tweet?.user?.displayName}
-			name={tweet?.user?.name}
-			isBookmarked
-			isLiked={tweet.isLiked}
-			likeCount={tweet?.likeCount}
-			retweetCount={tweet?.retweetCount}
-		/>
+	{#each data.bookmarks as bookmark (bookmark.id)}
+		<Tweet tweet={bookmark.tweet} />
 	{/each}
 </Feed>

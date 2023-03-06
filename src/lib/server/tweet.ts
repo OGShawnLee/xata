@@ -2,6 +2,7 @@ import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
 import { isNullish } from "malachite-ui/predicate";
 import { getTweetState } from "./user";
+import { createTweetObject, createTweetObjectWithRetweet } from "./utils";
 
 export function createTweet(id: string, text: string) {
 	return useAwait(async () => {
@@ -17,26 +18,7 @@ export function findTweet(id: string, displayName?: string) {
 			.select(["*", "user.description", "user.displayName", "user.name"])
 			.getFirst();
 
-		if (isNullish(tweet)) return null;
-
-		return {
-			id: tweet.id,
-			createdAt: tweet.createdAt,
-			text: tweet.text,
-			likeCount: tweet.likeCount,
-			quoteOf: tweet.quoteOf?.id,
-			quoteCount: tweet.quoteCount,
-			retweetCount: tweet.retweetCount,
-			retweetOf: tweet.retweetOf?.id,
-			isBookmarked: false,
-			isLiked: false,
-			user: {
-				id: tweet.user?.id,
-				description: tweet.user?.description,
-				displayName: tweet.user?.displayName,
-				name: tweet.user?.name
-			}
-		};
+		return isNullish(tweet) ? null : createTweetObject(tweet);
 	});
 }
 
@@ -66,18 +48,23 @@ export function findUserTweetWithStatus({
 }
 
 export function getTweets() {
-	return useAwait(() => {
-		return client.db.tweets
+	return useAwait<TweetObject[]>(async () => {
+		const tweets = await client.db.tweets
 			.select([
 				"*",
+				"user.description",
 				"user.displayName",
 				"user.name",
+				"user.id",
 				"retweetOf.text",
+				"retweetOf.user.description",
 				"retweetOf.user.displayName",
 				"retweetOf.user.name",
 				"retweetOf.createdAt"
 			])
 			.sort("createdAt", "desc")
 			.getAll();
+
+		return tweets.map(createTweetObjectWithRetweet);
 	});
 }

@@ -6,12 +6,12 @@
 </script>
 
 <script lang="ts">
+	import Context from "../Context";
 	import Button from "./Button.svelte";
 	import { BookmarkMinus, BookmarkPlus } from "lucide-svelte";
 	import { page } from "$app/stores";
 
-	export let id: string;
-	export let isBookmarked: boolean;
+	const { id, isBookmarked } = Context.getContext();
 
 	$: action = getBookmarkAction(isBookmarkPage);
 	$: icon = isBookmarked ? BookmarkMinus : BookmarkPlus;

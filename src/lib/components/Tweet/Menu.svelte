@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Context from "./Context";
 	import { Menu, MenuButton, MenuItem, MenuItems } from "malachite-ui";
 	import { Edit3 as Edit, Repeat } from "lucide-svelte";
 	import { composeDialog } from "$lib/state";
@@ -6,11 +7,7 @@
 	import { isNumber } from "malachite-ui/predicate";
 	import { enhance } from "$app/forms";
 
-	export let id: string;
-	export let createdAt: Date;
-	export let text: string;
-	export let retweetCount: number | undefined = undefined;
-	export let user: UserObject;
+	const { id, createdAt, user, text, retweetCount } = Context.getContext();
 
 	const className = useClassNameResolver<"ACTIVE">({
 		base: "w-full px-4 py-2 | flex items-center gap-4.5",

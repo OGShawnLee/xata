@@ -7,15 +7,7 @@
 </script>
 
 <Feed>
-	{#each data.tweets as { id, createdAt, text, user } (id)}
-		<Tweet
-			{createdAt}
-			{text}
-			{id}
-			displayName={user?.displayName}
-			name={user?.name}
-			isBookmarked={false}
-			isLiked={false}
-		/>
+	{#each data.tweets as tweet (tweet.id)}
+		<Tweet {tweet} />
 	{/each}
 </Feed>
