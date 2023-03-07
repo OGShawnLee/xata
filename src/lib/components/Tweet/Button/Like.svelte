@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
-	function getLikeAction(isBookmarkPage: boolean, isLiked: boolean) {
-		const path = isLiked ? "/home?/unlike-tweet" : "/home?/like-tweet";
+	function getLikeAction(isBookmarkPage: boolean) {
+		const path = "/home?/like-or-unlike";
 		return isBookmarkPage ? path + "&redirect=/i/bookmarks" : path;
 	}
 </script>
@@ -15,7 +15,7 @@
 
 	$: ({ id, likeCount, isLiked } = $tweet);
 
-	$: action = getLikeAction(isBookmarkPage, isLiked);
+	$: action = getLikeAction(isBookmarkPage);
 	$: isBookmarkPage = $page.url.pathname.includes("i/bookmarks");
 	$: label = isLiked ? "Unlike Tweet" : "Like Tweet";
 </script>

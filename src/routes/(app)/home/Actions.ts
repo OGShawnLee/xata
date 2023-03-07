@@ -31,18 +31,27 @@ export default class Action {
 		if (location) throw redirect(303, location);
 	}
 
-	static async likeTweet(event: RequestEvent) {
+	static async handleLike(event: RequestEvent) {
 		const { id, user, tweet } = await handleActionValidation(event);
-		const like = await likeTweet(user.id, id, tweet.likeCount ?? 0);
+		const like = await findLike(user.id, id);
 		if (like.failed) throw error(500, { message: "Unable to like Tweet." });
 
-		if (isDefined(tweet.user.id) && tweet.user.id !== user.id)
-			triggerNotificationEvent(event, {
-				type: "LIKE",
-				"from.id": user.id,
-				"to.id": tweet.user.id,
-				"tweet.id": tweet.id
-			});
+		if (like.data) {
+			const deleted = await unlikeTweet(like.data.id, id, tweet.likeCount);
+			if (deleted.failed) throw error(500, { message: "Unable to unlike Tweet." });
+		} else {
+			const createdLike = await likeTweet(user.id, id, tweet.likeCount);
+			if (createdLike.failed) throw error(500, { message: "Unable to like Tweet." });
+
+			if (tweet.user.id && tweet.user.id !== user.id) {
+				triggerNotificationEvent(event, {
+					type: "LIKE",
+					"from.id": user.id,
+					"to.id": tweet.user.id,
+					"tweet.id": tweet.id
+				});
+			}
+		}
 
 		const location = event.url.searchParams.get("redirect");
 		if (location) throw redirect(303, location);
@@ -106,16 +115,6 @@ export default class Action {
 				text: { value: text.data }
 			});
 		}
-	}
-
-	static async unlikeTweet(event: RequestEvent) {
-		const { id, user, tweet } = await handleActionValidation(event);
-		const like = await findLike(user.id, id);
-		if (like.failed) throw error(500, { message: "Unable to unlike Tweet." });
-		if (isNullish(like.data)) throw fail(400, { error: "Can't unlike a Tweet that is not liked." });
-
-		const deleted = await unlikeTweet(like.data.id, tweet.id, tweet.likeCount ?? 1);
-		if (deleted.failed) throw error(500, { message: "Unable to unlike Tweet." });
 	}
 }
 
