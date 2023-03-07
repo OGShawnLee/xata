@@ -9,13 +9,15 @@
 	import { Bookmark, Like } from "./Button";
 	import { currentUser } from "$lib/state";
 	import { isNullish, isObject } from "malachite-ui/predicate";
+	import { writable } from "svelte/store";
 
 	export let tweet: TweetObject;
 	export let quoteOf: QuoteTweetObject | undefined = undefined;
 
 	if (quoteOf) tweet.quoteOf = quoteOf;
 
-	Context.setContext(tweet);
+	const state = Context.setContext(writable(tweet));
+	$: state.set(tweet);
 
 	$: retweetOf = tweet.retweetOf;
 	$: user = tweet.user;

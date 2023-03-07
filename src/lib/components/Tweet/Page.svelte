@@ -5,10 +5,14 @@
 	import Header from "./Header.svelte";
 	import Quote from "./Quote.svelte";
 	import Stats from "./Stats.svelte";
+	import { writable } from "svelte/store";
 
 	export let tweet: TweetObject;
 
-	Context.setContext(tweet);
+	const state = Context.setContext(writable(tweet));
+	$: state.set(tweet);
+
+	$: console.log("Tweet changed!", tweet.text);
 
 	const formatter = Intl.DateTimeFormat("en", { dateStyle: "full", timeStyle: "medium" });
 </script>

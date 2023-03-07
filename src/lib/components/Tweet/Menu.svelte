@@ -7,12 +7,14 @@
 	import { isNumber } from "malachite-ui/predicate";
 	import { enhance } from "$app/forms";
 
-	const { id, createdAt, user, text, retweetCount } = Context.getContext();
-
 	const className = useClassNameResolver<"ACTIVE">({
 		base: "w-full px-4 py-2 | flex items-center gap-4.5",
 		active: { off: "text-zinc-100", on: "bg-zinc-700 text-white" }
 	});
+
+	const tweet = Context.getContext();
+
+	$: ({ id, createdAt, text, retweetCount, user } = $tweet);
 </script>
 
 <Menu class="relative" infinite>

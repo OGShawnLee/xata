@@ -11,7 +11,9 @@
 	import { Heart } from "lucide-svelte";
 	import { page } from "$app/stores";
 
-	const { id, likeCount, isLiked } = Context.getContext();
+	const tweet = Context.getContext();
+
+	$: ({ id, likeCount, isLiked } = $tweet);
 
 	$: action = getLikeAction(isBookmarkPage, isLiked);
 	$: isBookmarkPage = $page.url.pathname.includes("i/bookmarks");

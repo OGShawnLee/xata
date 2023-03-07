@@ -11,7 +11,9 @@
 	import { BookmarkMinus, BookmarkPlus } from "lucide-svelte";
 	import { page } from "$app/stores";
 
-	const { id, isBookmarked } = Context.getContext();
+	const tweet = Context.getContext();
+
+	$: ({ id, isBookmarked } = $tweet);
 
 	$: action = getBookmarkAction(isBookmarkPage);
 	$: icon = isBookmarked ? BookmarkMinus : BookmarkPlus;
