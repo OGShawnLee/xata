@@ -10,7 +10,11 @@
 
 	export let data: PageData;
 
-	$: layout.set("RELEVANT-PEOPLE", [data.tweet.user]);
+	$: {
+		const relevantPeople = [data.tweet.user];
+		if (data.tweet.quoteOf) relevantPeople.push(data.tweet.quoteOf.user);
+		layout.set("RELEVANT-PEOPLE", relevantPeople);
+	}
 
 	onDestroy(() => layout.set("NONE", undefined));
 </script>
