@@ -26,8 +26,8 @@
 	</time>
 	<Stats />
 	<div class="flex items-center justify-around | pt-2.75">
-		<Like />
-		<Menu />
+		<Like counter={false} />
+		<Menu counter={false} />
 		<Bookmark />
 	</div>
 </div>

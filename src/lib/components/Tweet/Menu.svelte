@@ -7,6 +7,8 @@
 	import { isNumber } from "malachite-ui/predicate";
 	import { enhance } from "$app/forms";
 
+	export let counter = true;
+
 	const className = useClassNameResolver<"ACTIVE">({
 		base: "w-full px-4 py-2 | flex items-center gap-4.5",
 		active: { off: "text-zinc-100", on: "bg-zinc-700 text-white" }
@@ -15,13 +17,14 @@
 	const tweet = Context.getContext();
 
 	$: ({ id, createdAt, text, retweetCount, user } = $tweet);
+	$: count = counter ? retweetCount : undefined;
 </script>
 
 <Menu class="relative" infinite>
 	<MenuButton class="group | flex items-center gap-3" aria-label="Retweet" title="Retweet">
 		<Repeat class="group-focus:stroke-white" />
-		{#if isNumber(retweetCount)}
-			<span class="text-sm"> {retweetCount} </span>
+		{#if isNumber(count)}
+			<span class="text-sm"> {count} </span>
 		{/if}
 	</MenuButton>
 	<MenuItems
