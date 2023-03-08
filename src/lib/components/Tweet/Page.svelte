@@ -10,11 +10,9 @@
 	export let tweet: TweetObject;
 
 	const state = Context.setContext(writable(tweet));
-	$: state.set(tweet);
-
-	$: console.log("Tweet changed!", tweet.text);
-
 	const formatter = Intl.DateTimeFormat("en", { dateStyle: "full", timeStyle: "medium" });
+
+	$: state.set(tweet);
 </script>
 
 <div class="px-8 | grid gap-2.25">
