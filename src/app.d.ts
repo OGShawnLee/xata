@@ -39,7 +39,7 @@ declare global {
 
 	type QuoteTweetObject = Pick<TweetObject, "id" | "createdAt" | "text" | "user">;
 
-	type RetweetObject = Pick<TweetObject, "id" | "createdAt" | "text" | "user">;
+	type RetweetObject = Pick<TweetObject, "id" | "createdAt" | "text" | "user" | "quoteOf">;
 
 	interface TweetLikeUserObject {
 		id: string;

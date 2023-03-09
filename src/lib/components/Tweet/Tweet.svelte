@@ -22,6 +22,7 @@
 	$: retweetOf = tweet.retweetOf;
 	$: user = tweet.user;
 
+	$: finalQuoteOf = tweet.quoteOf ? tweet.quoteOf : tweet.retweetOf?.quoteOf;
 	$: finalDisplayName = isObject(retweetOf) ? retweetOf.user.displayName : user.displayName;
 	$: finalName = isObject(retweetOf) ? retweetOf.user.name : user.name;
 	$: finalText = isObject(retweetOf) ? retweetOf.text : tweet.text;
@@ -35,8 +36,8 @@
 		{/if}
 		<Header displayName={finalDisplayName} name={finalName} createdAt={finalCreatedAt} />
 		<p class="whitespace-pre-line">{finalText}</p>
-		{#if tweet.quoteOf}
-			<Quote tweet={tweet.quoteOf} isLink />
+		{#if finalQuoteOf}
+			<Quote tweet={finalQuoteOf} isLink />
 		{/if}
 		{#if $currentUser && isNullish(retweetOf)}
 			<div class="flex items-center justify-between | pt-2.75">

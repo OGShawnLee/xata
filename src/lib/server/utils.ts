@@ -21,6 +21,8 @@ type TweetRecordComplete = SelectedPick<
 		| "retweetOf.user.description"
 		| "retweetOf.user.displayName"
 		| "retweetOf.user.name"
+		| "retweetOf.quoteOf.*"
+		| "retweetOf.quoteOf.user"
 	)[]
 >;
 
@@ -184,7 +186,20 @@ export function createTweetObject(tweet: TweetRecordComplete): TweetObject {
 						displayName: tweet.retweetOf.user?.displayName,
 						name: tweet.retweetOf.user?.name
 					},
-					createdAt: tweet.retweetOf.createdAt
+					createdAt: tweet.retweetOf.createdAt,
+					quoteOf: tweet.retweetOf.quoteOf
+						? {
+								id: tweet.retweetOf.quoteOf.id,
+								text: tweet.retweetOf.quoteOf.text,
+								createdAt: tweet.retweetOf.quoteOf.createdAt,
+								user: {
+									id: tweet.retweetOf.quoteOf.user?.id,
+									description: tweet.retweetOf.quoteOf.user?.description,
+									displayName: tweet.retweetOf.quoteOf.user?.displayName,
+									name: tweet.retweetOf.quoteOf.user?.name
+								}
+						  }
+						: undefined
 			  }
 			: undefined,
 		isBookmarked: false,

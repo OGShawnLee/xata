@@ -131,7 +131,9 @@ export async function getUserTweets(
 			"retweetOf.user.description",
 			"retweetOf.user.displayName",
 			"retweetOf.user.name",
-			"retweetOf.createdAt"
+			"retweetOf.createdAt",
+			"retweetOf.quoteOf.*",
+			"retweetOf.quoteOf.user"
 		])
 		.sort("createdAt", "desc")
 		.getAll();
