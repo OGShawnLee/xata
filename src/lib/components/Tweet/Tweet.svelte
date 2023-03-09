@@ -3,8 +3,8 @@
 	import Context from "./Context";
 	import Badge from "./Badge.svelte";
 	import Header from "./Header.svelte";
-	import Menu from "./Menu.svelte";
 	import Quote from "./Quote.svelte";
+	import { MenuRetweet, MenuShare } from "./Menu";
 	import { ArrowRight } from "lucide-svelte";
 	import { Bookmark, Like } from "./Button";
 	import { currentUser } from "$lib/state";
@@ -42,8 +42,8 @@
 		{#if $currentUser && isNullish(retweetOf)}
 			<div class="flex items-center justify-between | pt-2.75">
 				<Like />
-				<Menu />
-				<Bookmark />
+				<MenuRetweet />
+				<MenuShare />
 				<a href="/{user.displayName}/status/{tweet.id}" title="View Tweet">
 					<ArrowRight />
 					<span class="sr-only"> View Tweet </span>

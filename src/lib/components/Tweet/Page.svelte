@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { Bookmark, Like } from "./Button";
 	import Context from "./Context";
-	import Menu from "./Menu.svelte";
 	import Header from "./Header.svelte";
 	import Quote from "./Quote.svelte";
 	import Stats from "./Stats.svelte";
+	import { MenuRetweet, MenuShare } from "./Menu";
 	import { writable } from "svelte/store";
 
 	export let tweet: TweetObject;
@@ -27,7 +27,7 @@
 	<Stats />
 	<div class="flex items-center justify-around | pt-2.75">
 		<Like counter={false} />
-		<Menu counter={false} />
-		<Bookmark />
+		<MenuRetweet counter={false} />
+		<MenuShare counter={false} />
 	</div>
 </div>
