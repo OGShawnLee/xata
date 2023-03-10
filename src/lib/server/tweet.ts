@@ -86,7 +86,7 @@ export function getTweets() {
 	});
 }
 
-export async function getTweetReplies(id: string) {
+export async function getTweetReplies(id: string, cuid: string | undefined) {
 	const replies = await client.db.tweets
 		.filter("replyOf", id)
 		.select([
@@ -110,6 +110,18 @@ export async function getTweetReplies(id: string) {
 		])
 		.sort("createdAt", "desc")
 		.getAll();
+
+	if (cuid) {
+		return Promise.all(
+			replies.map(async (tweet) => {
+				const finalTweet = createTweetObject(tweet);
+				const state = await getTweetState(cuid, tweet.id);
+				finalTweet.isBookmarked = state.isBookmarked;
+				finalTweet.isLiked = state.isLiked;
+				return finalTweet;
+			})
+		);
+	}
 
 	return replies.map(createTweetObject);
 }

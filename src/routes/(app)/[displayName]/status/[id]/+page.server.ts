@@ -14,7 +14,14 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	if (tweet.failed) throw error(500, { message: "Unable to find Tweet." });
 	if (isNullish(tweet.data)) throw error(404, { message: "Tweet not found." });
 
-	return { tweet: tweet.data, streamed: { replies: getTweetReplies(params.id) } };
+	if (tweet.data.replyCount === 0) return { tweet: tweet.data };
+
+	return {
+		tweet: tweet.data,
+		streamed: {
+			replies: getTweetReplies(params.id, locals.user.isAnonymous ? undefined : locals.user.data.id)
+		}
+	};
 };
 
 export const actions: Actions = {
