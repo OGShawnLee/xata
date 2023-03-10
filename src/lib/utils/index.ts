@@ -4,3 +4,7 @@ export function getCharCountColour(charCount: number) {
 	if (charCount >= 160 && charCount < 280) return "text-orange-500";
 	return "text-red-500";
 }
+
+export function range(length: number) {
+	return [...Array(length).keys()];
+}

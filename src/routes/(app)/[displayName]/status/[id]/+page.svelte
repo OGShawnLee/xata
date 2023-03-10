@@ -3,11 +3,13 @@
 	import DialogLikes from "./DialogLikes.svelte";
 	import DialogRetweets from "./DialogRetweets.svelte";
 	import TextAreaReply from "./TextAreaReply.svelte";
-	import { Tweet, TweetPage } from "$lib/components";
+	import FeedReplies from "./FeedReplies.svelte";
+	import { Tweet, TweetLoading, TweetPage } from "$lib/components";
 	import { Header } from "$lib/layout";
 	import { clearString } from "malachite-ui/utils";
 	import { layout } from "$lib/state";
 	import { onDestroy } from "svelte";
+	import { range } from "$lib/utils";
 
 	export let data: PageData;
 
@@ -30,12 +32,4 @@
 <Header title="Tweet" />
 <TweetPage tweet={data.tweet} />
 <TextAreaReply hasBottomBorder={data.tweet.replyCount > 0} />
-{#await data.streamed.replies}
-	<span>Loading Replies...</span>
-{:then replies}
-	{#each replies as reply (reply.id)}
-		<Tweet tweet={reply} />
-	{/each}
-{:catch error}
-	<span>Unable to load replies.</span>
-{/await}
+<FeedReplies replies={data.streamed?.replies} replyCount={data.tweet.replyCount} />
