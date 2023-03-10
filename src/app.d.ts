@@ -62,6 +62,7 @@ declare global {
 		quoteCount: number;
 		retweetCount: number;
 		retweetOf: RetweetObject | undefined;
+		replyCount: number;
 		isBookmarked: boolean;
 		isLiked: boolean;
 	}

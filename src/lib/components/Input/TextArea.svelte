@@ -7,6 +7,7 @@
 	export let label: string;
 	export let placeholder: string;
 	export let maxlength = 280;
+	export let element: HTMLTextAreaElement | undefined = undefined;
 
 	let value = "";
 
@@ -25,4 +26,5 @@
 	data-minimum-rows="1"
 	on:input={handleExpandableArea}
 	bind:value
+	bind:this={element}
 />

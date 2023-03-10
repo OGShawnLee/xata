@@ -1,4 +1,5 @@
-import type { PageServerLoad } from "./$types";
+import type { Actions, PageServerLoad } from "./$types";
+import Action from "./Actions";
 import { findUserTweetWithStatus } from "$lib/server/tweet";
 import { error } from "@sveltejs/kit";
 import { isNullish } from "malachite-ui/predicate";
@@ -14,4 +15,8 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	if (isNullish(tweet.data)) throw error(404, { message: "Tweet not found." });
 
 	return { tweet: tweet.data };
+};
+
+export const actions: Actions = {
+	reply: Action.reply
 };

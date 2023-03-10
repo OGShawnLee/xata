@@ -96,6 +96,7 @@ export function createTweetObjectNoRetweet(tweet: TweetRecordNoRetweet) {
 		quoteCount: tweet.quoteCount,
 		retweetCount: tweet.retweetCount,
 		retweetOf: undefined,
+		replyCount: tweet.replyCount,
 		isBookmarked: false,
 		isLiked: false,
 		user: {
@@ -144,6 +145,7 @@ export function createTweetObjectWithRetweet(
 					createdAt: tweet.retweetOf.createdAt
 			  }
 			: undefined,
+		replyCount: tweet.replyCount,
 		isBookmarked: false,
 		isLiked: false,
 		user: {
@@ -202,6 +204,7 @@ export function createTweetObject(tweet: TweetRecordComplete): TweetObject {
 						: undefined
 			  }
 			: undefined,
+		replyCount: tweet.replyCount,
 		isBookmarked: false,
 		isLiked: false,
 		user: {

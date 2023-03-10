@@ -85,3 +85,13 @@ export function getTweets() {
 		return tweets.map(createTweetObject);
 	});
 }
+
+export function reply(event: { id: string; cuid: string; text: string; replyCount: number }) {
+	const { id, cuid, text, replyCount } = event;
+	return useAwait(() => {
+		return client.transactions.run([
+			{ insert: { table: "tweets", record: { text, user: cuid, replyOf: id } } },
+			{ update: { table: "tweets", id, fields: { replyCount: replyCount + 1 } } }
+		]);
+	});
+}
