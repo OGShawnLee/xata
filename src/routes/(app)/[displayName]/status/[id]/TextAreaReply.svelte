@@ -5,6 +5,8 @@
 	import { onMount } from "svelte";
 	import { enhance } from "$app/forms";
 
+	export let hasBottomBorder = false;
+
 	let charCount = 0;
 	let element: HTMLTextAreaElement;
 	let hasFocus = false;
@@ -21,7 +23,7 @@
 </script>
 
 {#if $currentUser}
-	<section>
+	<section class={hasBottomBorder ? "pb-4 border-b-2 border-zinc-800" : undefined}>
 		<div class="px-8">
 			<h2 class="sr-only">Reply Text Area</h2>
 			<form class="flex flex-col" action="?/reply" method="post" use:enhance>

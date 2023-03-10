@@ -86,6 +86,34 @@ export function getTweets() {
 	});
 }
 
+export async function getTweetReplies(id: string) {
+	const replies = await client.db.tweets
+		.filter("replyOf", id)
+		.select([
+			"*",
+			"user.description",
+			"user.displayName",
+			"user.name",
+			"user.id",
+			"quoteOf.createdAt",
+			"quoteOf.text",
+			"quoteOf.user.description",
+			"quoteOf.user.displayName",
+			"quoteOf.user.name",
+			"retweetOf.text",
+			"retweetOf.user.description",
+			"retweetOf.user.displayName",
+			"retweetOf.user.name",
+			"retweetOf.createdAt",
+			"retweetOf.quoteOf.*",
+			"retweetOf.quoteOf.user"
+		])
+		.sort("createdAt", "desc")
+		.getAll();
+
+	return replies.map(createTweetObject);
+}
+
 export function reply(event: { id: string; cuid: string; text: string; replyCount: number }) {
 	const { id, cuid, text, replyCount } = event;
 	return useAwait(() => {

@@ -3,7 +3,7 @@
 	import DialogLikes from "./DialogLikes.svelte";
 	import DialogRetweets from "./DialogRetweets.svelte";
 	import TextAreaReply from "./TextAreaReply.svelte";
-	import { TweetPage } from "$lib/components";
+	import { Tweet, TweetPage } from "$lib/components";
 	import { Header } from "$lib/layout";
 	import { clearString } from "malachite-ui/utils";
 	import { layout } from "$lib/state";
@@ -29,4 +29,13 @@
 
 <Header title="Tweet" />
 <TweetPage tweet={data.tweet} />
-<TextAreaReply/>
+<TextAreaReply hasBottomBorder={data.tweet.replyCount > 0} />
+{#await data.streamed.replies}
+	<span>Loading Replies...</span>
+{:then replies}
+	{#each replies as reply (reply.id)}
+		<Tweet tweet={reply} />
+	{/each}
+{:catch error}
+	<span>Unable to load replies.</span>
+{/await}
