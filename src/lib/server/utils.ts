@@ -1,5 +1,5 @@
 import type { SelectedPick } from "@xata.io/client";
-import type { TweetsRecord } from "./xata";
+import type { NotificationsRecord, TweetsRecord } from "./xata";
 import { useAwait } from "$lib/hooks";
 import { genSalt, hash } from "bcrypt";
 
@@ -53,6 +53,37 @@ export function createPasswordHash(password: string) {
 	});
 }
 
+export function createNotificationObject(
+	notification: SelectedPick<
+		NotificationsRecord,
+		(
+			| "*"
+			| "tweet.text"
+			| "from.displayName"
+			| "from.name"
+			| "reply.*"
+			| "reply.user.displayName"
+			| "reply.user.name"
+			| "reply.user.description"
+		)[]
+	>,
+	reply?: TweetObject
+): NotificationObject {
+	return {
+		id: notification.id,
+		createdAt: notification.createdAt,
+		type: notification.type as NotificationEventType,
+		from: {
+			name: notification.from?.name,
+			displayName: notification.from?.displayName
+		},
+		tweet: {
+			text: notification.tweet?.text
+		},
+		reply: reply
+	};
+}
+
 export function createTweetObjectMinimal(tweet: TweetRecordMinimal) {
 	return {
 		id: tweet.id,
@@ -63,6 +94,7 @@ export function createTweetObjectMinimal(tweet: TweetRecordMinimal) {
 		quoteOf: undefined,
 		retweetCount: tweet.retweetCount,
 		retweetOf: undefined,
+		replyCount: tweet.replyCount,
 		isBookmarked: false,
 		isLiked: false,
 		user: {

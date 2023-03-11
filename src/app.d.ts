@@ -25,10 +25,25 @@ declare global {
 		"from.id": string;
 		"to.id": string;
 		"tweet.id": string;
+		"reply.id"?: string;
 		type: NotificationEventType;
 	}
 
-	type NotificationEventType = "LIKE" | "RETWEET";
+	type NotificationEventType = "LIKE" | "REPLY" | "RETWEET";
+
+	interface NotificationObject {
+		id: string;
+		createdAt: Date;
+		type: NotificationEventType;
+		from: {
+			name: Nullable<string>;
+			displayName: Nullable<string>;
+		};
+		tweet: {
+			text: Nullable<string>;
+		};
+		reply?: TweetObject;
+	}
 
 	interface UserObject {
 		id: string | undefined;

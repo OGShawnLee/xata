@@ -2,6 +2,7 @@
 	import type { Nullable } from "malachite-ui/types";
 	import { AtSign, Key } from "lucide-svelte";
 	import { Input } from "$lib/components";
+	import { enhance } from "$app/forms";
 
 	export let form: Nullable<{
 		error?: string;
@@ -28,7 +29,7 @@
 				</a>
 			</span>
 		</header>
-		<form class="px-8 | grid gap-6" method="post">
+		<form class="px-8 | grid gap-6" method="post" use:enhance>
 			<div class="grid gap-3">
 				<Input
 					id="display-name"

@@ -21,10 +21,11 @@ export const errorMessage = {
 };
 
 export const notificationSchema = z.object({
-	type: z.enum(["LIKE", "RETWEET"]),
+	type: z.enum(["LIKE", "REPLY", "RETWEET"]),
 	"from.id": z.string(),
 	"to.id": z.string(),
-	"tweet.id": z.string()
+	"tweet.id": z.string(),
+	"reply.id": z.string().optional()
 });
 
 export const tweetSchema = z

@@ -13,6 +13,7 @@
 
 	export let tweet: TweetObject;
 	export let quoteOf: QuoteTweetObject | undefined = undefined;
+	export let padding = true;
 
 	if (quoteOf) tweet.quoteOf = quoteOf;
 
@@ -30,7 +31,7 @@
 </script>
 
 <article class="pb-4 | border-b-2 border-zinc-800">
-	<div class="px-8 | grid gap-1.25">
+	<div class="grid gap-1.25" class:px-8={padding}>
 		{#if retweetOf}
 			<Badge />
 		{/if}

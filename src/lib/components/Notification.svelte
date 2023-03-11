@@ -1,30 +1,36 @@
-<script lang="ts">
-	import type { SelectedPick } from "@xata.io/client";
-	import type { NotificationsRecord } from "$lib/server/xata";
-	import { Heart, Repeat } from "lucide-svelte";
+<script lang="ts" context="module">
+	const NOTIFICATION_TYPE_VERB: Record<NotificationEventType, string> = Object.freeze({
+		LIKE: "liked",
+		REPLY: "replied to",
+		RETWEET: "retweeted"
+	});
+</script>
 
-	export let notification: SelectedPick<
-		NotificationsRecord,
-		("from.name" | "from.displayName" | "tweet.text" | "*")[]
-	>;
+<script lang="ts">
+	import { Tweet } from "$lib/components";
+	import { Heart, MessageCircle, Repeat } from "lucide-svelte";
+
+	export let notification: NotificationObject;
 
 	const formatter = Intl.DateTimeFormat("en", { dateStyle: "medium" });
 </script>
 
 <article class="pb-4 | border-b-2 border-zinc-800">
 	<div class="px-8 | grid gap-1.25">
-		<header class="flex items-center gap-3">
+		<header class="flex items-center gap-1.75">
 			{#if notification.type === "LIKE"}
 				<Heart class="fill-white stroke-white" />
-			{:else}
+			{:else if notification.type === "RETWEET"}
 				<Repeat class="stroke-white" />
+			{:else}
+				<MessageCircle class="stroke-white" />
 			{/if}
 			<div class="w-full flex items-baseline justify-between">
 				<h3>
 					<a class="hover:underline focus:underline" href="/{notification.from?.displayName}">
 						<strong class="text-white"> {notification.from?.name} </strong>
 					</a>
-					{notification.type === "LIKE" ? "liked" : "retweeted"}
+					{NOTIFICATION_TYPE_VERB[notification.type]}
 					your Tweet.
 				</h3>
 				<time class="text-xs text-zinc-500" datetime={notification.createdAt.toISOString()}>
@@ -32,6 +38,11 @@
 				</time>
 			</div>
 		</header>
-		<p class="text-sm text-zinc-400">{notification.tweet?.text}</p>
+		<p class="text-sm text-zinc-400" class:pb-2.75={notification.reply}>
+			{notification.tweet?.text}
+		</p>
+		{#if notification.reply}
+			<Tweet tweet={notification.reply} padding={false} />
+		{/if}
 	</div>
 </article>

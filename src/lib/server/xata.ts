@@ -84,6 +84,7 @@ const tables = [
       },
       { name: "tweet", type: "link", link: { table: "tweets" } },
       { name: "type", type: "string" },
+      { name: "reply", type: "link", link: { table: "tweets" } },
     ],
   },
 ] as const;
