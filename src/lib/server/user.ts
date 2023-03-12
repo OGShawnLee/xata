@@ -1,5 +1,6 @@
 import type { UsersRecord } from "$lib/server/xata";
 import client from "$lib/server/client";
+import { notExists } from "@xata.io/client";
 import { useAwait } from "$lib/hooks";
 import { getTweets } from "./tweet";
 import { findBookmark } from "./bookmark";
@@ -116,6 +117,7 @@ export async function getUserTweets(
 ): Promise<TweetObject[]> {
 	const tweets = await client.db.tweets
 		.filter("user.displayName", displayName)
+		.filter(notExists("replyOf.id"))
 		.select([
 			"*",
 			"user.description",
