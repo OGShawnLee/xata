@@ -28,6 +28,7 @@ const tables = [
       },
       { name: "description", type: "string" },
       { name: "location", type: "string" },
+      { name: "pinnedTweet", type: "link", link: { table: "tweets" } },
     ],
   },
   {

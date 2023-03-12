@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Nullable } from "malachite-ui/types";
 	import { Time } from "$lib/components";
-	import { getRelativeTime } from "$lib/utils";
+	import { MenuTweet } from "./Menu";
 
 	export let createdAt: Date | undefined = undefined;
 	export let displayName: Nullable<string>;
@@ -28,5 +28,8 @@
 			<span class="text-sm text-zinc-500"> @{displayName} </span>
 		{/if}
 	</div>
-	<Time {createdAt} />
+	<div class="flex items-center gap-3">
+		<Time {createdAt} />
+		<MenuTweet />
+	</div>
 </header>

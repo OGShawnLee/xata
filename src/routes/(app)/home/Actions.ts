@@ -12,6 +12,7 @@ import { triggerNotificationEvent } from "$lib/server/notification";
 import { isDefined } from "$lib/utils/predicate";
 import { createRetweet, findRetweet } from "$lib/server/retweet";
 import { quote } from "$lib/server/quote";
+import { pin } from "$lib/server/pin";
 
 export default class Action {
 	static async handleBookmark(event: RequestEvent) {
@@ -71,6 +72,15 @@ export default class Action {
 
 		const quotedTweet = await quote({ text: text.data, user, tweet });
 		if (quotedTweet.failed) return error(500, { message: "Unable to quote Tweet." });
+	}
+
+	static async pin(event: RequestEvent) {
+		const { id, user, tweet } = await handleActionValidation(event);
+		if (user.id !== tweet.user.id)
+			throw error(403, { message: "Cannot pin a Tweet that does not belong to you." });
+
+		const pinned = await pin(id, user.id);
+		if (pinned.failed) throw error(500, { message: "Unable to pin Tweet." });
 	}
 
 	static async retweet(event: RequestEvent) {
