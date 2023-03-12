@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Nullable } from "malachite-ui/types";
 	import Context from "./Context";
 	import Badge from "./Badge.svelte";
 	import Header from "./Header.svelte";
