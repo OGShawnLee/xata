@@ -9,7 +9,7 @@
 	$: isActive = $page.url.pathname.includes(href);
 </script>
 
-<a class="flex items-center gap-3" {href}>
+<a class="h-6 flex items-center gap-3" {href}>
 	<svelte:component this={icon} class={isActive ? "stroke-white" : "stroke-zinc-300"} />
 	<span
 		class={isActive ? "text-white" : "text-zinc-300"}
