@@ -33,9 +33,7 @@
 
 <article class={replying ? "pb-4" : "pb-4 border-b-2 border-zinc-800"}>
 	<div class="grid gap-1.25" class:px-8={padding}>
-		{#if retweetOf}
-			<Badge />
-		{/if}
+		<Badge />
 		<Header
 			displayName={finalDisplayName}
 			name={finalName}
