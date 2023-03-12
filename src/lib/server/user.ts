@@ -7,7 +7,7 @@ import { findBookmark } from "./bookmark";
 import { isDefined } from "$lib/utils/predicate";
 import { findLike } from "./like";
 import { isNullish } from "malachite-ui/predicate";
-import { createTweetObject, createTweetObjectWithRetweet } from "./utils";
+import { createTweetObject } from "./utils";
 
 export function createUser(data: Pick<UsersRecord, "displayName" | "email" | "name" | "password">) {
 	return useAwait(async () => {

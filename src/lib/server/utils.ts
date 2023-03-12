@@ -140,55 +140,6 @@ export function createTweetObjectNoRetweet(tweet: TweetRecordNoRetweet) {
 	};
 }
 
-export function createTweetObjectWithRetweet(
-	tweet: SelectedPick<
-		TweetsRecord,
-		(
-			| "*"
-			| "user.displayName"
-			| "user.name"
-			| "user.description"
-			| "retweetOf.createdAt"
-			| "retweetOf.text"
-			| "retweetOf.user.displayName"
-			| "retweetOf.user.name"
-			| "retweetOf.user.description"
-		)[]
-	>
-) {
-	return {
-		id: tweet.id,
-		createdAt: tweet.createdAt,
-		text: tweet.text,
-		likeCount: tweet.likeCount,
-		quoteOf: tweet.quoteOf?.id,
-		quoteCount: tweet.quoteCount,
-		retweetCount: tweet.retweetCount,
-		retweetOf: tweet.retweetOf
-			? {
-					id: tweet.retweetOf.id,
-					text: tweet.retweetOf.text,
-					user: {
-						id: tweet.retweetOf.user?.id,
-						description: tweet.retweetOf.user?.description,
-						displayName: tweet.retweetOf.user?.displayName,
-						name: tweet.retweetOf.user?.name
-					},
-					createdAt: tweet.retweetOf.createdAt
-			  }
-			: undefined,
-		replyCount: tweet.replyCount,
-		isBookmarked: false,
-		isLiked: false,
-		user: {
-			id: tweet.user?.id,
-			description: tweet.user?.description,
-			displayName: tweet.user?.displayName,
-			name: tweet.user?.name
-		}
-	};
-}
-
 export function createTweetObject(tweet: TweetRecordComplete): TweetObject {
 	return {
 		id: tweet.id,
