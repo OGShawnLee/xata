@@ -3,6 +3,7 @@
 	import Badge from "./Badge.svelte";
 	import Header from "./Header.svelte";
 	import Quote from "./Quote.svelte";
+	import Text from "./Text.svelte";
 	import { MenuRetweet, MenuShare } from "./Menu";
 	import { Like, Reply } from "./Button";
 	import { currentUser } from "$lib/state";
@@ -24,7 +25,6 @@
 	$: user = tweet.user;
 	$: finalCreatedAt = retweetOf ? retweetOf.createdAt : tweet.createdAt;
 	$: finalDisplayName = retweetOf ? retweetOf.user.displayName : user.displayName;
-	$: finalId = retweetOf ? retweetOf.id : tweet.id;
 	$: finalName = retweetOf ? retweetOf.user.name : user.name;
 	$: finalQuoteOf = tweet.quoteOf ? tweet.quoteOf : tweet.retweetOf?.quoteOf;
 	$: finalText = retweetOf ? retweetOf.text : tweet.text;
@@ -42,13 +42,12 @@
 			createdAt={finalCreatedAt}
 			link={!replying}
 		/>
-		{#if replying}
-			<p class="whitespace-pre-line">{finalText}</p>
-		{:else}
-			<a href="/{finalDisplayName}/status/{finalId}" aria-label="View Tweet">
-				<p class="whitespace-pre-line">{finalText}</p>
-			</a>
-		{/if}
+		<Text
+			displayName={finalDisplayName}
+			id={retweetOf ? retweetOf.id : tweet.id}
+			{replying}
+			text={finalText}
+		/>
 		{#if finalQuoteOf}
 			<Quote tweet={finalQuoteOf} isLink />
 		{/if}
