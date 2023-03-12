@@ -16,17 +16,22 @@
 </script>
 
 <div class="border-b-2 border-zinc-800">
-	<div class="px-8 | grid gap-2.25">
-		<Header displayName={tweet.user.displayName} name={tweet.user.name} big />
-		<p>{tweet.text}</p>
-		{#if tweet.quoteOf}
-			<Quote tweet={tweet.quoteOf} isLink />
-		{/if}
-		<time class="text-sm text-zinc-500" datetime={tweet.createdAt.toISOString()}>
-			{formatter.format(tweet.createdAt)}
-		</time>
-		<Stats />
-		<div class="flex items-center justify-around | py-4">
+	<div class="px-8">
+		<div class="grid gap-2.25">
+			<Header displayName={tweet.user.displayName} name={tweet.user.name} big />
+			<p>{tweet.text}</p>
+			{#if tweet.quoteOf}
+				<Quote tweet={tweet.quoteOf} isLink />
+			{/if}
+			<time
+				class="pb-2 | border-b-2 border-zinc-800 text-sm text-zinc-500"
+				datetime={tweet.createdAt.toISOString()}
+			>
+				{formatter.format(tweet.createdAt)}
+			</time>
+			<Stats />
+		</div>
+		<div class="py-4 | flex items-center justify-around">
 			<Reply counter={false} />
 			<Like counter={false} />
 			<MenuRetweet counter={false} />
