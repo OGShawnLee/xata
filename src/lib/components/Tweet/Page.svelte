@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Bookmark, Like } from "./Button";
+	import { Like, Reply } from "./Button";
 	import Context from "./Context";
 	import Header from "./Header.svelte";
 	import Quote from "./Quote.svelte";
@@ -27,6 +27,7 @@
 		</time>
 		<Stats />
 		<div class="flex items-center justify-around | py-4">
+			<Reply counter={false} />
 			<Like counter={false} />
 			<MenuRetweet counter={false} />
 			<MenuShare counter={false} />

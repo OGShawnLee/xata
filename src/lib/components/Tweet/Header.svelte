@@ -5,7 +5,7 @@
 	export let displayName: Nullable<string>;
 	export let name: Nullable<string>;
 	export let big = false;
-	export let isQuote = false;
+	export let link = true;
 
 	$: as = big ? "h2" : "h3";
 </script>
@@ -15,15 +15,15 @@
 		<svelte:element this={as} class="text-white font-medium" class:text-lg={big}>
 			{name}
 		</svelte:element>
-		{#if isQuote}
-			<span class="text-sm text-zinc-500"> @{displayName} </span>
-		{:else}
+		{#if link}
 			<a
 				class="{big ? 'text-base' : 'text-sm'} text-zinc-500 hover:underline focus:underline"
 				href="/{displayName}"
 			>
 				@{displayName}
 			</a>
+		{:else}
+			<span class="text-sm text-zinc-500"> @{displayName} </span>
 		{/if}
 	</div>
 	{#if createdAt}
