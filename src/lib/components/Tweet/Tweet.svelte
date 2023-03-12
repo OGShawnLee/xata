@@ -4,17 +4,16 @@
 	import Header from "./Header.svelte";
 	import Quote from "./Quote.svelte";
 	import { MenuRetweet, MenuShare } from "./Menu";
-	import { ArrowRight } from "lucide-svelte";
 	import { Like, Reply } from "./Button";
 	import { currentUser } from "$lib/state";
-	import { isNullish, isObject } from "malachite-ui/predicate";
+	import { isNullish } from "malachite-ui/predicate";
 	import { writable } from "svelte/store";
 
-	export let tweet: TweetObject;
+	export let buttons = true;
 	export let quoteOf: QuoteTweetObject | undefined = undefined;
 	export let padding = true;
 	export let replying = false;
-	export let buttons = true;
+	export let tweet: TweetObject;
 
 	if (quoteOf) tweet.quoteOf = quoteOf;
 	if (replying) buttons = false;
@@ -23,11 +22,12 @@
 
 	$: retweetOf = tweet.retweetOf;
 	$: user = tweet.user;
+	$: finalCreatedAt = retweetOf ? retweetOf.createdAt : tweet.createdAt;
+	$: finalDisplayName = retweetOf ? retweetOf.user.displayName : user.displayName;
+	$: finalId = retweetOf ? retweetOf.id : tweet.id;
+	$: finalName = retweetOf ? retweetOf.user.name : user.name;
 	$: finalQuoteOf = tweet.quoteOf ? tweet.quoteOf : tweet.retweetOf?.quoteOf;
-	$: finalDisplayName = isObject(retweetOf) ? retweetOf.user.displayName : user.displayName;
-	$: finalName = isObject(retweetOf) ? retweetOf.user.name : user.name;
-	$: finalText = isObject(retweetOf) ? retweetOf.text : tweet.text;
-	$: finalCreatedAt = isObject(retweetOf) ? retweetOf.createdAt : tweet.createdAt;
+	$: finalText = retweetOf ? retweetOf.text : tweet.text;
 	$: state.set(tweet);
 </script>
 
@@ -42,7 +42,13 @@
 			createdAt={finalCreatedAt}
 			link={!replying}
 		/>
-		<p class="whitespace-pre-line">{finalText}</p>
+		{#if replying}
+			<p class="whitespace-pre-line">{finalText}</p>
+		{:else}
+			<a href="/{finalDisplayName}/status/{finalId}" aria-label="View Tweet">
+				<p class="whitespace-pre-line">{finalText}</p>
+			</a>
+		{/if}
 		{#if finalQuoteOf}
 			<Quote tweet={finalQuoteOf} isLink />
 		{/if}
@@ -52,10 +58,6 @@
 				<Like />
 				<MenuRetweet />
 				<MenuShare />
-				<a href="/{user.displayName}/status/{tweet.id}" title="View Tweet">
-					<ArrowRight />
-					<span class="sr-only"> View Tweet </span>
-				</a>
 			</div>
 		{/if}
 	</div>
