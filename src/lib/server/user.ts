@@ -86,21 +86,19 @@ export function getUserLikes(displayName: string, cuid: string | undefined) {
 	});
 }
 
-export function getUserFeed(id: string) {
-	return useAwait<TweetObject[]>(async () => {
-		const tweets = await getTweets();
-		if (tweets.failed) throw tweets.error;
-		return Promise.all(
-			tweets.data.map(async (tweet) => {
-				const [bookmark, like] = await Promise.all([
-					findBookmark(id, tweet.id),
-					findLike(id, tweet.id)
-				]);
-				tweet.isBookmarked = bookmark.failed ? false : isDefined(bookmark.data);
-				tweet.isLiked = like.failed ? false : isDefined(like.data);
+export function getUserFeed(id: string, after?: string) {
+	return useAwait<Paginated<TweetObject>>(async () => {
+		const paginated = await getTweets(after);
+		if (paginated.failed) throw paginated.error;
+		paginated.data.records = await Promise.all(
+			paginated.data.records.map(async (tweet) => {
+				const state = await getTweetState(id, tweet.id);
+				tweet.isBookmarked = state.isBookmarked;
+				tweet.isLiked = state.isLiked;
 				return tweet;
 			})
 		);
+		return paginated.data;
 	});
 }
 

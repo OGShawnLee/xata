@@ -57,9 +57,9 @@ export function findUserTweetWithStatus({
 	});
 }
 
-export function getTweets() {
-	return useAwait<TweetObject[]>(async () => {
-		const tweets = await client.db.tweets
+export function getTweets(after?: string) {
+	return useAwait<Paginated<TweetObject>>(async () => {
+		const paginated = await client.db.tweets
 			.select([
 				"*",
 				"user.description",
@@ -80,9 +80,11 @@ export function getTweets() {
 				"retweetOf.quoteOf.user"
 			])
 			.sort("createdAt", "desc")
-			.getAll();
+			.getPaginated({
+				pagination: { after, size: 15 }
+			});
 
-		return tweets.map(createTweetObject);
+		return { page: paginated.meta.page, records: paginated.records.map(createTweetObject) };
 	});
 }
 

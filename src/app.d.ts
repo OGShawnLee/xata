@@ -45,6 +45,14 @@ declare global {
 		reply?: TweetObject;
 	}
 
+	interface Paginated<T> {
+		page: {
+			cursor: string;
+			more: boolean;
+		};
+		records: T[];
+	}
+
 	interface UserObject {
 		id: string | undefined;
 		name: Nullable<string>;
