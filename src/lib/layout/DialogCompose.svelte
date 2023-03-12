@@ -47,11 +47,11 @@
 				<TweetQuote tweet={data.quoteTweet} />
 				<input type="hidden" name="tweet-id" value={data.quoteTweet.id} />
 			{:else if event === "REPLY" && data.replyTweet}
-				<Tweet tweet={data.replyTweet} padding={false} replying />
+				<Tweet tweet={data.replyTweet} hasPadding={false} isReplying />
 				<TweetHeader
 					displayName={$currentUser?.displayName}
 					name={$currentUser?.name}
-					link={false}
+					isLink={false}
 				/>
 				<TextArea bind:charCount placeholder="What will you reply?" id="tweet-text" label="Tweet" />
 				<input type="hidden" name="tweet-id" value={data.replyTweet.id} />

@@ -10,14 +10,14 @@
 	import { isNullish } from "malachite-ui/predicate";
 	import { writable } from "svelte/store";
 
-	export let buttons = true;
+	export let hasButtons = true;
+	export let hasPadding = true;
+	export let isReplying = false;
 	export let quoteOf: QuoteTweetObject | undefined = undefined;
-	export let padding = true;
-	export let replying = false;
 	export let tweet: TweetObject;
 
 	if (quoteOf) tweet.quoteOf = quoteOf;
-	if (replying) buttons = false;
+	if (isReplying) hasButtons = false;
 
 	const state = Context.setContext(writable(tweet));
 
@@ -27,29 +27,28 @@
 	$: finalDisplayName = retweetOf ? retweetOf.user.displayName : user.displayName;
 	$: finalName = retweetOf ? retweetOf.user.name : user.name;
 	$: finalQuoteOf = tweet.quoteOf ? tweet.quoteOf : tweet.retweetOf?.quoteOf;
-	$: finalText = retweetOf ? retweetOf.text : tweet.text;
 	$: state.set(tweet);
 </script>
 
-<article class={replying ? "pb-4" : "pb-4 border-b-2 border-zinc-800"}>
-	<div class="grid gap-1.25" class:px-8={padding}>
+<article class={isReplying ? "pb-4" : "pb-4 border-b-2 border-zinc-800"}>
+	<div class="grid gap-1.25" class:px-8={hasPadding}>
 		<Badge />
 		<Header
 			displayName={finalDisplayName}
 			name={finalName}
 			createdAt={finalCreatedAt}
-			link={!replying}
+			isLink={!isReplying}
 		/>
 		<Text
 			displayName={finalDisplayName}
 			id={retweetOf ? retweetOf.id : tweet.id}
-			{replying}
-			text={finalText}
+			{isReplying}
+			text={retweetOf ? retweetOf.text : tweet.text}
 		/>
 		{#if finalQuoteOf}
 			<Quote tweet={finalQuoteOf} isLink />
 		{/if}
-		{#if buttons && $currentUser && isNullish(retweetOf)}
+		{#if hasButtons && $currentUser && isNullish(retweetOf)}
 			<div class="flex items-center justify-between | pt-2.75">
 				<Reply />
 				<Like />

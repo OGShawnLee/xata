@@ -40,7 +40,7 @@
 			{notification.tweet?.text}
 		</p>
 		{#if notification.reply}
-			<Tweet tweet={notification.reply} padding={false} />
+			<Tweet tweet={notification.reply} hasPadding={false} />
 		{/if}
 	</div>
 </article>
