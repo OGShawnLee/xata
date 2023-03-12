@@ -7,7 +7,6 @@
 	export let count: number | undefined = undefined;
 	export let label: string;
 	export let icon: typeof SvelteComponent;
-	export let size = "w-56";
 
 	$: finalCount = counter ? count : undefined;
 </script>
@@ -20,7 +19,7 @@
 		{/if}
 	</MenuButton>
 	<MenuItems
-		class="absolute top-0 -right-3 {size} | bg-zinc-800 rounded-md shadow-lg overflow-hidden outline-none"
+		class="absolute top-0 -right-3 w-56 | bg-zinc-800 rounded-xl shadow-lg overflow-hidden outline-none"
 	>
 		<slot />
 	</MenuItems>

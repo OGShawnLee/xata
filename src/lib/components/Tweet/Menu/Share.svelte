@@ -29,7 +29,7 @@
 	}
 </script>
 
-<Menu label="Retweet" {counter} icon={Share} size="w-88">
+<Menu label="Retweet" {counter} icon={Share}>
 	<MenuItem as="fragment" let:item let:isActive>
 		<button class={className({ isActive })} use:item on:click={copyTweetLinkToClipboard}>
 			<Link size={20} />
@@ -41,7 +41,7 @@
 			<input type="hidden" name="tweet-id" value={id} />
 			<button class={className({ isActive })} use:item>
 				<svelte:component this={isBookmarked ? BookmarkMinus : BookmarkPlus} size={20} />
-				<span> {isBookmarked ? "Remove Tweet from Bookmarks" : "Bookmark"} </span>
+				<span> {isBookmarked ? "Unbookmark" : "Bookmark"} </span>
 			</button>
 		</form>
 	</MenuItem>
