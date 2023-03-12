@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { Nullable } from "malachite-ui/types";
+	import { Time } from "$lib/components";
+	import { getRelativeTime } from "$lib/utils";
 
 	export let createdAt: Date | undefined = undefined;
 	export let displayName: Nullable<string>;
@@ -26,10 +28,5 @@
 			<span class="text-sm text-zinc-500"> @{displayName} </span>
 		{/if}
 	</div>
-	{#if createdAt}
-		{@const formatter = Intl.DateTimeFormat("en", { dateStyle: "medium" })}
-		<time class="text-xs text-zinc-500" datetime={createdAt.toISOString()}>
-			{formatter.format(createdAt)}
-		</time>
-	{/if}
+	<Time {createdAt} />
 </header>

@@ -1,11 +1,6 @@
-<script lang="ts" context="module">
-	function plural(count: number, word: string) {
-		return count === 1 ? word : word + "s";
-	}
-</script>
-
 <script lang="ts">
 	import type { Action } from "svelte/action";
+	import { plural } from "$lib/utils";
 
 	export let count: number;
 	export let href: string;

@@ -7,7 +7,7 @@
 </script>
 
 <script lang="ts">
-	import { Tweet } from "$lib/components";
+	import { Time, Tweet } from "$lib/components";
 	import { Heart, MessageCircle, Repeat } from "lucide-svelte";
 
 	export let notification: NotificationObject;
@@ -33,9 +33,7 @@
 					{NOTIFICATION_TYPE_VERB[notification.type]}
 					your Tweet.
 				</h3>
-				<time class="text-xs text-zinc-500" datetime={notification.createdAt.toISOString()}>
-					{formatter.format(notification.createdAt)}
-				</time>
+				<Time createdAt={notification.createdAt} />
 			</div>
 		</header>
 		<p class="text-sm text-zinc-400" class:pb-2.75={notification.reply}>
