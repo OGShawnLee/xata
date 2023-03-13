@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Link from "./Link.svelte";
+	import SearchInput from "./SearchInput.svelte";
 	import UserStatus from "./UserStatus.svelte";
 	import { Bell, Bookmark, Home, User } from "lucide-svelte";
 	import { currentUser } from "$lib/state";
@@ -11,6 +12,7 @@
 
 <nav class="{className} | grid gap-12">
 	<i class="bx bxl-twitter text-4xl text-white" />
+	<SearchInput />
 	<div class="grid gap-6">
 		<Link icon={Home} href="/home" text="Home" />
 		<Link icon={Bookmark} href="/i/bookmarks" text="Bookmarks" />
