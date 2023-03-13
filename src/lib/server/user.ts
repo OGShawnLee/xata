@@ -81,7 +81,8 @@ export function getUserLikes(displayName: string, cuid: string | undefined) {
 				"tweet.user.name",
 				"tweet.quoteOf.createdAt",
 				"tweet.quoteOf.text",
-				"tweet.quoteOf.user"
+				"tweet.quoteOf.user",
+				"tweet.replyOf.user"
 			])
 			.sort("likedAt", "desc")
 			.getAll();

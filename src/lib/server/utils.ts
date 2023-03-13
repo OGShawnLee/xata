@@ -23,6 +23,9 @@ type TweetRecordComplete = SelectedPick<
 		| "retweetOf.user.name"
 		| "retweetOf.quoteOf.*"
 		| "retweetOf.quoteOf.user"
+		| "replyOf.user.description"
+		| "replyOf.user.displayName"
+		| "replyOf.user.name"
 	)[]
 >;
 
@@ -188,6 +191,17 @@ export function createTweetObject(tweet: TweetRecordComplete): TweetObject {
 			  }
 			: undefined,
 		replyCount: tweet.replyCount,
+		replyOf: tweet.replyOf
+			? {
+					id: tweet.replyOf.id,
+					user: {
+						id: tweet.replyOf.user?.id,
+						description: tweet.replyOf.user?.description,
+						displayName: tweet.replyOf.user?.displayName,
+						name: tweet.replyOf.user?.name
+					}
+			  }
+			: undefined,
 		isBookmarked: false,
 		isLiked: false,
 		user: {

@@ -2,6 +2,7 @@
 	import Context from "./Context";
 	import Badge from "./Badge.svelte";
 	import Header from "./Header.svelte";
+	import ReplyLink from "./ReplyLink.svelte";
 	import Quote from "./Quote.svelte";
 	import Text from "./Text.svelte";
 	import { MenuRetweet, MenuShare } from "./Menu";
@@ -41,6 +42,7 @@
 			isLink={!isReplying}
 			{isPinned}
 		/>
+		<ReplyLink/>
 		<Text
 			displayName={finalDisplayName}
 			id={retweetOf ? retweetOf.id : tweet.id}

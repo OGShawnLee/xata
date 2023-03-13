@@ -86,8 +86,14 @@ declare global {
 		retweetCount: number;
 		retweetOf: RetweetObject | undefined;
 		replyCount: number;
+		replyOf: TweetReplyObject | undefined;
 		isBookmarked: boolean;
 		isLiked: boolean;
+	}
+
+	interface TweetReplyObject {
+		id: string;
+		user: UserObject;
 	}
 
 	interface TweetRetweetUserObject {

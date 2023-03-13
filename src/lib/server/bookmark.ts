@@ -38,7 +38,8 @@ export function getBookmarks(uid: string) {
 				"tweet.user.name",
 				"tweet.quoteOf.createdAt",
 				"tweet.quoteOf.text",
-				"tweet.quoteOf.user"
+				"tweet.quoteOf.user",
+				"tweet.replyOf.user"
 			])
 			.sort("createdAt", "desc")
 			.getAll();

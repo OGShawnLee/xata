@@ -31,7 +31,10 @@ export function findTweet(id: string, displayName?: string) {
 				"retweetOf.user.name",
 				"retweetOf.createdAt",
 				"retweetOf.quoteOf.*",
-				"retweetOf.quoteOf.user"
+				"retweetOf.quoteOf.user",
+				"replyOf.user.description",
+				"replyOf.user.displayName",
+				"replyOf.user.name"
 			])
 			.getFirst();
 
@@ -84,7 +87,10 @@ export function getTweets(after?: string) {
 				"retweetOf.user.name",
 				"retweetOf.createdAt",
 				"retweetOf.quoteOf.*",
-				"retweetOf.quoteOf.user"
+				"retweetOf.quoteOf.user",
+				"replyOf.user.description",
+				"replyOf.user.displayName",
+				"replyOf.user.name"
 			])
 			.sort("createdAt", "desc")
 			.getPaginated({
@@ -115,7 +121,8 @@ export async function getTweetReplies(id: string, cuid: string | undefined) {
 			"retweetOf.user.name",
 			"retweetOf.createdAt",
 			"retweetOf.quoteOf.*",
-			"retweetOf.quoteOf.user"
+			"retweetOf.quoteOf.user",
+			"replyOf.user"
 		])
 		.sort("createdAt", "desc")
 		.getAll();
