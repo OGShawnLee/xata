@@ -1,7 +1,7 @@
 import type { PageServerLoad } from "./$types";
 import { findTweetQuotes } from "$lib/server/quote";
 import { error } from "@sveltejs/kit";
-import { findTweet, findUserTweetWithStatus } from "$lib/server/tweet";
+import { findTweet } from "$lib/server/tweet";
 import { isNullish } from "malachite-ui/predicate";
 
 export const load: PageServerLoad = async ({ locals: { user }, params }) => {

@@ -1,10 +1,7 @@
 import type { Actions, PageServerLoad } from "./$types";
 import Action from "./Actions";
-import client from "$lib/server/client";
 import { error, redirect } from "@sveltejs/kit";
 import { getUserFeed } from "$lib/server/user";
-import { useAwait } from "$lib/hooks";
-import { createTweetObject } from "$lib/server/utils";
 
 export const load: PageServerLoad = async ({ locals: { user } }) => {
 	if (user.isAnonymous) throw redirect(303, "/auth/sign-in");
