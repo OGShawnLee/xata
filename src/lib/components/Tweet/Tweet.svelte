@@ -13,6 +13,7 @@
 	export let hasButtons = true;
 	export let hasPadding = true;
 	export let isReplying = false;
+	export let isPinned = false;
 	export let quoteOf: QuoteTweetObject | undefined = undefined;
 	export let tweet: TweetObject;
 
@@ -32,7 +33,7 @@
 
 <article class={isReplying ? "pb-4" : "pb-4 border-b-2 border-zinc-800"}>
 	<div class="grid gap-1.25" class:px-8={hasPadding}>
-		<Badge />
+		<Badge {isPinned} />
 		<Header
 			displayName={finalDisplayName}
 			name={finalName}

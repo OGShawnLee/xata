@@ -7,7 +7,7 @@ import { findBookmark } from "./bookmark";
 import { isDefined } from "$lib/utils/predicate";
 import { findLike } from "./like";
 import { isNullish } from "malachite-ui/predicate";
-import { createTweetObject } from "./utils";
+import { createTweetObject, createTweetObjectMinimal } from "./utils";
 
 export function createUser(data: Pick<UsersRecord, "displayName" | "email" | "name" | "password">) {
 	return useAwait(async () => {
@@ -37,6 +37,30 @@ export async function findUserPublic(displayName: string) {
 		location: user.location,
 		createdAt: user.createdAt
 	};
+}
+
+export async function getUserPinnedTweet(displayName: string, cuid: string | undefined) {
+	const user = await client.db.users
+		.filter("displayName", displayName)
+		.select([
+			"pinnedTweet.*",
+			"pinnedTweet.user.id",
+			"pinnedTweet.user.description",
+			"pinnedTweet.user.displayName",
+			"pinnedTweet.user.name"
+		])
+		.getFirst();
+
+	if (!user?.pinnedTweet) return;
+
+	const tweet = createTweetObjectMinimal(user.pinnedTweet);
+	if (cuid) {
+		const state = await getTweetState(cuid, tweet.id);
+		tweet.isBookmarked = state.isBookmarked;
+		tweet.isLiked = state.isLiked;
+	}
+
+	return tweet;
 }
 
 export function getUserPublicPage(displayName: string, currentUser: string | undefined) {

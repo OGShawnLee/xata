@@ -11,6 +11,9 @@
 </svelte:head>
 
 <Feed>
+	{#if data.pinnedTweet}
+		<Tweet tweet={data.pinnedTweet} isPinned />
+	{/if}
 	{#each data.tweets as tweet (tweet.id)}
 		<Tweet {tweet} />
 	{/each}
