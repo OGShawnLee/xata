@@ -4,6 +4,7 @@
 	import { MenuItem } from "malachite-ui";
 	import { MoreHorizontal, Pin, PinOff } from "lucide-svelte";
 	import { useClassNameResolver } from "malachite-ui/hooks";
+	import { isNullish } from "malachite-ui/predicate";
 	import { enhance } from "$app/forms";
 	import { currentUser } from "$lib/state";
 
@@ -15,10 +16,10 @@
 	});
 	const tweet = Context.getContext();
 
-	$: ({ id, user } = $tweet);
+	$: ({ id, user, retweetOf } = $tweet);
 </script>
 
-{#if user.id === $currentUser?.id}
+{#if user.id === $currentUser?.id && isNullish(retweetOf)}
 	<Menu
 		label="View Tweet Options"
 		counter={false}

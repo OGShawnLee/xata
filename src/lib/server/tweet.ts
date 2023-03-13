@@ -2,7 +2,7 @@ import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
 import { isNullish } from "malachite-ui/predicate";
 import { getTweetState } from "./user";
-import { createTweetObject, createTweetObjectNoRetweet } from "./utils";
+import { createTweetObject } from "./utils";
 
 export function createTweet(id: string, text: string) {
 	return useAwait(async () => {
@@ -24,11 +24,18 @@ export function findTweet(id: string, displayName?: string) {
 				"quoteOf.text",
 				"quoteOf.user.description",
 				"quoteOf.user.displayName",
-				"quoteOf.user.name"
+				"quoteOf.user.name",
+				"retweetOf.text",
+				"retweetOf.user.description",
+				"retweetOf.user.displayName",
+				"retweetOf.user.name",
+				"retweetOf.createdAt",
+				"retweetOf.quoteOf.*",
+				"retweetOf.quoteOf.user"
 			])
 			.getFirst();
 
-		return isNullish(tweet) ? null : createTweetObjectNoRetweet(tweet);
+		return isNullish(tweet) ? null : createTweetObject(tweet);
 	});
 }
 

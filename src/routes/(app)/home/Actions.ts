@@ -78,6 +78,7 @@ export default class Action {
 		const { id, user, tweet } = await handleActionValidation(event);
 		if (user.id !== tweet.user.id)
 			throw error(403, { message: "Cannot pin a Tweet that does not belong to you." });
+		if (tweet.retweetOf) throw error(400, { message: "Cannot pin a retweet." });
 
 		const pinned = await pin(id, user.id);
 		if (pinned.failed) throw error(500, { message: "Unable to pin Tweet." });
