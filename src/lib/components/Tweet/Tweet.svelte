@@ -12,8 +12,8 @@
 
 	export let hasButtons = true;
 	export let hasPadding = true;
-	export let isReplying = false;
 	export let isPinned = false;
+	export let isReplying = false;
 	export let quoteOf: QuoteTweetObject | undefined = undefined;
 	export let tweet: TweetObject;
 
@@ -39,6 +39,7 @@
 			name={finalName}
 			createdAt={finalCreatedAt}
 			isLink={!isReplying}
+			{isPinned}
 		/>
 		<Text
 			displayName={finalDisplayName}

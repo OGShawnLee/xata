@@ -12,7 +12,7 @@ import { triggerNotificationEvent } from "$lib/server/notification";
 import { isDefined } from "$lib/utils/predicate";
 import { createRetweet, findRetweet } from "$lib/server/retweet";
 import { quote } from "$lib/server/quote";
-import { pin } from "$lib/server/pin";
+import { pin, unpin } from "$lib/server/pin";
 
 export default class Action {
 	static async handleBookmark(event: RequestEvent) {
@@ -125,6 +125,12 @@ export default class Action {
 				text: { value: text.data }
 			});
 		}
+	}
+
+	static async unpin(event: RequestEvent) {
+		const { user } = await handleActionValidation(event);
+		const result = await unpin(user.id);
+		if (result.failed) throw error(500, { message: "Unable to unpin pin." });
 	}
 }
 

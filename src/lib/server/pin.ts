@@ -6,3 +6,9 @@ export function pin(id: string, uid: string) {
 		return client.db.users.update(uid, { pinnedTweet: id });
 	});
 }
+
+export function unpin(uid: string) {
+	return useAwait(() => {
+		return client.db.users.update(uid, { pinnedTweet: null });
+	});
+}

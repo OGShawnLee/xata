@@ -19,5 +19,6 @@ export const actions: Actions = {
 	pin: Action.pin,
 	"quote-tweet": Action.quote,
 	retweet: Action.retweet,
-	tweet: Action.tweet
+	tweet: Action.tweet,
+	unpin: Action.unpin
 };

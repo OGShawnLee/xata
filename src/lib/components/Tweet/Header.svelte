@@ -8,6 +8,7 @@
 	export let name: Nullable<string>;
 	export let big = false;
 	export let isLink = true;
+	export let isPinned = false;
 
 	$: as = big ? "h2" : "h3";
 </script>
@@ -30,6 +31,6 @@
 	</div>
 	<div class="flex items-center gap-3">
 		<Time {createdAt} />
-		<MenuTweet />
+		<MenuTweet {isPinned} />
 	</div>
 </header>
