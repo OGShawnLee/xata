@@ -4,9 +4,9 @@ import { isNullish } from "malachite-ui/predicate";
 import { getTweetState } from "./user";
 import { createTweetObject } from "./utils";
 
-export function createTweet(id: string, text: string) {
+export function createTweet(id: string, text: string, hashtags: string[] | undefined) {
 	return useAwait(async () => {
-		const tweet = await client.db.tweets.create({ text, user: { id } });
+		const tweet = await client.db.tweets.create({ text, user: { id }, hashtags });
 		return tweet.toSerializable();
 	});
 }
@@ -142,11 +142,17 @@ export async function getTweetReplies(id: string, cuid: string | undefined) {
 	return replies.map(createTweetObject);
 }
 
-export function reply(event: { id: string; cuid: string; text: string; replyCount: number }) {
-	const { id, cuid, text, replyCount } = event;
+export function reply(event: {
+	id: string;
+	cuid: string;
+	hashtags: Hashtags;
+	replyCount: number;
+	text: string;
+}) {
+	const { id, cuid, text, replyCount, hashtags } = event;
 	return useAwait(() => {
 		return client.transactions.run([
-			{ insert: { table: "tweets", record: { text, user: cuid, replyOf: id } } },
+			{ insert: { table: "tweets", record: { text, user: cuid, replyOf: id, hashtags } } },
 			{ update: { table: "tweets", id, fields: { replyCount: replyCount + 1 } } }
 		]);
 	});

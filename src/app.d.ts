@@ -15,6 +15,8 @@ declare global {
 		// interface Platform {}
 	}
 
+	type Hashtags = string[] | undefined;
+
 	interface JWTPayloadState {
 		id: string;
 		displayName: string;

@@ -2,7 +2,7 @@ import type { ZodError } from "zod";
 import type { RequestEvent } from "@sveltejs/kit";
 import { string } from "zod";
 import { error, fail, redirect } from "@sveltejs/kit";
-import { useAwait } from "$lib/hooks";
+import { useAwait, useCatch } from "$lib/hooks";
 import { tweetSchema } from "$lib/validation/schema";
 import { createTweet, findTweet } from "$lib/server/tweet";
 import { isNullish } from "malachite-ui/predicate";
@@ -13,6 +13,7 @@ import { isDefined } from "$lib/utils/predicate";
 import { createRetweet, findRetweet } from "$lib/server/retweet";
 import { quote } from "$lib/server/quote";
 import { pin, unpin } from "$lib/server/pin";
+import { getHashtags } from "$lib/utils";
 
 export default class Action {
 	static async handleBookmark(event: RequestEvent) {
@@ -70,7 +71,8 @@ export default class Action {
 			});
 		}
 
-		const quotedTweet = await quote({ text: text.data, user, tweet });
+		const hashtags = getHashtags(text.data);
+		const quotedTweet = await quote({ text: text.data, user, tweet, hashtags });
 		if (quotedTweet.failed) return error(500, { message: "Unable to quote Tweet." });
 	}
 
@@ -118,8 +120,9 @@ export default class Action {
 				text: { value: input as string | null, error: errors[0] }
 			});
 		}
+		const hashtags = getHashtags(text.data);
 
-		const tweet = await createTweet(event.locals.user.data.id, text.data);
+		const tweet = await createTweet(event.locals.user.data.id, text.data, hashtags);
 		if (tweet.failed) {
 			return fail(500, {
 				error: "Unable to create Tweet.",

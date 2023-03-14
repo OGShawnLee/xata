@@ -29,15 +29,17 @@ export function findTweetQuotes(id: string, cuid: string | undefined) {
 export function quote({
 	text,
 	tweet,
-	user
+	user,
+	hashtags
 }: {
 	text: string;
 	tweet: { id: string; quoteCount: number };
 	user: { id: string };
+	hashtags: Hashtags;
 }) {
 	return useAwait(() => {
 		return client.transactions.run([
-			{ insert: { table: "tweets", record: { user: user.id, text, quoteOf: tweet.id } } },
+			{ insert: { table: "tweets", record: { user: user.id, text, quoteOf: tweet.id, hashtags } } },
 			{ update: { table: "tweets", id: tweet.id, fields: { quoteCount: tweet.quoteCount + 1 } } }
 		]);
 	});

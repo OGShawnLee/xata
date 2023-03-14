@@ -1,8 +1,19 @@
+import { isNullish } from "malachite-ui/predicate";
+
 export function getCharCountColour(charCount: number) {
 	if (charCount === 0) return "text-rose-500";
 	if (charCount < 160) return "text-emerald-500";
 	if (charCount >= 160 && charCount < 280) return "text-orange-500";
 	return "text-red-500";
+}
+
+export function getHashtags(text: string): Hashtags {
+	const re = /#[A-Za-z0-9]+/gm;
+	const matches = text.match(re);
+	if (isNullish(matches)) return;
+	const hashtags = new Set<string>();
+	for (const match of matches) hashtags.add(match.toLowerCase());
+	return Array.from(hashtags);
 }
 
 // https://natclark.com/tutorials/javascript-relative-time/

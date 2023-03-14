@@ -6,6 +6,7 @@ import { isNullish } from "malachite-ui/predicate";
 import { useCatch } from "$lib/hooks";
 import { tweetSchema } from "$lib/validation/schema";
 import { triggerNotificationEvent } from "$lib/server/notification";
+import { getHashtags } from "$lib/utils";
 
 export default class Action {
 	static async reply(event: RequestEvent) {
@@ -29,8 +30,9 @@ export default class Action {
 		const result = await reply({
 			id: tweet.data.id,
 			cuid: event.locals.user.data.id,
-			text: text.data,
-			replyCount: tweet.data.replyCount
+			hashtags: getHashtags(text.data),
+			replyCount: tweet.data.replyCount,
+			text: text.data
 		});
 		if (result.failed) throw error(500, { message: "Unable to reply." });
 
