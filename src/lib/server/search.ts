@@ -1,6 +1,7 @@
 import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
 import { isNullish } from "malachite-ui/predicate";
+import type { Nullable } from "malachite-ui/types";
 
 function findUserObject(id: string) {
 	return useAwait<UserObject | undefined>(async () => {
@@ -18,69 +19,57 @@ function findUserObject(id: string) {
 	});
 }
 
-export function getSearchResults(query: string) {
+export function getSearchResults(query: string, target: "people" | null) {
 	return useAwait(async () => {
-		const results = await client.search.all(query, {
-			tables: [
-				{
-					table: "tweets",
-					target: ["text"]
-				},
-				{
-					table: "users",
-					target: ["description", "displayName", "name", "location"]
-				}
-			],
-			prefix: "phrase"
-		});
-
-		// We only have 2 users so this is not a bad idea
-		const cachedUsers = new Map<string, UserObject>();
-		const tweets: TweetObject[] = [];
-		const users: UserObject[] = [];
-
-		for await (const { table, record } of results) {
-			if (table === "users") {
-				const foundUser = cachedUsers.get(record.id);
-				if (foundUser) users.push(foundUser);
-				else {
-					const user = {
-						id: record.id,
-						description: record.description,
-						displayName: record.displayName,
-						name: record.name
-					};
-					cachedUsers.set(user.id, user);
-					users.push(user);
-				}
-			} else {
-				if (isNullish(record.user)) continue;
-				const foundUser = cachedUsers.get(record.user.id);
-				const tweet = {
+		if (target === "people") {
+			const results = await client.db.users.search(query, {
+				target: ["description", "displayName", "name", "location"],
+				prefix: "phrase"
+			});
+			return results.map<UserObject>((record) => {
+				return {
 					id: record.id,
-					createdAt: record.createdAt,
-					user: foundUser,
-					text: record.text,
-					likeCount: record.likeCount,
-					quoteOf: undefined,
-					quoteCount: record.quoteCount,
-					retweetCount: record.retweetCount,
-					retweetOf: undefined,
-					replyCount: record.replyCount,
-					isBookmarked: false,
-					isLiked: false
+					description: record.description,
+					displayName: record.displayName,
+					name: record.name
 				};
-				if (tweet.user) tweets.push(tweet as TweetObject);
-				else {
-					const foundUser = await findUserObject(record.user.id);
-					if (foundUser.failed || isNullish(foundUser.data)) continue;
-					cachedUsers.set(record.user.id, foundUser.data);
-					tweet.user = foundUser.data;
-					tweets.push(tweet as TweetObject);
-				}
-			}
-		}
+			});
+		} else {
+			const cachedUsers = new Map<string, UserObject>();
+			const results = await client.db.tweets.search(query, {
+				target: ["text"],
+				prefix: "phrase"
+			});
 
-		return { tweets, users };
+			return Promise.all(
+				results.map(async (record) => {
+					if (isNullish(record.user)) throw Error("Tweet User ID not defined.");
+					const foundUser = cachedUsers.get(record.user.id);
+					const tweet = {
+						id: record.id,
+						createdAt: record.createdAt,
+						user: foundUser,
+						text: record.text,
+						likeCount: record.likeCount,
+						quoteOf: undefined,
+						quoteCount: record.quoteCount,
+						retweetCount: record.retweetCount,
+						retweetOf: undefined,
+						replyCount: record.replyCount,
+						isBookmarked: false,
+						isLiked: false
+					};
+
+					if (tweet.user) return tweet as TweetObject;
+
+					const targetUser = await findUserObject(record.user.id);
+					if (targetUser.failed || isNullish(targetUser.data)) throw Error("Unable to Fetch User.");
+
+					cachedUsers.set(record.user.id, targetUser.data);
+					tweet.user = targetUser.data;
+					return tweet as TweetObject;
+				})
+			);
+		}
 	});
 }

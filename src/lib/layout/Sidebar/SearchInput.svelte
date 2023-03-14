@@ -1,4 +1,5 @@
 <script>
+	import { page } from "$app/stores";
 	import { Search } from "lucide-svelte";
 </script>
 
@@ -17,5 +18,8 @@
 			minlength={1}
 			maxlength={280}
 		/>
+		{#if $page.url.searchParams.get("target") === "people"}
+			<input type="hidden" name="target" value="people" />
+		{/if}
 	</div>
 </form>
