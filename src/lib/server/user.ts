@@ -136,9 +136,10 @@ export async function getTweetState(uid: string, tid: string) {
 
 export async function getUserTweets(
 	displayName: string,
-	cuid: string | undefined
-): Promise<TweetObject[]> {
-	const tweets = await client.db.tweets
+	cuid: string | undefined,
+	after?: string
+): Promise<Paginated<TweetObject>> {
+	const paginated = await client.db.tweets
 		.filter("user.displayName", displayName)
 		.filter(notExists("replyOf.id"))
 		.select([
@@ -161,22 +162,31 @@ export async function getUserTweets(
 			"retweetOf.quoteOf.user"
 		])
 		.sort("createdAt", "desc")
-		.getAll();
+		.getPaginated({
+			pagination: { after, size: 15 }
+		});
 
-	if (isNullish(cuid)) return tweets.map(createTweetObject);
+	if (isNullish(cuid))
+		return {
+			records: paginated.records.map(createTweetObject),
+			page: paginated.meta.page
+		};
 
-	return Promise.all(
-		tweets.map(async (tweet) => {
-			const finalTweet = createTweetObject(tweet);
-			const [like, bookmark] = await Promise.all([
-				findLike(cuid, tweet.id),
-				findBookmark(cuid, tweet.id)
-			]);
-			finalTweet.isBookmarked = bookmark.failed ? false : isDefined(bookmark.data);
-			finalTweet.isLiked = like.failed ? false : isDefined(like.data);
-			return finalTweet;
-		})
-	);
+	return {
+		page: paginated.meta.page,
+		records: await Promise.all(
+			paginated.records.map(async (tweet) => {
+				const finalTweet = createTweetObject(tweet);
+				const [like, bookmark] = await Promise.all([
+					findLike(cuid, tweet.id),
+					findBookmark(cuid, tweet.id)
+				]);
+				finalTweet.isBookmarked = bookmark.failed ? false : isDefined(bookmark.data);
+				finalTweet.isLiked = like.failed ? false : isDefined(like.data);
+				return finalTweet;
+			})
+		)
+	};
 }
 
 export function updateUserProfile(
