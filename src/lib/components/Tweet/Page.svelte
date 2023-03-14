@@ -22,7 +22,7 @@
 			<Header displayName={tweet.user.displayName} name={tweet.user.name} big />
 			<div class="grid gap-1.25">
 				<ReplyLink />
-				<p>{tweet.text}</p>
+				<p class="whitespace-pre-line">{tweet.text}</p>
 			</div>
 			{#if tweet.quoteOf}
 				<Quote tweet={tweet.quoteOf} isLink />
