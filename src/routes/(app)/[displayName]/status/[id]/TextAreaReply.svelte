@@ -4,17 +4,19 @@
 	import { useCleanup, useListener } from "malachite-ui/hooks";
 	import { onMount } from "svelte";
 	import { enhance } from "$app/forms";
+	import { isNullish } from "malachite-ui/predicate";
 
 	export let hasBottomBorder = false;
 
 	let charCount = 0;
-	let element: HTMLTextAreaElement;
+	let element: HTMLTextAreaElement | undefined;
 	let hasFocus = false;
 
 	$: disabled = charCount === 0;
 	$: isTextAreaToRender = hasFocus || charCount > 0;
 
 	onMount(() => {
+		if (isNullish(element)) return;
 		return useCleanup(
 			useListener(element, "focus", () => (hasFocus = true)),
 			useListener(element, "focusout", () => (hasFocus = false))
@@ -36,8 +38,7 @@
 					label="Reply"
 					placeholder="What is your reply?"
 					bind:charCount
-					bind:element
-				/>
+					bind:element />
 				{#if isTextAreaToRender}
 					<div class="ml-auto flex items-center gap-3">
 						<CharCount {charCount} />
