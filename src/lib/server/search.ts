@@ -30,7 +30,8 @@ export function getSearchResults(query: string) {
 					table: "users",
 					target: ["description", "displayName", "name", "location"]
 				}
-			]
+			],
+			prefix: "phrase"
 		});
 
 		// We only have 2 users so this is not a bad idea
