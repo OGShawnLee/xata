@@ -7,7 +7,7 @@
 </script>
 
 <Feed>
-	{#each data.tweets as tweet (tweet.id)}
+	{#each data.feed.records as tweet (tweet.id)}
 		<Tweet {tweet} />
 	{/each}
 </Feed>

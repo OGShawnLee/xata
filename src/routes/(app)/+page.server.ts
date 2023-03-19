@@ -4,7 +4,7 @@ import { error, redirect } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user.isSignedIn) throw redirect(303, "/home");
-	const tweets = await getTweets();
-	if (tweets.failed) throw error(500, { message: "Unable to load Tweets." });
-	return { tweets: tweets.data };
+	const feed = await getTweets();
+	if (feed.failed) throw error(500, { message: "Unable to load Tweets." });
+	return { feed: feed.data };
 };
