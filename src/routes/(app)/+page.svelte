@@ -16,6 +16,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Twitter</title>
+</svelte:head>
+
 <Feed
 	loadingComponent={TweetLoading}
 	more={data.feed.page.more}
