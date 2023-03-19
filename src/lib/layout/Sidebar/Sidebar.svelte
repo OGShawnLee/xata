@@ -23,5 +23,9 @@
 	{/if}
 	{#if $currentUser}
 		<UserStatus displayName={$currentUser.displayName} name={$currentUser.name} />
+	{:else}
+		<a class="button button--sky | flex items-center justify-center gap-1.75" href="/auth/sign-in"> 
+			<span> Sign In </span>
+		</a>
 	{/if}
 </nav>
