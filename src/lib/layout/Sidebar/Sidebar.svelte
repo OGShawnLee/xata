@@ -13,14 +13,14 @@
 <nav class="{className} | grid gap-12">
 	<i class="bx bxl-twitter text-4xl text-white" />
 	<SearchInput />
-	<div class="grid gap-6">
-		<Link icon={Home} href="/home" text="Home" />
-		<Link icon={Bookmark} href="/i/bookmarks" text="Bookmarks" />
-		<Link icon={Bell} href="/i/notifications" text="Notifications" />
-		{#if $currentUser}
+	{#if $currentUser}
+		<div class="grid gap-6">
+			<Link icon={Home} href="/home" text="Home" />
+			<Link icon={Bookmark} href="/i/bookmarks" text="Bookmarks" />
+			<Link icon={Bell} href="/i/notifications" text="Notifications" />
 			<Link icon={User} href="/{$currentUser.displayName}" text="Profile" />
-		{/if}
-	</div>
+		</div>
+	{/if}
 	{#if $currentUser}
 		<UserStatus displayName={$currentUser.displayName} name={$currentUser.name} />
 	{/if}
