@@ -32,6 +32,9 @@
 	$: state.set(tweet);
 </script>
 
+{#if tweet.replyOf && tweet.replyOf.text}
+	<svelte:self tweet={tweet.replyOf} />
+{/if}
 <article class={isReplying ? "pb-4" : "pb-4 border-b-2 border-zinc-800"}>
 	<div class="grid gap-1.25" class:px-8={hasPadding}>
 		<Badge {isPinned} />
@@ -42,7 +45,7 @@
 			isLink={!isReplying}
 			{isPinned}
 		/>
-		<ReplyLink/>
+		<ReplyLink />
 		<Text
 			displayName={finalDisplayName}
 			id={retweetOf ? retweetOf.id : tweet.id}

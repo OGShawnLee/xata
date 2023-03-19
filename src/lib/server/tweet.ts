@@ -32,9 +32,12 @@ export function findTweet(id: string, displayName?: string) {
 				"retweetOf.createdAt",
 				"retweetOf.quoteOf.*",
 				"retweetOf.quoteOf.user",
+				"replyOf.*",
 				"replyOf.user.description",
 				"replyOf.user.displayName",
-				"replyOf.user.name"
+				"replyOf.user.name",
+				"replyOf.replyOf.*",
+				"replyOf.replyOf.user"
 			])
 			.getFirst();
 
@@ -60,6 +63,16 @@ export function findUserTweetWithStatus({
 
 		if (tweet.failed) throw tweet.error;
 		if (isNullish(tweet.data)) return null;
+
+		if (cuid) {
+			let currentTweet = tweet.data.replyOf;
+			while (currentTweet) {
+				const status = await getTweetState(cuid, currentTweet.id);
+				currentTweet.isBookmarked = status.isBookmarked;
+				currentTweet.isLiked = status.isLiked;
+				currentTweet = currentTweet.replyOf;
+			}
+		}
 
 		tweet.data.isBookmarked = status.isBookmarked;
 		tweet.data.isLiked = status.isLiked;

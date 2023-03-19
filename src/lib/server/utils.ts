@@ -3,31 +3,41 @@ import type { NotificationsRecord, TweetsRecord } from "./xata";
 import { useAwait } from "$lib/hooks";
 import { genSalt, hash } from "bcrypt";
 
-type TweetRecordComplete = SelectedPick<
+type QueryTweet = SelectedPick<
 	TweetsRecord,
 	(
 		| "*"
-		| "user.displayName"
-		| "user.id"
-		| "user.name"
-		| "user.description"
-		| "quoteOf.createdAt"
-		| "quoteOf.text"
-		| "quoteOf.user.description"
-		| "quoteOf.user.displayName"
-		| "quoteOf.user.name"
-		| "retweetOf.createdAt"
-		| "retweetOf.text"
-		| "retweetOf.user.description"
-		| "retweetOf.user.displayName"
-		| "retweetOf.user.name"
-		| "retweetOf.quoteOf.*"
-		| "retweetOf.quoteOf.user"
-		| "replyOf.user.description"
-		| "replyOf.user.displayName"
-		| "replyOf.user.name"
+		| QueryTweetUser
+		| (QueryTweetQuoteOf | QueryTweetReplyOfComplete)
+		| QueryTweetReplyOf
+		| QueryTweetRetweetOf
 	)[]
 >;
+
+type QueryTweetQuoteOf =
+	| "quoteOf.createdAt"
+	| "quoteOf.text"
+	| "quoteOf.user.description"
+	| "quoteOf.user.displayName"
+	| "quoteOf.user.name";
+type QueryTweetReplyOf =
+	| "replyOf.user.description"
+	| "replyOf.user.displayName"
+	| "replyOf.user.name";
+type QueryTweetReplyOfComplete =
+	| "*"
+	| "replyOf.user.description"
+	| "replyOf.user.displayName"
+	| "replyOf.user.name";
+type QueryTweetRetweetOf =
+	| "retweetOf.createdAt"
+	| "retweetOf.text"
+	| "retweetOf.user.description"
+	| "retweetOf.user.displayName"
+	| "retweetOf.user.name"
+	| "retweetOf.quoteOf.*"
+	| "retweetOf.quoteOf.user";
+type QueryTweetUser = "user.displayName" | "user.name" | "user.description";
 
 type TweetRecordMinimal = SelectedPick<
 	TweetsRecord,
@@ -143,7 +153,7 @@ export function createTweetObjectNoRetweet(tweet: TweetRecordNoRetweet) {
 	};
 }
 
-export function createTweetObject(tweet: TweetRecordComplete): TweetObject {
+export function createTweetObject(tweet: QueryTweet): TweetObject {
 	return {
 		id: tweet.id,
 		createdAt: tweet.createdAt,
@@ -191,17 +201,7 @@ export function createTweetObject(tweet: TweetRecordComplete): TweetObject {
 			  }
 			: undefined,
 		replyCount: tweet.replyCount,
-		replyOf: tweet.replyOf
-			? {
-					id: tweet.replyOf.id,
-					user: {
-						id: tweet.replyOf.user?.id,
-						description: tweet.replyOf.user?.description,
-						displayName: tweet.replyOf.user?.displayName,
-						name: tweet.replyOf.user?.name
-					}
-			  }
-			: undefined,
+		replyOf: tweet.replyOf ? createTweetObject(tweet.replyOf) : undefined,
 		isBookmarked: false,
 		isLiked: false,
 		user: {

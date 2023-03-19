@@ -5,6 +5,7 @@
 	import ReplyLink from "./ReplyLink.svelte";
 	import Quote from "./Quote.svelte";
 	import Stats from "./Stats.svelte";
+	import Tweet from "./Tweet.svelte";
 	import { MenuRetweet, MenuShare } from "./Menu";
 	import { writable } from "svelte/store";
 
@@ -16,7 +17,10 @@
 	$: state.set(tweet);
 </script>
 
-<div class="border-b-2 border-zinc-800">
+<div class="grid gap-8 | border-b-2 border-zinc-800">
+	{#if tweet.replyOf}
+		<Tweet tweet={tweet.replyOf}/>
+	{/if}
 	<div class="px-8">
 		<div class="grid gap-2.25">
 			<Header displayName={tweet.user.displayName} name={tweet.user.name} big />
