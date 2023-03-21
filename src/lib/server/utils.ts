@@ -1,4 +1,5 @@
 import type { SelectedPick } from "@xata.io/client";
+import type { Nullable, NullableRecursively } from "malachite-ui/types";
 import type { NotificationsRecord, TweetsRecord } from "./xata";
 import { useAwait } from "$lib/hooks";
 import { genSalt, hash } from "bcrypt";
@@ -110,12 +111,7 @@ export function createTweetObjectMinimal(tweet: TweetRecordMinimal) {
 		replyCount: tweet.replyCount,
 		isBookmarked: false,
 		isLiked: false,
-		user: {
-			id: tweet.user?.id,
-			description: tweet.user?.description,
-			displayName: tweet.user?.displayName,
-			name: tweet.user?.name
-		}
+		user: createUserObject(tweet.user)
 	};
 }
 
@@ -129,12 +125,7 @@ export function createTweetObjectNoRetweet(tweet: TweetRecordNoRetweet) {
 			? {
 					id: tweet.quoteOf.id,
 					text: tweet.quoteOf.text,
-					user: {
-						id: tweet.quoteOf.user?.id,
-						description: tweet.quoteOf.user?.description,
-						displayName: tweet.quoteOf.user?.displayName,
-						name: tweet.quoteOf.user?.name
-					},
+					user: createUserObject(tweet.quoteOf.user),
 					createdAt: tweet.quoteOf.createdAt
 			  }
 			: undefined,
@@ -144,12 +135,7 @@ export function createTweetObjectNoRetweet(tweet: TweetRecordNoRetweet) {
 		replyCount: tweet.replyCount,
 		isBookmarked: false,
 		isLiked: false,
-		user: {
-			id: tweet.user?.id,
-			description: tweet.user?.description,
-			displayName: tweet.user?.displayName,
-			name: tweet.user?.name
-		}
+		user: createUserObject(tweet.user)
 	};
 }
 
@@ -163,12 +149,7 @@ export function createTweetObject(tweet: QueryTweet): TweetObject {
 			? {
 					id: tweet.quoteOf.id,
 					text: tweet.quoteOf.text,
-					user: {
-						id: tweet.quoteOf.user?.id,
-						description: tweet.quoteOf.user?.description,
-						displayName: tweet.quoteOf.user?.displayName,
-						name: tweet.quoteOf.user?.name
-					},
+					user: createUserObject(tweet.quoteOf.user),
 					createdAt: tweet.quoteOf.createdAt
 			  }
 			: undefined,
@@ -178,24 +159,14 @@ export function createTweetObject(tweet: QueryTweet): TweetObject {
 			? {
 					id: tweet.retweetOf.id,
 					text: tweet.retweetOf.text,
-					user: {
-						id: tweet.retweetOf.user?.id,
-						description: tweet.retweetOf.user?.description,
-						displayName: tweet.retweetOf.user?.displayName,
-						name: tweet.retweetOf.user?.name
-					},
+					user: createUserObject(tweet.retweetOf.user),
 					createdAt: tweet.retweetOf.createdAt,
 					quoteOf: tweet.retweetOf.quoteOf
 						? {
 								id: tweet.retweetOf.quoteOf.id,
 								text: tweet.retweetOf.quoteOf.text,
 								createdAt: tweet.retweetOf.quoteOf.createdAt,
-								user: {
-									id: tweet.retweetOf.quoteOf.user?.id,
-									description: tweet.retweetOf.quoteOf.user?.description,
-									displayName: tweet.retweetOf.quoteOf.user?.displayName,
-									name: tweet.retweetOf.quoteOf.user?.name
-								}
+								user: createUserObject(tweet.retweetOf.quoteOf.user)
 						  }
 						: undefined
 			  }
@@ -204,12 +175,18 @@ export function createTweetObject(tweet: QueryTweet): TweetObject {
 		replyOf: tweet.replyOf ? createTweetObject(tweet.replyOf) : undefined,
 		isBookmarked: false,
 		isLiked: false,
-		user: {
-			id: tweet.user?.id,
-			description: tweet.user?.description,
-			displayName: tweet.user?.displayName,
-			name: tweet.user?.name
-		}
+		user: createUserObject(tweet.user)
+	};
+}
+
+export function createUserObject(
+	user: Nullable<{ id: string | undefined } & NullableRecursively<UserObject>>
+): UserObject {
+	return {
+		id: user?.id,
+		description: user?.description,
+		displayName: user?.displayName,
+		name: user?.name
 	};
 }
 
