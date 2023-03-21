@@ -1,11 +1,16 @@
 <script lang="ts" context="module">
-	function getAction(
-		event: "NONE" | "QUOTE" | "REPLY",
-		user: UserObject | undefined,
-		id: string | undefined
-	) {
+	type Event = "NONE" | "COMPOSE" | "QUOTE" | "REPLY";
+
+	function getAction(event: Event, user: UserObject | undefined, id: string | undefined) {
+		if (event === "COMPOSE") return "/home?/tweet";
 		if (event === "QUOTE") return "/home?/quote-tweet";
 		return user ? `/${user.displayName}/status/${id}?/reply` : undefined;
+	}
+
+	function getSubmitButtonText(event: Event) {
+		if (event === "QUOTE") return "Quote Tweet";
+		if (event === "REPLY") return "Reply";
+		return "Tweet";
 	}
 </script>
 
@@ -31,12 +36,19 @@
 			<div class="ml-auto | flex items-center gap-3">
 				<CharCount {charCount} />
 				<ButtonWhite {disabled} type="submit">
-					{event === "QUOTE" ? "Quote Tweet" : "Reply"}
+					{getSubmitButtonText(event)}
 				</ButtonWhite>
 			</div>
 		</header>
 		<div class="px-8">
-			{#if event === "QUOTE" && data.quoteTweet}
+			{#if event === "COMPOSE"}
+				<TweetHeader
+					displayName={$currentUser?.displayName}
+					name={$currentUser?.name}
+					isLink={false}
+				/>
+				<TextArea bind:charCount placeholder="What is happening?" id="tweet-text" label="Tweet" />
+			{:else if event === "QUOTE" && data.quoteTweet}
 				<TweetHeader displayName={$currentUser?.displayName} name={$currentUser?.name} />
 				<TextArea
 					bind:charCount

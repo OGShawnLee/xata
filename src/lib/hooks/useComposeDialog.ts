@@ -1,7 +1,9 @@
 import { writable } from "svelte/store";
 
+type Event = "NONE" | "COMPOSE" | "QUOTE" | "REPLY";
+
 interface State {
-	event: "NONE" | "QUOTE" | "REPLY";
+	event: Event;
 	open: boolean;
 	data: {
 		quoteTweet: QuoteTweetObject | undefined;
@@ -28,17 +30,16 @@ export default function useComposeDialog() {
 	}
 
 	function trigger(this: void, type: "NONE"): void;
+	function trigger(this: void, type: "COMPOSE"): void;
 	function trigger(this: void, type: "QUOTE", data: QuoteTweetObject): void;
 	function trigger(this: void, type: "REPLY", data: TweetObject): void;
 
-	function trigger(
-		this: void,
-		type: "NONE" | "QUOTE" | "REPLY",
-		data?: QuoteTweetObject | TweetObject
-	) {
+	function trigger(this: void, type: Event, data?: QuoteTweetObject | TweetObject) {
 		update((state) => {
 			state.event = type;
-			if (type === "NONE") {
+			if (type === "COMPOSE") {
+				state.open = true;
+			} else if (type === "NONE") {
 				state.open = false;
 				state.data.quoteTweet = undefined;
 			} else if (data) {

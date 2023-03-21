@@ -2,8 +2,8 @@
 	import Link from "./Link.svelte";
 	import SearchInput from "./SearchInput.svelte";
 	import UserStatus from "./UserStatus.svelte";
-	import { Bell, Bookmark, Home, User } from "lucide-svelte";
-	import { currentUser } from "$lib/state";
+	import { Bell, Bookmark, Home, PenTool, User } from "lucide-svelte";
+	import { composeDialog, currentUser } from "$lib/state";
 
 	let className: string;
 
@@ -19,12 +19,20 @@
 			<Link icon={Bookmark} href="/i/bookmarks" text="Bookmarks" />
 			<Link icon={Bell} href="/i/notifications" text="Notifications" />
 			<Link icon={User} href="/{$currentUser.displayName}" text="Profile" />
+			<Link
+				icon={PenTool}
+				text="Compose"
+				on:click={(event) => {
+					event.preventDefault();
+					composeDialog.trigger("COMPOSE")
+				}} 
+			/>
 		</div>
 	{/if}
 	{#if $currentUser}
 		<UserStatus displayName={$currentUser.displayName} name={$currentUser.name} />
 	{:else}
-		<a class="button button--sky | flex items-center justify-center gap-1.75" href="/auth/sign-in"> 
+		<a class="button button--sky | flex items-center justify-center gap-1.75" href="/auth/sign-in">
 			<span> Sign In </span>
 		</a>
 	{/if}
