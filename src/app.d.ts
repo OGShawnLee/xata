@@ -69,12 +69,7 @@ declare global {
 	interface TweetLikeUserObject {
 		id: string;
 		likedAt: Date;
-		user: {
-			id: string | undefined;
-			description: Nullable<string>;
-			displayName: Nullable<string>;
-			name: Nullable<string>;
-		};
+		user: UserObject;
 	}
 
 	interface TweetObject {
@@ -105,12 +100,7 @@ declare global {
 	interface TweetRetweetUserObject {
 		id: string;
 		retweetedAt: Date;
-		user: {
-			id: string | undefined;
-			description: Nullable<string>;
-			displayName: Nullable<string>;
-			name: Nullable<string>;
-		};
+		user: UserObject;
 	}
 
 	interface UserState extends JWTPayloadState {
