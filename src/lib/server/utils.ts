@@ -144,6 +144,7 @@ export function createTweetObject(tweet: QueryTweet): TweetObject {
 		id: tweet.id,
 		createdAt: tweet.createdAt,
 		text: tweet.text,
+		bookmarkCount: tweet.bookmarkCount,
 		likeCount: tweet.likeCount,
 		quoteOf: tweet.quoteOf
 			? {

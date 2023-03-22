@@ -77,6 +77,7 @@ declare global {
 		createdAt: Date;
 		user: UserObject;
 		text: string;
+		bookmarkCount: number;
 		likeCount: number;
 		quoteOf: QuoteTweetObject | undefined;
 		quoteCount: number;

@@ -3,16 +3,23 @@
 	import { plural } from "$lib/utils";
 
 	export let count: number;
-	export let href: string;
+	export let href: string | undefined;
 	export let word: string;
-	export let use: Action<HTMLAnchorElement> = () => {};
+	export let use: Action<HTMLElement> | undefined = () => {};
+
+	const as = href ? "a" : "span";
 </script>
 
 {#if count}
-	<a class="hover:(underline underline-white)" {href} use:use>
+	<svelte:element
+		class={as === "a" ? "hover:(underline underline-white)" : undefined}
+		this={as}
+		{href}
+		use:use
+	>
 		<b class="text-sm font-victor">{count}</b>
 		<span class="text-sm text-zinc-500">
 			{plural(count, word)}
 		</span>
-	</a>
+	</svelte:element>
 {/if}

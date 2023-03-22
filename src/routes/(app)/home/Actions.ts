@@ -17,15 +17,15 @@ import { getHashtags } from "$lib/utils";
 
 export default class Action {
 	static async handleBookmark(event: RequestEvent) {
-		const { id, user } = await handleActionValidation(event);
+		const { id, user, tweet } = await handleActionValidation(event);
 		const bookmark = await findBookmark(user.id, id);
 		if (bookmark.failed) throw error(500, { message: "Unable to Bookmark Tweet." });
 
 		if (bookmark.data) {
-			const deleted = await deleteBookmark(bookmark.data.id);
+			const deleted = await deleteBookmark(bookmark.data.id, id, tweet.bookmarkCount);
 			if (deleted.failed) throw error(500, { message: "Unable to Delete Bookmark." });
 		} else {
-			const createdBookmark = await createBookmark(user.id, id);
+			const createdBookmark = await createBookmark(user.id, id, tweet.bookmarkCount);
 			if (createdBookmark.failed) throw error(500, { message: "Unable to Bookmark Tweet." });
 		}
 

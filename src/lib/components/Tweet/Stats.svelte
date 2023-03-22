@@ -17,5 +17,6 @@
 		<Count count={$tweet.retweetCount} href="{pathname}/retweets" word="Retweet" use={retweets} />
 		<Count count={$tweet.quoteCount} href="{pathname}/retweets/with_comments" word="Quote Tweet" />
 		<Count count={$tweet.likeCount} href="{pathname}/likes" word="Like" use={likes} />
+		<Count count={$tweet.bookmarkCount} word="Bookmark" />
 	</div>
 {/if}
