@@ -31,7 +31,6 @@ export default class Action {
 			id: tweet.data.id,
 			cuid: event.locals.user.data.id,
 			hashtags: getHashtags(text.data),
-			replyCount: tweet.data.replyCount,
 			text: text.data
 		});
 		if (result.failed) throw error(500, { message: "Unable to reply." });

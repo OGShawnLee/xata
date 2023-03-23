@@ -26,21 +26,12 @@ export function findTweetQuotes(id: string, cuid: string | undefined) {
 	});
 }
 
-export function quote({
-	text,
-	tweet,
-	user,
-	hashtags
-}: {
-	text: string;
-	tweet: { id: string; quoteCount: number };
-	user: { id: string };
-	hashtags: Hashtags;
-}) {
+export function quote(event: { hashtags: Hashtags; text: string; tweet: string; user: string }) {
+	const { hashtags, text, tweet, user } = event;
 	return useAwait(() => {
 		return client.transactions.run([
-			{ insert: { table: "tweets", record: { user: user.id, text, quoteOf: tweet.id, hashtags } } },
-			{ update: { table: "tweets", id: tweet.id, fields: { quoteCount: tweet.quoteCount + 1 } } }
+			{ insert: { table: "tweets", record: { user, text, quoteOf: tweet, hashtags } } },
+			{ update: { table: "tweets", id: tweet, fields: { quoteCount: { $increment: 1 } } } }
 		]);
 	});
 }

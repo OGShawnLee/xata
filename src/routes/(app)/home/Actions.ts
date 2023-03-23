@@ -22,10 +22,10 @@ export default class Action {
 		if (bookmark.failed) throw error(500, { message: "Unable to Bookmark Tweet." });
 
 		if (bookmark.data) {
-			const deleted = await deleteBookmark(bookmark.data.id, id, tweet.bookmarkCount);
+			const deleted = await deleteBookmark(bookmark.data.id, id);
 			if (deleted.failed) throw error(500, { message: "Unable to Delete Bookmark." });
 		} else {
-			const createdBookmark = await createBookmark(user.id, id, tweet.bookmarkCount);
+			const createdBookmark = await createBookmark(user.id, id);
 			if (createdBookmark.failed) throw error(500, { message: "Unable to Bookmark Tweet." });
 		}
 
@@ -39,10 +39,10 @@ export default class Action {
 		if (like.failed) throw error(500, { message: "Unable to like Tweet." });
 
 		if (like.data) {
-			const deleted = await unlikeTweet(like.data.id, id, tweet.likeCount);
+			const deleted = await unlikeTweet(like.data.id, id);
 			if (deleted.failed) throw error(500, { message: "Unable to unlike Tweet." });
 		} else {
-			const createdLike = await likeTweet(user.id, id, tweet.likeCount);
+			const createdLike = await likeTweet(user.id, id);
 			if (createdLike.failed) throw error(500, { message: "Unable to like Tweet." });
 
 			if (tweet.user.id && tweet.user.id !== user.id) {
@@ -72,7 +72,7 @@ export default class Action {
 		}
 
 		const hashtags = getHashtags(text.data);
-		const quotedTweet = await quote({ text: text.data, user, tweet, hashtags });
+		const quotedTweet = await quote({ text: text.data, user: user.id, tweet: tweet.id, hashtags });
 		if (quotedTweet.failed) return error(500, { message: "Unable to quote Tweet." });
 	}
 
@@ -92,7 +92,7 @@ export default class Action {
 		if (retweet.failed) throw error(500, { message: "Unable to retweet Tweet." });
 		if (retweet.data) throw fail(400, { error: "Tweet has been already retweeted." });
 
-		const created = await createRetweet(user.id, id, tweet.retweetCount);
+		const created = await createRetweet(user.id, id);
 		if (created.failed) throw error(500, { message: "Unable to retweet Tweet." });
 
 		if (isDefined(tweet.user.id) && tweet.user.id !== user.id)

@@ -5,20 +5,20 @@ import { isDefined } from "$lib/utils/predicate";
 import { isNullish } from "malachite-ui/predicate";
 import { createTweetObject } from "./utils";
 
-export function createBookmark(uid: string, tid: string, bookmarkCount: number) {
+export function createBookmark(uid: string, tid: string) {
 	return useAwait(() => {
 		return client.transactions.run([
 			{ insert: { table: "bookmarks", record: { tweet: tid, user: uid } } },
-			{ update: { table: "tweets", id: tid, fields: { bookmarkCount: bookmarkCount + 1 } } }
+			{ update: { table: "tweets", id: tid, fields: { bookmarkCount: { $increment: 1 } } } }
 		]);
 	});
 }
 
-export function deleteBookmark(id: string, tid: string, bookmarkCount: number) {
+export function deleteBookmark(id: string, tid: string) {
 	return useAwait(() => {
 		return client.transactions.run([
 			{ delete: { table: "bookmarks", id } },
-			{ update: { table: "tweets", id: tid, fields: { bookmarkCount: bookmarkCount - 1 } } }
+			{ update: { table: "tweets", id: tid, fields: { bookmarkCount: { $decrement: 1 } } } }
 		]);
 	});
 }

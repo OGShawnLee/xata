@@ -30,20 +30,20 @@ export function findUsersWhoLikedTweet(id: string) {
 	});
 }
 
-export function likeTweet(userid: string, tweetid: string, likeCount: number) {
+export function likeTweet(userid: string, tweetid: string) {
 	return useAwait(() => {
 		return client.transactions.run([
 			{ insert: { table: "likes", record: { tweet: tweetid, user: userid } } },
-			{ update: { table: "tweets", id: tweetid, fields: { likeCount: likeCount + 1 } } }
+			{ update: { table: "tweets", id: tweetid, fields: { likeCount: { $increment: 1 } } } }
 		]);
 	});
 }
 
-export function unlikeTweet(likeid: string, tweetid: string, likeCount: number) {
+export function unlikeTweet(likeid: string, tweetid: string) {
 	return useAwait(() => {
 		return client.transactions.run([
 			{ delete: { table: "likes", id: likeid } },
-			{ update: { table: "tweets", id: tweetid, fields: { likeCount: likeCount - 1 } } }
+			{ update: { table: "tweets", id: tweetid, fields: { likeCount: { $decrement: 1 } } } }
 		]);
 	});
 }

@@ -155,18 +155,12 @@ export async function getTweetReplies(id: string, cuid: string | undefined) {
 	return replies.map(createTweetObject);
 }
 
-export function reply(event: {
-	id: string;
-	cuid: string;
-	hashtags: Hashtags;
-	replyCount: number;
-	text: string;
-}) {
-	const { id, cuid, text, replyCount, hashtags } = event;
+export function reply(event: { id: string; cuid: string; hashtags: Hashtags; text: string }) {
+	const { id, cuid, text, hashtags } = event;
 	return useAwait(() => {
 		return client.transactions.run([
 			{ insert: { table: "tweets", record: { text, user: cuid, replyOf: id, hashtags } } },
-			{ update: { table: "tweets", id, fields: { replyCount: replyCount + 1 } } }
+			{ update: { table: "tweets", id, fields: { replyCount: { $increment: 1 } } } }
 		]);
 	});
 }
