@@ -1,10 +1,11 @@
+import type { NotificationEvent } from "@types";
 import type { RequestEvent } from "@sveltejs/kit";
 import client from "./client";
 import { INTERNAL_HEADER, INTERNAL_TOKEN } from "$env/static/private";
 import { useAwait } from "$lib/hooks";
 import { stringify } from "devalue";
 import { isNullish } from "malachite-ui/predicate";
-import { createNotificationObject, createTweetObject, createTweetObjectMinimal } from "./utils";
+import { createNotificationObject, createTweetObject } from "./utils";
 import { getTweetState } from "./user";
 
 export function createNotification(event: NotificationEvent) {
@@ -40,7 +41,7 @@ export function getNotifications(id: string) {
 			notifications.map(async (notification) => {
 				if (isNullish(notification.reply)) return createNotificationObject(notification);
 
-				const finalTweet = createTweetObjectMinimal(notification.reply);
+				const finalTweet = createTweetObject(notification.reply);
 				const state = await getTweetState(id, notification.reply.id);
 				finalTweet.isBookmarked = state.isBookmarked;
 				finalTweet.isLiked = state.isLiked;
@@ -54,6 +55,7 @@ export function getNotifications(id: string) {
 export function triggerNotificationEvent(event: RequestEvent, notification: NotificationEvent) {
 	if (notification.type === "REPLY" && isNullish(notification["reply.id"]))
 		throw TypeError("Reply id not provided for notification reply event.");
+
 	event.fetch("/functions/notifications", {
 		method: "POST",
 		headers: {

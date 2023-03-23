@@ -7,10 +7,11 @@
 </script>
 
 <script lang="ts">
+	import type { Notification, NotificationEventType } from '@types'
 	import { Time, Tweet } from "$lib/components";
 	import { Heart, MessageCircle, Repeat } from "lucide-svelte";
 
-	export let notification: NotificationObject;
+	export let notification: Notification;
 
 	const formatter = Intl.DateTimeFormat("en", { dateStyle: "medium" });
 </script>

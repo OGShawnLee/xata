@@ -1,3 +1,4 @@
+import type { Hashtags } from "@types";
 import { isNullish } from "malachite-ui/predicate";
 
 export function getCharCountColour(charCount: number) {

@@ -1,15 +1,17 @@
 <script lang="ts">
-	import { Like, Reply } from "./Button";
+	import type { Tweet } from "@types";
 	import Context from "./Context";
 	import Header from "./Header.svelte";
 	import ReplyLink from "./ReplyLink.svelte";
 	import Quote from "./Quote.svelte";
 	import Stats from "./Stats.svelte";
-	import Tweet from "./Tweet.svelte";
+	import TweetComponent from "./Tweet.svelte";
+	import { Like, Reply } from "./Button";
 	import { MenuRetweet, MenuShare } from "./Menu";
 	import { writable } from "svelte/store";
+	import { isObject } from "malachite-ui/predicate";
 
-	export let tweet: TweetObject;
+	export let tweet: Tweet;
 
 	const state = Context.setContext(writable(tweet));
 	const formatter = Intl.DateTimeFormat("en", { dateStyle: "full", timeStyle: "medium" });
@@ -18,8 +20,8 @@
 </script>
 
 <div class="grid gap-8 | border-b-2 border-zinc-800">
-	{#if tweet.replyOf}
-		<Tweet tweet={tweet.replyOf}/>
+	{#if isObject(tweet.replyOf, ["text"])}
+		<TweetComponent tweet={tweet.replyOf} />
 	{/if}
 	<div class="px-8">
 		<div class="grid gap-2.25">

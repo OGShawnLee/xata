@@ -1,7 +1,8 @@
 <script lang="ts">
+	import type { Quote } from '@types';
 	import Header from "./Header.svelte";
 
-	export let tweet: QuoteTweetObject;
+	export let tweet: Quote;
 	export let isLink = false;
 </script>
 

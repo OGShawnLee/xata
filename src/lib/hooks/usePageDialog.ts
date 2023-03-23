@@ -21,14 +21,14 @@ export default function usePageDialog<T, E>(
 		onDestroy(() => reset());
 
 		const pathname = "/" + displayName + "/status/" + id + route;
-		return (element: HTMLAnchorElement) => {
+		return (element: HTMLElement) => {
 			return {
 				destroy: useCleanup(handleClick(element), handleMouseEnter(element, pathname))
 			};
 		};
 	}
 
-	function handleClick(element: HTMLAnchorElement) {
+	function handleClick(element: HTMLElement) {
 		return useListener(element, "click", (event) => {
 			event.preventDefault();
 			store.update((store) => {

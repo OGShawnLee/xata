@@ -1,5 +1,6 @@
+import type { Notification, NotificationEventType, Tweet, User } from "@types";
 import type { SelectedPick } from "@xata.io/client";
-import type { Nullable, NullableRecursively } from "malachite-ui/types";
+import type { Nullable } from "malachite-ui/types";
 import type { NotificationsRecord, TweetsRecord } from "./xata";
 import { useAwait } from "$lib/hooks";
 import { genSalt, hash } from "bcrypt";
@@ -40,27 +41,6 @@ type QueryTweetRetweetOf =
 	| "retweetOf.quoteOf.user";
 type QueryTweetUser = "user.displayName" | "user.name" | "user.description";
 
-type TweetRecordMinimal = SelectedPick<
-	TweetsRecord,
-	("*" | "user.displayName" | "user.id" | "user.name" | "user.description")[]
->;
-
-type TweetRecordNoRetweet = SelectedPick<
-	TweetsRecord,
-	(
-		| "*"
-		| "user.displayName"
-		| "user.id"
-		| "user.name"
-		| "user.description"
-		| "quoteOf.createdAt"
-		| "quoteOf.text"
-		| "quoteOf.user.description"
-		| "quoteOf.user.displayName"
-		| "quoteOf.user.name"
-	)[]
->;
-
 export function createPasswordHash(password: string) {
 	return useAwait(async () => {
 		return hash(password, await genSalt());
@@ -81,8 +61,8 @@ export function createNotificationObject(
 			| "reply.user.description"
 		)[]
 	>,
-	reply?: TweetObject
-): NotificationObject {
+	reply?: Tweet
+): Notification {
 	return {
 		id: notification.id,
 		createdAt: notification.createdAt,
@@ -92,54 +72,13 @@ export function createNotificationObject(
 			displayName: notification.from?.displayName
 		},
 		tweet: {
-			text: notification.tweet?.text
+			text: notification.tweet?.text as string
 		},
 		reply: reply
 	};
 }
 
-export function createTweetObjectMinimal(tweet: TweetRecordMinimal) {
-	return {
-		id: tweet.id,
-		createdAt: tweet.createdAt,
-		text: tweet.text,
-		likeCount: tweet.likeCount,
-		quoteCount: tweet.quoteCount,
-		quoteOf: undefined,
-		retweetCount: tweet.retweetCount,
-		retweetOf: undefined,
-		replyCount: tweet.replyCount,
-		isBookmarked: false,
-		isLiked: false,
-		user: createUserObject(tweet.user)
-	};
-}
-
-export function createTweetObjectNoRetweet(tweet: TweetRecordNoRetweet) {
-	return {
-		id: tweet.id,
-		createdAt: tweet.createdAt,
-		text: tweet.text,
-		likeCount: tweet.likeCount,
-		quoteOf: tweet.quoteOf
-			? {
-					id: tweet.quoteOf.id,
-					text: tweet.quoteOf.text,
-					user: createUserObject(tweet.quoteOf.user),
-					createdAt: tweet.quoteOf.createdAt
-			  }
-			: undefined,
-		quoteCount: tweet.quoteCount,
-		retweetCount: tweet.retweetCount,
-		retweetOf: undefined,
-		replyCount: tweet.replyCount,
-		isBookmarked: false,
-		isLiked: false,
-		user: createUserObject(tweet.user)
-	};
-}
-
-export function createTweetObject(tweet: QueryTweet): TweetObject {
+export function createTweetObject(tweet: QueryTweet): Tweet {
 	return {
 		id: tweet.id,
 		createdAt: tweet.createdAt,
@@ -180,9 +119,7 @@ export function createTweetObject(tweet: QueryTweet): TweetObject {
 	};
 }
 
-export function createUserObject(
-	user: Nullable<{ id: string | undefined } & NullableRecursively<UserObject>>
-): UserObject {
+export function createUserObject(user: Nullable<User>): User {
 	return {
 		id: user?.id,
 		description: user?.description,

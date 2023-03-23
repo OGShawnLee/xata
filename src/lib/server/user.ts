@@ -1,4 +1,5 @@
 import type { UsersRecord } from "$lib/server/xata";
+import type { Tweet } from '@types'
 import client from "$lib/server/client";
 import { notExists } from "@xata.io/client";
 import { useAwait } from "$lib/hooks";
@@ -7,7 +8,7 @@ import { findBookmark } from "./bookmark";
 import { isDefined } from "$lib/utils/predicate";
 import { findLike } from "./like";
 import { isNullish } from "malachite-ui/predicate";
-import { createTweetObject, createTweetObjectMinimal } from "./utils";
+import { createTweetObject } from "./utils";
 
 export function createUser(data: Pick<UsersRecord, "displayName" | "email" | "name" | "password">) {
 	return useAwait(async () => {
@@ -53,7 +54,7 @@ export async function getUserPinnedTweet(displayName: string, cuid: string | und
 
 	if (!user?.pinnedTweet) return;
 
-	const tweet = createTweetObjectMinimal(user.pinnedTweet);
+	const tweet = createTweetObject(user.pinnedTweet);
 	if (cuid) {
 		const state = await getTweetState(cuid, tweet.id);
 		tweet.isBookmarked = state.isBookmarked;
@@ -112,7 +113,7 @@ export function getUserLikes(displayName: string, cuid: string | undefined) {
 }
 
 export function getUserFeed(id: string, after?: string) {
-	return useAwait<Paginated<TweetObject>>(async () => {
+	return useAwait<Paginated<Tweet>>(async () => {
 		const paginated = await getTweets(after);
 		if (paginated.failed) throw paginated.error;
 		paginated.data.records = await Promise.all(
@@ -138,7 +139,7 @@ export async function getUserTweets(
 	displayName: string,
 	cuid: string | undefined,
 	after?: string
-): Promise<Paginated<TweetObject>> {
+): Promise<Paginated<Tweet>> {
 	const paginated = await client.db.tweets
 		.filter("user.displayName", displayName)
 		.filter(notExists("replyOf.id"))

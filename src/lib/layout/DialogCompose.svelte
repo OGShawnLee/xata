@@ -1,7 +1,9 @@
 <script lang="ts" context="module">
+	import type { User } from "@types";
+	
 	type Event = "NONE" | "COMPOSE" | "QUOTE" | "REPLY";
 
-	function getAction(event: Event, user: UserObject | undefined, id: string | undefined) {
+	function getAction(event: Event, user: User | undefined, id: string | undefined) {
 		if (event === "COMPOSE") return "/home?/tweet";
 		if (event === "QUOTE") return "/home?/quote-tweet";
 		return user ? `/${user.displayName}/status/${id}?/reply` : undefined;

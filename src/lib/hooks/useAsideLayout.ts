@@ -1,10 +1,11 @@
+import type { User } from "@types";
 import { writable } from "svelte/store";
 import { isArray } from "malachite-ui/predicate";
 
 interface AsideLayout {
 	type: LayoutType;
 	data: {
-		relevantPeople: UserObject[];
+		relevantPeople: User[];
 	};
 }
 
@@ -17,9 +18,9 @@ export default function useAsideLayout() {
 	});
 
 	function set(this: void, type: "NONE", data: undefined): void;
-	function set(this: void, type: "RELEVANT-PEOPLE", data: UserObject[]): void;
+	function set(this: void, type: "RELEVANT-PEOPLE", data: User[]): void;
 
-	function set(this: void, type: LayoutType, data: undefined | UserObject[]) {
+	function set(this: void, type: LayoutType, data: undefined | User[]) {
 		if (type === "RELEVANT-PEOPLE" && isArray(data)) {
 			update((state) => {
 				state.type = type;

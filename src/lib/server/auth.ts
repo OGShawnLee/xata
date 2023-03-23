@@ -1,3 +1,4 @@
+import type { JWTPayloadState } from "@types";
 import type { Cookies } from "@sveltejs/kit";
 import { ACCESS_TOKEN, AUTH_COOKIE } from "$env/static/private";
 import { sign, verify } from "jsonwebtoken";

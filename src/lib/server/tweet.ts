@@ -1,6 +1,7 @@
+import type { Hashtags, Paginated, Tweet } from "@types";
 import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
-import { isNullish } from "malachite-ui/predicate";
+import { isNullish, isObject } from "malachite-ui/predicate";
 import { getTweetState } from "./user";
 import { createTweetObject } from "./utils";
 
@@ -12,7 +13,7 @@ export function createTweet(id: string, text: string, hashtags: string[] | undef
 }
 
 export function findTweet(id: string, displayName?: string) {
-	return useAwait<TweetObject | null>(async () => {
+	return useAwait<Tweet | null>(async () => {
 		const tweet = await client.db.tweets
 			.filter(displayName ? { id: id, "user.displayName": displayName } : { id: id })
 			.select([
@@ -67,10 +68,12 @@ export function findUserTweetWithStatus({
 		if (cuid) {
 			let currentTweet = tweet.data.replyOf;
 			while (currentTweet) {
-				const status = await getTweetState(cuid, currentTweet.id);
-				currentTweet.isBookmarked = status.isBookmarked;
-				currentTweet.isLiked = status.isLiked;
-				currentTweet = currentTweet.replyOf;
+				if (isObject(currentTweet, ["text"])) {
+					const status = await getTweetState(cuid, currentTweet.id);
+					currentTweet.isBookmarked = status.isBookmarked;
+					currentTweet.isLiked = status.isLiked;
+					currentTweet = currentTweet.replyOf;
+				} else break;
 			}
 		}
 
@@ -81,7 +84,7 @@ export function findUserTweetWithStatus({
 }
 
 export function getTweets(after?: string) {
-	return useAwait<Paginated<TweetObject>>(async () => {
+	return useAwait<Paginated<Tweet>>(async () => {
 		const paginated = await client.db.tweets
 			.select([
 				"*",

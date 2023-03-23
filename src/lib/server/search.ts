@@ -1,10 +1,10 @@
+import type { Tweet, User } from "@types";
 import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
 import { isNullish } from "malachite-ui/predicate";
-import type { Nullable } from "malachite-ui/types";
 
 function findUserObject(id: string) {
-	return useAwait<UserObject | undefined>(async () => {
+	return useAwait<User | undefined>(async () => {
 		const foundUser = await client.db.users
 			.filter("id", id)
 			.select(["description", "displayName", "name"])
@@ -26,7 +26,7 @@ export function getSearchResults(query: string, target: "people" | null) {
 				target: ["description", "displayName", "name", "location"],
 				prefix: "phrase"
 			});
-			return results.map<UserObject>((record) => {
+			return results.map<User>((record) => {
 				return {
 					id: record.id,
 					description: record.description,
@@ -35,7 +35,7 @@ export function getSearchResults(query: string, target: "people" | null) {
 				};
 			});
 		} else {
-			const cachedUsers = new Map<string, UserObject>();
+			const cachedUsers = new Map<string, User>();
 			const results = await client.db.tweets.search(query, {
 				target: ["text"],
 				prefix: "phrase"
@@ -60,14 +60,14 @@ export function getSearchResults(query: string, target: "people" | null) {
 						isLiked: false
 					};
 
-					if (tweet.user) return tweet as TweetObject;
+					if (tweet.user) return tweet as Tweet;
 
 					const targetUser = await findUserObject(record.user.id);
 					if (targetUser.failed || isNullish(targetUser.data)) throw Error("Unable to Fetch User.");
 
 					cachedUsers.set(record.user.id, targetUser.data);
 					tweet.user = targetUser.data;
-					return tweet as TweetObject;
+					return tweet as Tweet;
 				})
 			);
 		}

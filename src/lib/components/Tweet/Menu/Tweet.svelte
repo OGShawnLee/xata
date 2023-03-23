@@ -17,7 +17,7 @@
 	const tweet = Context.getContext(false);
 </script>
 
-{#if tweet && $tweet.user.id === $currentUser?.id && isNullish($tweet.retweetOf)}
+{#if $tweet && $tweet.user.id === $currentUser?.id && isNullish($tweet.retweetOf)}
 	<Menu
 		label="View Tweet Options"
 		counter={false}

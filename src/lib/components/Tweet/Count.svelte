@@ -3,9 +3,9 @@
 	import { plural } from "$lib/utils";
 
 	export let count: number;
-	export let href: string | undefined;
+	export let href: string | undefined = undefined;
 	export let word: string;
-	export let use: Action<HTMLElement> | undefined = () => {};
+	export let use: Action<HTMLElement> = () => {};
 
 	const as = href ? "a" : "span";
 </script>

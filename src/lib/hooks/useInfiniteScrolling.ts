@@ -1,3 +1,4 @@
+import type { Paginated } from "@types";
 import type { Expand } from "malachite-ui/types";
 import { parse } from "devalue";
 import { useAwait } from ".";

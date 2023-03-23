@@ -1,22 +1,23 @@
 <script lang="ts">
+	import type { Quote, Tweet } from "@types";
 	import Context from "./Context";
 	import Badge from "./Badge.svelte";
 	import Header from "./Header.svelte";
 	import ReplyLink from "./ReplyLink.svelte";
-	import Quote from "./Quote.svelte";
+	import QuoteComponent from "./Quote.svelte";
 	import Text from "./Text.svelte";
 	import { MenuRetweet, MenuShare } from "./Menu";
 	import { Like, Reply } from "./Button";
 	import { currentUser } from "$lib/state";
-	import { isNullish } from "malachite-ui/predicate";
+	import { isNullish, isObject } from "malachite-ui/predicate";
 	import { writable } from "svelte/store";
 
 	export let hasButtons = true;
 	export let hasPadding = true;
 	export let isPinned = false;
 	export let isReplying = false;
-	export let quoteOf: QuoteTweetObject | undefined = undefined;
-	export let tweet: TweetObject;
+	export let quoteOf: Quote | undefined = undefined;
+	export let tweet: Tweet;
 
 	if (quoteOf) tweet.quoteOf = quoteOf;
 	if (isReplying) hasButtons = false;
@@ -32,7 +33,7 @@
 	$: state.set(tweet);
 </script>
 
-{#if tweet.replyOf && tweet.replyOf.text}
+{#if isObject(tweet.replyOf, ["text"])}
 	<svelte:self tweet={tweet.replyOf} />
 {/if}
 <article class={isReplying ? "pb-4" : "pb-4 border-b-2 border-zinc-800"}>
@@ -53,7 +54,7 @@
 			text={retweetOf ? retweetOf.text : tweet.text}
 		/>
 		{#if finalQuoteOf}
-			<Quote tweet={finalQuoteOf} isLink />
+			<QuoteComponent tweet={finalQuoteOf} isLink />
 		{/if}
 		{#if hasButtons && $currentUser && isNullish(retweetOf)}
 			<div class="flex items-center justify-between | pt-2.75">

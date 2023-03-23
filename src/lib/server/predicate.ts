@@ -1,3 +1,4 @@
+import type { JWTPayloadState } from "@types";
 import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
 import { compare } from "bcrypt";
