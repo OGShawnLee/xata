@@ -4,6 +4,7 @@ import type { Nullable } from "malachite-ui/types";
 import type { NotificationsRecord, TweetsRecord } from "./xata";
 import { useAwait } from "$lib/hooks";
 import { genSalt, hash } from "bcrypt";
+import { isObject } from "malachite-ui/predicate";
 
 type QueryTweet = SelectedPick<
 	TweetsRecord,
@@ -112,7 +113,11 @@ export function createTweetObject(tweet: QueryTweet): Tweet {
 			  }
 			: undefined,
 		replyCount: tweet.replyCount,
-		replyOf: tweet.replyOf ? createTweetObject(tweet.replyOf) : undefined,
+		replyOf: tweet.replyOf
+			? isObject(tweet.replyOf, ["createdAt"])
+				? createTweetObject(tweet.replyOf as QueryTweet)
+				: { id: tweet.replyOf.id, user: createUserObject(tweet.replyOf.user) }
+			: undefined,
 		isBookmarked: false,
 		isLiked: false,
 		user: createUserObject(tweet.user)
