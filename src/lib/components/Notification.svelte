@@ -37,7 +37,7 @@
 				<Time createdAt={notification.createdAt} />
 			</div>
 		</header>
-		<p class="text-sm text-zinc-400" class:pb-2.75={notification.reply}>
+		<p class="text-sm text-zinc-400 whitespace-pre-line" class:pb-2.75={notification.reply}>
 			{notification.tweet?.text}
 		</p>
 		{#if notification.reply}
