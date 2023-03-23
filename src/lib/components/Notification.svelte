@@ -12,8 +12,6 @@
 	import { Heart, MessageCircle, Repeat } from "lucide-svelte";
 
 	export let notification: Notification;
-
-	const formatter = Intl.DateTimeFormat("en", { dateStyle: "medium" });
 </script>
 
 <article class="pb-4 | border-b-2 border-zinc-800">
