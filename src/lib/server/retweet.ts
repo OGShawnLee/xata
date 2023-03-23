@@ -1,5 +1,6 @@
 import client from "./client";
 import { useAwait } from "$lib/hooks";
+import { createUserObject } from "./utils";
 
 export function createRetweet(uid: string, tid: string) {
 	return useAwait(() => {
@@ -22,12 +23,7 @@ export function findUsersWhoRetweetedTweet(id: string) {
 			return {
 				id: retweet.id,
 				retweetedAt: retweet.createdAt,
-				user: {
-					id: retweet.user?.id,
-					displayName: retweet.user?.displayName,
-					name: retweet.user?.name,
-					description: retweet.user?.description
-				}
+				user: createUserObject(retweet.user)
 			};
 		});
 	});

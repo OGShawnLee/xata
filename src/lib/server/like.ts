@@ -1,5 +1,6 @@
 import client from "./client";
 import { useAwait } from "$lib/hooks";
+import { createUserObject } from "./utils";
 
 export function findLike(userid: string, tweetid: string) {
 	return useAwait(() => {
@@ -15,17 +16,8 @@ export function findUsersWhoLikedTweet(id: string) {
 			.sort("likedAt", "desc")
 			.getAll();
 
-		return likes.map((like) => {
-			return {
-				id: like.id,
-				likedAt: like.likedAt,
-				user: {
-					id: like.user?.id,
-					description: like.user?.description,
-					displayName: like.user?.displayName,
-					name: like.user?.name
-				}
-			};
+		return likes.map(({ id, likedAt, user }) => {
+			return { id, likedAt, user: createUserObject(user) };
 		});
 	});
 }
