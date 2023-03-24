@@ -23,12 +23,14 @@ export function deleteBookmark(id: string, tid: string) {
 	});
 }
 
-export function findBookmark(userId: string, tweetId: string) {
+export function findBookmark(uid: string, tid: string) {
 	return useAwait(async () => {
 		const bookmark = await client.db.bookmarks
-			.filter({ "tweet.id": tweetId, "user.id": userId })
+			.filter({ "tweet.id": tid, "user.id": uid })
 			.getFirst();
-		return bookmark?.toSerializable();
+
+		if (isNullish(bookmark)) return;
+		return bookmark.toSerializable();
 	});
 }
 
