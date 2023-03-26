@@ -14,6 +14,10 @@ export function createBookmark(uid: string, tid: string) {
 	});
 }
 
+export function createBookmarkFolder(uid: string, description: string | undefined, name: string) {
+	return useAwait(() => client.db.folder.create({ user: uid, description, name }));
+}
+
 export function deleteBookmark(id: string, tid: string) {
 	return useAwait(() => {
 		return client.transactions.run([

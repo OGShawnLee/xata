@@ -2,8 +2,9 @@
 	import { useClassNameResolver } from "malachite-ui/hooks";
 
 	export let disabled = false;
-	export let type: "button" | "submit" | "reset" = "button";
 	export let small = false;
+	export let text: string | undefined = undefined
+	export let type: "button" | "submit" | "reset" = "button";
 
 	$: className = useClassNameResolver<"DISABLED">({
 		base: `${
@@ -14,5 +15,5 @@
 </script>
 
 <button class={className({ isDisabled: disabled })} {disabled} {type}>
-	<slot />
+	<slot> {text} </slot>
 </button>

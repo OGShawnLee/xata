@@ -70,7 +70,7 @@
 			{/if}
 			{#if type === "textarea"}
 				<textarea
-					class="w-full py-2.5 px-3 | bg-transparent  outline-none placeholder-zinc-400 focus:text-white"
+					class="w-full py-2.5 px-3 | bg-transparent outline-none placeholder-zinc-400 focus:text-white"
 					{id}
 					{name}
 					{placeholder}

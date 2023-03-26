@@ -20,6 +20,22 @@ export const errorMessage = {
 	}
 };
 
+export const folderSchema = z.object({
+	name: z
+		.string({
+			required_error: errorMessage.required("Name"),
+			invalid_type_error: errorMessage.invalidType("Name", "string")
+		})
+		.min(1, errorMessage.min("Name", 1))
+		.max(50, errorMessage.max("Name", 50)),
+	description: z
+		.string({
+			invalid_type_error: errorMessage.invalidType("Description", "string")
+		})
+		.max(12, errorMessage.max("Description", 12))
+		.optional()
+});
+
 export const notificationSchema = z.object({
 	type: z.enum(["LIKE", "REPLY", "RETWEET"]),
 	"from.id": z.string(),

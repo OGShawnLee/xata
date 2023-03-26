@@ -1,6 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
 
 import type { Nullable } from "malachite-ui/types";
+import type { JWTPayloadState } from "@types";
 
 // for information about these interfaces
 declare global {
