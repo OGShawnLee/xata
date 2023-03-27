@@ -1,5 +1,18 @@
 import type { Hashtags } from "@types";
+import sanitize from "sanitize-html";
 import { isNullish } from "malachite-ui/predicate";
+
+const HASHTAG_REGEX = /#[A-Za-z0-9]+/gm;
+
+export function fromTweetTextToHTML(text: string) {
+	const hashtags = getRawHashTags(text);
+	let HTML = sanitize(text, { allowedTags: [], disallowedTagsMode: "escape" });
+	if (isNullish(hashtags)) return HTML;
+	return hashtags.reduce((HTML, hashtag) => {
+		const href = "/hashtag/" + hashtag.substring(1);
+		return HTML.replace(hashtag, link(href, hashtag));
+	}, HTML);
+}
 
 export function getCharCountColour(charCount: number) {
 	if (charCount === 0) return "text-rose-500";
@@ -8,13 +21,18 @@ export function getCharCountColour(charCount: number) {
 	return "text-red-500";
 }
 
-export function getHashtags(text: string): Hashtags {
-	const re = /#[A-Za-z0-9]+/gm;
-	const matches = text.match(re);
+function getRawHashTags(text: string, transform?: (hashtag: string) => string): Hashtags {
+	const matches = text.match(HASHTAG_REGEX);
 	if (isNullish(matches)) return;
 	const hashtags = new Set<string>();
-	for (const match of matches) hashtags.add(match.toLowerCase());
+	if (transform) {
+		for (const match of matches) hashtags.add(transform(match));
+	} else for (const match of matches) hashtags.add(match);
 	return Array.from(hashtags);
+}
+
+export function getHashtags(text: string): Hashtags {
+	return getRawHashTags(text, (hashtag) => hashtag.toLowerCase());
 }
 
 // https://natclark.com/tutorials/javascript-relative-time/
@@ -47,6 +65,10 @@ export function getRelativeTime(date: Date) {
 
 function getTimeString(amount: number, word: string) {
 	return `${amount} ${plural(amount, word)} ago`;
+}
+
+function link(href: string, text: string) {
+	return `<a class='text-cyan-500 hover:(text-cyan-400 underline) focus:(text-cyan-400 underline)' href='${href}'>${text}</a>`;
 }
 
 export function plural(count: number, word: string) {

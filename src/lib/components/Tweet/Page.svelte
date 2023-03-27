@@ -5,6 +5,7 @@
 	import ReplyLink from "./ReplyLink.svelte";
 	import Quote from "./Quote.svelte";
 	import Stats from "./Stats.svelte";
+	import Text from "./Text.svelte";
 	import TweetComponent from "./Tweet.svelte";
 	import { Like, Reply } from "./Button";
 	import { MenuRetweet, MenuShare } from "./Menu";
@@ -28,7 +29,7 @@
 			<Header displayName={tweet.user.displayName} name={tweet.user.name} big />
 			<div class="grid gap-1.25">
 				<ReplyLink />
-				<p class="whitespace-pre-line">{tweet.text}</p>
+				<Text text={tweet.text}/>
 			</div>
 			{#if tweet.quoteOf}
 				<Quote tweet={tweet.quoteOf} isLink />
