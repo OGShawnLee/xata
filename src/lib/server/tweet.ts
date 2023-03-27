@@ -7,7 +7,7 @@ import { createTweetObject } from "./utils";
 
 export function createTweet(id: string, text: string, hashtags: string[] | undefined) {
 	return useAwait(async () => {
-		const tweet = await client.db.tweets.create({ text, user: { id }, hashtags });
+		const tweet = await client.db.tweets.create({ text, user: { id }, entities: { hashtags } });
 		return tweet.toSerializable();
 	});
 }

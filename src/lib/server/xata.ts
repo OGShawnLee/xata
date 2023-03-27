@@ -49,8 +49,12 @@ const tables = [
       { name: "quoteCount", type: "int", notNull: true, defaultValue: "0" },
       { name: "replyOf", type: "link", link: { table: "tweets" } },
       { name: "replyCount", type: "int", notNull: true, defaultValue: "0" },
-      { name: "hashtags", type: "multiple" },
       { name: "bookmarkCount", type: "int", notNull: true, defaultValue: "0" },
+      {
+        name: "entities",
+        type: "object",
+        columns: [{ name: "hashtags", type: "multiple" }],
+      },
     ],
   },
   {
