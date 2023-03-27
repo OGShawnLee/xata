@@ -32,7 +32,10 @@ export function getNotifications(id: string) {
 				"reply.*",
 				"reply.user.description",
 				"reply.user.displayName",
-				"reply.user.name"
+				"reply.user.name",
+				"reply.replyOf.user.description",
+				"reply.replyOf.user.displayName",
+				"reply.replyOf.user.name"
 			])
 			.sort("createdAt", "desc")
 			.getAll();
