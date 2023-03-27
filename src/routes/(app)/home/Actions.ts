@@ -120,9 +120,8 @@ export default class Action {
 				text: { value: input as string | null, error: errors[0] }
 			});
 		}
-		const hashtags = getHashtags(text.data);
 
-		const tweet = await createTweet(event.locals.user.data.id, text.data, hashtags);
+		const tweet = await createTweet(event.locals.user.data.id, text.data);
 		if (tweet.failed) {
 			return fail(500, {
 				error: "Unable to create Tweet.",

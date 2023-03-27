@@ -4,10 +4,15 @@ import { useAwait } from "$lib/hooks";
 import { isNullish, isObject } from "malachite-ui/predicate";
 import { getTweetState } from "./user";
 import { createTweetObject } from "./utils";
+import { getHashtags } from "$lib/utils";
 
-export function createTweet(id: string, text: string, hashtags: string[] | undefined) {
+export function createTweet(id: string, text: string) {
 	return useAwait(async () => {
-		const tweet = await client.db.tweets.create({ text, user: { id }, entities: { hashtags } });
+		const tweet = await client.db.tweets.create({
+			text,
+			user: { id },
+			entities: { hashtags: getHashtags(text) }
+		});
 		return tweet.toSerializable();
 	});
 }
