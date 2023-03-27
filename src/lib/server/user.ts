@@ -1,5 +1,5 @@
 import type { UsersRecord } from "$lib/server/xata";
-import type { Tweet } from '@types'
+import type { Paginated, Tweet } from '@types'
 import client from "$lib/server/client";
 import { notExists } from "@xata.io/client";
 import { useAwait } from "$lib/hooks";
