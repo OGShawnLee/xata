@@ -5,6 +5,7 @@ import { isNullish, isObject } from "malachite-ui/predicate";
 import { getTweetState } from "./user";
 import { createTweetObject } from "./utils";
 import { getHashtags } from "$lib/utils";
+import { includes } from "@xata.io/client";
 
 export function createTweet(id: string, text: string) {
 	return useAwait(async () => {
@@ -161,6 +162,53 @@ export async function getTweetReplies(id: string, cuid: string | undefined) {
 	}
 
 	return replies.map(createTweetObject);
+}
+
+export function getTweetsByHashtag(hashtag: string, cuid?: string) {
+	return useAwait<Paginated<Tweet>>(async () => {
+		const paginated = await client.db.tweets
+			.filter("entities.hashtags", includes("#" + hashtag.toLowerCase()))
+			.select([
+				"*",
+				"user.description",
+				"user.displayName",
+				"user.name",
+				"user.id",
+				"quoteOf.createdAt",
+				"quoteOf.text",
+				"quoteOf.user.description",
+				"quoteOf.user.displayName",
+				"quoteOf.user.name",
+				"retweetOf.text",
+				"retweetOf.user.description",
+				"retweetOf.user.displayName",
+				"retweetOf.user.name",
+				"retweetOf.createdAt",
+				"retweetOf.quoteOf.*",
+				"retweetOf.quoteOf.user",
+				"replyOf.user.description",
+				"replyOf.user.displayName",
+				"replyOf.user.name"
+			])
+			.sort("createdAt", "desc")
+			.getPaginated({ pagination: { size: 15 } });
+
+		if (isNullish(cuid))
+			return { page: paginated.meta.page, records: paginated.records.map(createTweetObject) };
+
+		return {
+			page: paginated.meta.page,
+			records: await Promise.all(
+				paginated.records.map(async (tweet) => {
+					const finalTweet = createTweetObject(tweet);
+					const state = await getTweetState(cuid, tweet.id);
+					finalTweet.isBookmarked = state.isBookmarked;
+					finalTweet.isLiked = state.isLiked;
+					return finalTweet;
+				})
+			)
+		};
+	});
 }
 
 export function reply(event: { id: string; cuid: string; hashtags: Hashtags; text: string }) {
