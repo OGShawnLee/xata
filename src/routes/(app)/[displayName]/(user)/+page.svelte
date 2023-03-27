@@ -1,13 +1,14 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
-	import { Tweet, TweetLoading } from "$lib/components";
+	import type { Tweet } from "@types";
+	import { Tweet as TweetComponent, TweetLoading } from "$lib/components";
 	import { Feed } from "$lib/layout";
 	import { useInfiniteScrolling } from "$lib/hooks";
 	import { page } from "$app/stores";
 
 	export let data: PageData;
 
-	$: fetchMoreUserTweets = useInfiniteScrolling<TweetObject>({
+	$: fetchMoreUserTweets = useInfiniteScrolling<Tweet>({
 		endpoint: $page.url.pathname,
 		onSuccess: (next) => {
 			data.feed.page = next.page;
@@ -26,9 +27,9 @@
 	more={data.feed.page.more}
 	on:intersect={() => fetchMoreUserTweets(data.feed.page)}>
 	{#if data.pinnedTweet}
-		<Tweet tweet={data.pinnedTweet} isPinned />
+		<TweetComponent tweet={data.pinnedTweet} isPinned />
 	{/if}
 	{#each data.feed.records as tweet (tweet.id)}
-		<Tweet {tweet} />
+		<TweetComponent {tweet} />
 	{/each}
 </Feed>

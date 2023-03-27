@@ -1,13 +1,14 @@
 <script lang="ts">
 	import type { ActionData, PageData } from "./$types";
-	import { Tweet, TweetLoading } from "$lib/components";
+	import type { Tweet } from "@types";
+	import { Tweet as TweetComponent, TweetLoading } from "$lib/components";
 	import { Feed, Header, TweetTextArea } from "$lib/layout";
 	import { useInfiniteScrolling } from "$lib/hooks";
 
 	export let data: PageData;
 	export let form: ActionData;
 
-	const fetchMoreTweets = useInfiniteScrolling<TweetObject>({
+	const fetchMoreTweets = useInfiniteScrolling<Tweet>({
 		endpoint: "/home",
 		onSuccess: (next) => {
 			data.feed.page = next.page;
@@ -29,6 +30,6 @@
 	on:intersect={() => fetchMoreTweets(data.feed.page)}
 >
 	{#each data.feed.records as tweet (tweet.id)}
-		<Tweet {tweet} />
+		<TweetComponent {tweet} />
 	{/each}
 </Feed>
