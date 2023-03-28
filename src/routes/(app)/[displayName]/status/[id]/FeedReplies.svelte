@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { Tweet, TweetLoading } from "$lib/components";
+	import type { Tweet } from '@types'
+	import { Tweet as TweetComponent, TweetLoading } from "$lib/components";
 	import { range } from "$lib/utils";
 
-	let pendingReplies: Promise<TweetObject[]> | undefined;
+	let pendingReplies: Promise<Tweet[]> | undefined;
 
 	export { pendingReplies as replies };
 	export let replyCount: number;
@@ -21,7 +22,7 @@
 		{/if}
 	{:then replies}
 		{#each replies as reply (reply.id)}
-			<Tweet tweet={reply} />
+			<TweetComponent tweet={reply} />
 		{/each}
 	{:catch}
 		<span>Unable to load replies.</span>

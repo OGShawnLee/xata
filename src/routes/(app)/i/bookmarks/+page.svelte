@@ -1,12 +1,11 @@
-<script lang="ts">
-	import type { PageData } from "./$types";
+<script>
 	import DialogNewFolder  from "./DialogNewFolder.svelte";
 	import { Tweet } from "$lib/components";
 	import { Feed, Header } from "$lib/layout";
 	import { FolderPlus } from "lucide-svelte";
 	import { useSwitch } from 'malachite-ui/hooks'
 
-	export let data: PageData;
+	export let data;
 
 	const open = useSwitch(false)
 	let description = ""

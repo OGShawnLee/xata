@@ -1,9 +1,8 @@
-<script lang="ts">
-	import type { LayoutData } from "./$types";
+<script>
 	import { DialogCompose, RelevantPeople, Sidebar } from "$lib/layout";
 	import { currentUser } from "$lib/state";
 
-	export let data: LayoutData;
+	export let data;
 
 	currentUser.set(data.user);
 </script>

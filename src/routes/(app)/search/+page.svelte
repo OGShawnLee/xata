@@ -1,10 +1,9 @@
-<script lang="ts">
-	import type { PageData } from "./$types";
+<script>
 	import { CardUser, Tab, TabGroup, Tweet } from "$lib/components";
 	import { Feed, Header } from "$lib/layout";
 	import { page } from "$app/stores";
 
-	export let data: PageData;
+	export let data;
 </script>
 
 <svelte:head>

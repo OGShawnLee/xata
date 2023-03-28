@@ -1,12 +1,11 @@
 <script lang="ts">
-	import type { ActionData, PageData } from "./$types";
 	import type { Tweet } from "@types";
 	import { Tweet as TweetComponent, TweetLoading } from "$lib/components";
 	import { Feed, Header, TweetTextArea } from "$lib/layout";
 	import { useInfiniteScrolling } from "$lib/hooks";
 
-	export let data: PageData;
-	export let form: ActionData;
+	export let data;
+	export let form;
 
 	const fetchMoreTweets = useInfiniteScrolling<Tweet>({
 		endpoint: "/home",

@@ -1,9 +1,8 @@
-<script lang="ts">
-	import type { PageData } from "./$types";
+<script>
 	import { Feed, Header } from "$lib/layout";
 	import { Notification } from "$lib/components";
 
-	export let data: PageData;
+	export let data;
 </script>
 
 <svelte:head>

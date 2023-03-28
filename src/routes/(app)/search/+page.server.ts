@@ -1,4 +1,5 @@
 import type { PageServerLoad } from "./$types";
+import type { Tweet, User } from '@types'
 import { getSearchResults } from "$lib/server/search";
 import { isNullish } from "malachite-ui/predicate";
 import { error } from "@sveltejs/kit";
@@ -17,12 +18,12 @@ export const load: PageServerLoad = async (event) => {
 	if (target === "people") {
 		return {
 			query,
-			results: { people: results.data as UserObject[] }
+			results: { people: results.data as User[] }
 		};
 	} else {
 		return {
 			query,
-			results: { tweets: results.data as TweetObject[] }
+			results: { tweets: results.data as Tweet[] }
 		};
 	}
 };

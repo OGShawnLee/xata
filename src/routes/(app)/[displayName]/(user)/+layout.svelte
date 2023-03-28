@@ -1,5 +1,4 @@
-<script lang="ts">
-	import type { LayoutData } from "./$types";
+<script>
 	import DialogEditProfile from "./DialogEditProfile.svelte";
 	import TabGroup from "./TabGroup.svelte";
 	import UserInfo from "./UserInfo.svelte";
@@ -7,7 +6,7 @@
 	import { useSwitch } from "malachite-ui/hooks";
 	import { currentUser } from "$lib/state";
 
-	export let data: LayoutData;
+	export let data;
 
 	$: foundUser = data.foundUser;
 	$: isOwner = data.user?.id === foundUser.id;
