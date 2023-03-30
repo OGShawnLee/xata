@@ -37,10 +37,10 @@ export const folderSchema = z.object({
 });
 
 export const notificationSchema = z.object({
-	type: z.enum(["LIKE", "REPLY", "RETWEET"]),
+	type: z.enum(["FOLLOW", "LIKE", "REPLY", "RETWEET"]),
 	"from.id": z.string(),
 	"to.id": z.string(),
-	"tweet.id": z.string(),
+	"tweet.id": z.string().optional(),
 	"reply.id": z.string().optional()
 });
 

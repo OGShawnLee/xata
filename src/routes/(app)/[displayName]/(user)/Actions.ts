@@ -7,6 +7,7 @@ import { useAwait } from "$lib/hooks";
 import { setAuthCookie } from "$lib/server/auth";
 import { isNullish } from "malachite-ui/predicate";
 import { findFollow, follow, unfollow } from "$lib/server/follow";
+import { triggerNotificationEvent } from "$lib/server/notification";
 
 const schema = userSchema.pick({ name: true, description: true, location: true });
 
@@ -41,7 +42,8 @@ export default class {
 		});
 	}
 
-	static async handleFollow({ locals, params }: RequestEvent) {
+	static async handleFollow(event: RequestEvent) {
+		const { locals, params } = event;
 		if (locals.user.isAnonymous) throw error(400, { message: "User not logged in." });
 		if (locals.user.data.displayName === params.displayName)
 			throw error(400, { message: "Can't follow yourself." });
@@ -60,6 +62,11 @@ export default class {
 		} else {
 			const result = await follow(targetUser.data.id, locals.user.data.id);
 			if (result.failed) throw error(500, { message: "Unable to follow user." });
+			triggerNotificationEvent(event, {
+				type: "FOLLOW",
+				"from.id": locals.user.data.id,
+				"to.id": targetUser.data.id
+			});
 		}
 	}
 }

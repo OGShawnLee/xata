@@ -11,12 +11,12 @@ interface JWTPayloadState {
 interface NotificationEvent {
 	"from.id": string;
 	"to.id": string;
-	"tweet.id": string;
+	"tweet.id": string | undefined;
 	"reply.id"?: string;
 	type: NotificationEventType;
 }
 
-type NotificationEventType = "LIKE" | "REPLY" | "RETWEET";
+type NotificationEventType = "FOLLOW" | "LIKE" | "REPLY" | "RETWEET";
 
 interface Notification {
 	id: string;
@@ -75,7 +75,7 @@ interface UserProfile extends User {
 	createdAt: Date;
 	followerCount: number;
 	followingCount: number;
-	location: Nullable<string>,
+	location: Nullable<string>;
 	isFollowed: boolean;
 }
 
