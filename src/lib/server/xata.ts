@@ -29,6 +29,8 @@ const tables = [
       { name: "description", type: "string" },
       { name: "location", type: "string" },
       { name: "pinnedTweet", type: "link", link: { table: "tweets" } },
+      { name: "followerCount", type: "int", notNull: true, defaultValue: "0" },
+      { name: "followingCount", type: "int", notNull: true, defaultValue: "0" },
     ],
   },
   {
@@ -108,6 +110,19 @@ const tables = [
       { name: "user", type: "link", link: { table: "users" } },
     ],
   },
+  {
+    name: "follow",
+    columns: [
+      { name: "follower", type: "link", link: { table: "users" } },
+      { name: "followed", type: "link", link: { table: "users" } },
+      {
+        name: "followedAt",
+        type: "datetime",
+        notNull: true,
+        defaultValue: "now",
+      },
+    ],
+  },
 ] as const;
 
 export type SchemaTables = typeof tables;
@@ -131,6 +146,9 @@ export type NotificationsRecord = Notifications & XataRecord;
 export type Folder = InferredTypes["folder"];
 export type FolderRecord = Folder & XataRecord;
 
+export type Follow = InferredTypes["follow"];
+export type FollowRecord = Follow & XataRecord;
+
 export type DatabaseSchema = {
   users: UsersRecord;
   tweets: TweetsRecord;
@@ -138,6 +156,7 @@ export type DatabaseSchema = {
   likes: LikesRecord;
   notifications: NotificationsRecord;
   folder: FolderRecord;
+  follow: FollowRecord;
 };
 
 const DatabaseClient = buildClient();

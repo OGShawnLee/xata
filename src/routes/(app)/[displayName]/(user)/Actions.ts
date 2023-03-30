@@ -2,9 +2,11 @@ import type { RequestEvent } from "./$types";
 import type { ZodError } from "zod";
 import { userSchema } from "$lib/validation/schema";
 import { error, fail } from "@sveltejs/kit";
-import { updateUserProfile } from "$lib/server/user";
+import { findUserPublic, updateUserProfile } from "$lib/server/user";
 import { useAwait } from "$lib/hooks";
 import { setAuthCookie } from "$lib/server/auth";
+import { isNullish } from "malachite-ui/predicate";
+import { follow } from "$lib/server/follow";
 
 const schema = userSchema.pick({ name: true, description: true, location: true });
 
@@ -37,5 +39,19 @@ export default class {
 			displayName: locals.user.data.displayName,
 			name: profile.data.name
 		});
+	}
+
+	static async follow({ locals, params }: RequestEvent) {
+		if (locals.user.isAnonymous) throw error(400, { message: "User not logged in." });
+		if (locals.user.data.displayName === params.displayName)
+			throw error(400, { message: "Can't follow yourself." });
+
+		const targetUser = await useAwait(() => findUserPublic(params.displayName));
+		if (targetUser.failed) throw error(500, { message: "Unable to follow user" });
+		if (isNullish(targetUser.data))
+			throw error(404, { message: "Can't follow user that does not exist." });
+
+		const result = await follow(targetUser.data.id, locals.user.data.id);
+		if (result.failed) throw error(500, { message: "Unable to follow user." });
 	}
 }

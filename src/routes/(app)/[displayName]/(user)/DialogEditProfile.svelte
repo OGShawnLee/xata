@@ -18,7 +18,7 @@
 </script>
 
 <Dialog bind:open={$open} let:close>
-	<form class="grid gap-4.5" action="/{$currentUser?.displayName}" method="post" use:enhance>
+	<form class="grid gap-4.5" action="?/edit-profile" method="post" use:enhance>
 		<header class="px-8 pb-4 | flex items-center gap-4.5 | border-b-2 border-zinc-800">
 			<button
 				class="h-8 min-w-8 | bg-white rounded-full grid place-content-center hover:(bg-white/80 focus:bg-white)"

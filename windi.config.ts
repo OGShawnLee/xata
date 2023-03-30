@@ -9,6 +9,8 @@ export default defineConfig({
 			"bg-sky-600 text-white font-medium hover:(bg-sky-500) focus:(ring-2 ring-sky-200)",
 		"button--white":
 			"bg-white text-zinc-900 font-medium hover:(opacity-85) focus:(ring-2 ring-sky-500)",
+		"button-white":
+			"px-8 py-3 | border-2 border-white rounded-full outline-none text-white font-medium hover:(bg-white text-zinc-900) focus:border-white",
 		"button-zinc":
 			"px-8 py-3 | border-2 border-zinc-800 rounded-full outline-none text-zinc-100 font-medium hover:(bg-zinc-800 text-white) focus:border-white"
 	},

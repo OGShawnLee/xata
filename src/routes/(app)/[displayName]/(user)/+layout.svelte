@@ -5,6 +5,8 @@
 	import { Header } from "$lib/layout";
 	import { useSwitch } from "malachite-ui/hooks";
 	import { currentUser } from "$lib/state";
+	import { enhance } from "$app/forms";
+	
 
 	export let data;
 
@@ -29,6 +31,10 @@
 		<svelte:fragment slot="button">
 			{#if isOwner}
 				<button class="button-zinc" on:click={open.toggle}> Edit Profile </button>
+			{:else if $currentUser}
+				<form action="?/follow" method="post" use:enhance>
+					<button class="button-white" type="submit"> Follow </button>
+				</form>
 			{/if}
 		</svelte:fragment>
 	</Header>

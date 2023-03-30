@@ -17,5 +17,6 @@ export const load: PageServerLoad = async ({ locals: { user }, params: { display
 };
 
 export const actions: Actions = {
-	default: Action.edit
+	"edit-profile": Action.edit,
+	follow: Action.follow
 };
