@@ -6,7 +6,7 @@ import { findUserPublic, updateUserProfile } from "$lib/server/user";
 import { useAwait } from "$lib/hooks";
 import { setAuthCookie } from "$lib/server/auth";
 import { isNullish } from "malachite-ui/predicate";
-import { follow } from "$lib/server/follow";
+import { findFollow, follow, unfollow } from "$lib/server/follow";
 
 const schema = userSchema.pick({ name: true, description: true, location: true });
 
@@ -41,17 +41,25 @@ export default class {
 		});
 	}
 
-	static async follow({ locals, params }: RequestEvent) {
+	static async handleFollow({ locals, params }: RequestEvent) {
 		if (locals.user.isAnonymous) throw error(400, { message: "User not logged in." });
 		if (locals.user.data.displayName === params.displayName)
 			throw error(400, { message: "Can't follow yourself." });
 
 		const targetUser = await useAwait(() => findUserPublic(params.displayName, undefined));
-		if (targetUser.failed) throw error(500, { message: "Unable to follow user" });
+		if (targetUser.failed) throw error(500, { message: "Unable to follow user." });
 		if (isNullish(targetUser.data))
 			throw error(404, { message: "Can't follow user that does not exist." });
 
-		const result = await follow(targetUser.data.id, locals.user.data.id);
-		if (result.failed) throw error(500, { message: "Unable to follow user." });
+		const followRecord = await findFollow(targetUser.data.id, locals.user.data.id);
+		if (followRecord.failed) throw error(500, { message: "Unable to verify user follow status." });
+
+		if (followRecord.data) {
+			const result = await unfollow(targetUser.data.id, locals.user.data.id, followRecord.data.id);
+			if (result.failed) throw error(500, { message: "Unable to unfollow user." });
+		} else {
+			const result = await follow(targetUser.data.id, locals.user.data.id);
+			if (result.failed) throw error(500, { message: "Unable to follow user." });
+		}
 	}
 }

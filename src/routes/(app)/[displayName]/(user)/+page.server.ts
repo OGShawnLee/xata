@@ -18,5 +18,5 @@ export const load: PageServerLoad = async ({ locals: { user }, params: { display
 
 export const actions: Actions = {
 	"edit-profile": Action.edit,
-	follow: Action.follow
+	"follow-or-unfollow": Action.handleFollow
 };

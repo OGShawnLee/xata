@@ -30,9 +30,18 @@
 			{#if isOwner}
 				<button class="button-zinc" on:click={open.toggle}> Edit Profile </button>
 			{:else if $currentUser}
-				<form action="?/follow" method="post" use:enhance>
-					<button class={foundUser.isFollowed ? "button-white--filled" : "button-white"} type="submit">
-						{foundUser.isFollowed ? 'Following' : 'Follow'}
+				<form action="?/follow-or-unfollow" method="post" use:enhance>
+					<button
+						class="group {foundUser.isFollowed
+							? 'button-white--filled button-danger--filled'
+							: 'button-white'}"
+						type="submit">
+						<span class:group-hover:hidden={foundUser.isFollowed}>
+							{foundUser.isFollowed ? "Following" : "Follow"}
+						</span>
+						{#if foundUser.isFollowed}
+							<span class="hidden group-hover:inline"> Unfollow </span>
+						{/if}
 					</button>
 				</form>
 			{/if}
