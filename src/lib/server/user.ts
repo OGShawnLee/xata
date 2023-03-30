@@ -28,16 +28,28 @@ export function findUser(displayName: string) {
 export async function findUserPublic(displayName: string, cuid: string | undefined) {
 	const user = await client.db.users
 		.filter("displayName", displayName)
-		.select(["createdAt", "displayName", "name", "description", "location"])
+		.select([
+			"createdAt",
+			"description",
+			"displayName",
+			"followerCount",
+			"followingCount",
+			"location",
+			"name"
+		])
 		.getFirst();
+
 	if (isNullish(user)) return null;
+
 	return {
 		id: user.id,
-		displayName: user.displayName,
-		name: user.name,
-		description: user.description,
-		location: user.location,
 		createdAt: user.createdAt,
+		description: user.description,
+		displayName: user.displayName,
+		followerCount: user.followerCount,
+		followingCount: user.followingCount,
+		location: user.location,
+		name: user.name,
 		isFollowed: cuid ? await isFollowed(user.id, cuid) : false
 	};
 }

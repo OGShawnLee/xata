@@ -5,6 +5,8 @@
 	export let createdAt: Date;
 	export let description: Nullable<string>;
 	export let location: Nullable<string>;
+	export let followerCount: number;
+	export let followingCount: number;
 
 	const formatter = Intl.DateTimeFormat("en", { dateStyle: "full", timeStyle: "short" });
 </script>
@@ -26,5 +28,15 @@
 				<span class="text-xs text-zinc-500"> {location} </span>
 			</div>
 		{/if}
+	</div>
+	<div class="flex gap-4.5">
+		<p class="flex gap-1.25 | text-xs text-zinc-400">
+			<b class="text-white"> {followingCount} </b>
+			Following
+		</p>
+		<p class="flex gap-1.25 | text-xs text-zinc-400">
+			<b class="text-white"> {followerCount} </b>
+			Followers
+		</p>
 	</div>
 </div>

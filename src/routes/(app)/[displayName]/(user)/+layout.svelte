@@ -37,6 +37,8 @@
 	<UserInfo
 		createdAt={foundUser.createdAt}
 		description={foundUser.description}
+		followerCount={foundUser.followerCount}
+		followingCount={foundUser.followingCount}
 		location={foundUser.location}
 	/>
 	<TabGroup displayName={foundUser.displayName} />
