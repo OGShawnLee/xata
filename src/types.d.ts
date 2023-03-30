@@ -71,6 +71,14 @@ interface UserLike {
 	user: User;
 }
 
+interface UserProfile extends User {
+	createdAt: Date;
+	followerCount: number;
+	followingCount: number;
+	location: Nullable<string>,
+	isFollowed: boolean;
+}
+
 interface UserRetweet {
 	id: string;
 	retweetedAt: Date;

@@ -1,14 +1,21 @@
 <script lang="ts">
+import { page } from "$app/stores";
+
 	import { NavigableItem } from "malachite-ui";
 
 	export let action: string | undefined = undefined;
+	export let auto = false
 	export let href: string | undefined = undefined;
-	export let isActive: boolean;
+	export let isActive: boolean | undefined = undefined;
 	export let isForm = false;
 	export let text: string;
 
 	const className =
-		"relative w-full h-14 | flex items-center justify-center outline-none hover:(bg-zinc-800 text-white) focus:(bg-zinc-800 text-white)";
+	"relative w-full h-14 | flex items-center justify-center outline-none hover:(bg-zinc-800 text-white) focus:(bg-zinc-800 text-white)";
+
+	$: if (auto && href) {
+		isActive = $page.url.pathname.includes(href);
+	}
 </script>
 
 {#if isForm}

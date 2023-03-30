@@ -1,5 +1,5 @@
 import type { UsersRecord } from "$lib/server/xata";
-import type { Paginated, Tweet } from "@types";
+import type { Paginated, Tweet, UserProfile } from "@types";
 import client from "$lib/server/client";
 import { notExists } from "@xata.io/client";
 import { useAwait } from "$lib/hooks";
@@ -8,7 +8,7 @@ import { findBookmark } from "./bookmark";
 import { isDefined } from "$lib/utils/predicate";
 import { findLike } from "./like";
 import { isNullish } from "malachite-ui/predicate";
-import { createTweetObject } from "./utils";
+import { createTweetObject, createUserObject } from "./utils";
 import { isFollowed } from "./predicate";
 
 export function createUser(data: Pick<UsersRecord, "displayName" | "email" | "name" | "password">) {
@@ -51,7 +51,33 @@ export async function findUserPublic(displayName: string, cuid: string | undefin
 		location: user.location,
 		name: user.name,
 		isFollowed: cuid ? await isFollowed(user.id, cuid) : false
-	};
+	} as UserProfile;
+}
+
+export function getUserFollowers(uid: string) {
+	return useAwait(async () => {
+		const paginated = await client.db.follow
+			.filter("followed", uid)
+			.select(["follower.description", "follower.displayName", "follower.name"])
+			.sort("followedAt", "desc")
+			.getPaginated({ pagination: { size: 15 } });
+		return paginated.records.map((follow) => {
+			return createUserObject(follow.follower);
+		});
+	});
+}
+
+export function getUserFollowing(uid: string) {
+	return useAwait(async () => {
+		const paginated = await client.db.follow
+			.filter("follower", uid)
+			.select(["followed.description", "followed.displayName", "followed.name"])
+			.sort("followedAt", "desc")
+			.getPaginated({ pagination: { size: 15 } });
+		return paginated.records.map((follow) => {
+			return createUserObject(follow.followed);
+		});
+	});
 }
 
 export async function getUserPinnedTweet(displayName: string, cuid: string | undefined) {

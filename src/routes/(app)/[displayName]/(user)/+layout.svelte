@@ -6,11 +6,16 @@
 	import { Header } from "$lib/layout";
 	import { useSwitch } from "malachite-ui/hooks";
 	import { currentUser } from "$lib/state";
+	import { userProfileContext } from '$lib/context';
+	import { writable } from "svelte/store";
 
 	export let data;
 
+	const user = userProfileContext.setContext(writable(data.foundUser));
+
 	$: foundUser = data.foundUser;
 	$: isOwner = data.user?.id === foundUser.id;
+	$: user.set(data.foundUser);
 	$: if (isOwner && foundUser.name && $currentUser) {
 		$currentUser.name = foundUser.name;
 	}
@@ -34,13 +39,7 @@
 			{/if}
 		</svelte:fragment>
 	</Header>
-	<UserInfo
-		createdAt={foundUser.createdAt}
-		description={foundUser.description}
-		followerCount={foundUser.followerCount}
-		followingCount={foundUser.followingCount}
-		location={foundUser.location}
-	/>
+	<UserInfo />
 	<TabGroup displayName={foundUser.displayName} />
 </div>
 <slot />
