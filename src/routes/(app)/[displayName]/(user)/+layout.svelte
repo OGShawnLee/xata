@@ -6,7 +6,6 @@
 	import { useSwitch } from "malachite-ui/hooks";
 	import { currentUser } from "$lib/state";
 	import { enhance } from "$app/forms";
-	
 
 	export let data;
 
@@ -23,8 +22,7 @@
 	{open}
 	description={foundUser.description}
 	location={foundUser.location}
-	name={foundUser.name}
-/>
+	name={foundUser.name} />
 
 <div>
 	<Header title={foundUser.name} displayName={foundUser.displayName}>
@@ -33,7 +31,9 @@
 				<button class="button-zinc" on:click={open.toggle}> Edit Profile </button>
 			{:else if $currentUser}
 				<form action="?/follow" method="post" use:enhance>
-					<button class="button-white" type="submit"> Follow </button>
+					<button class={foundUser.isFollowed ? "button-white--filled" : "button-white"} type="submit">
+						{foundUser.isFollowed ? 'Following' : 'Follow'}
+					</button>
 				</form>
 			{/if}
 		</svelte:fragment>
@@ -41,8 +41,7 @@
 	<UserInfo
 		createdAt={foundUser.createdAt}
 		description={foundUser.description}
-		location={foundUser.location}
-	/>
+		location={foundUser.location} />
 	<TabGroup displayName={foundUser.displayName} />
 </div>
 <slot />

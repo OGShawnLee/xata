@@ -46,7 +46,7 @@ export default class {
 		if (locals.user.data.displayName === params.displayName)
 			throw error(400, { message: "Can't follow yourself." });
 
-		const targetUser = await useAwait(() => findUserPublic(params.displayName));
+		const targetUser = await useAwait(() => findUserPublic(params.displayName, undefined));
 		if (targetUser.failed) throw error(500, { message: "Unable to follow user" });
 		if (isNullish(targetUser.data))
 			throw error(404, { message: "Can't follow user that does not exist." });

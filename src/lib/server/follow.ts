@@ -1,6 +1,12 @@
 import client from "./client";
 import { useAwait } from "$lib/hooks";
 
+export function findFollow(uid: string, cuid: string) {
+	return useAwait(() => {
+		return client.db.follow.filter({ followed: uid, follower: cuid }).getFirst();
+	});
+}
+
 export function follow(uid: string, cuid: string) {
 	return useAwait(() => {
 		return client.transactions.run([

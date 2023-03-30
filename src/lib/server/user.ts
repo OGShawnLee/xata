@@ -1,5 +1,5 @@
 import type { UsersRecord } from "$lib/server/xata";
-import type { Paginated, Tweet } from '@types'
+import type { Paginated, Tweet } from "@types";
 import client from "$lib/server/client";
 import { notExists } from "@xata.io/client";
 import { useAwait } from "$lib/hooks";
@@ -9,6 +9,7 @@ import { isDefined } from "$lib/utils/predicate";
 import { findLike } from "./like";
 import { isNullish } from "malachite-ui/predicate";
 import { createTweetObject } from "./utils";
+import { isFollowed } from "./predicate";
 
 export function createUser(data: Pick<UsersRecord, "displayName" | "email" | "name" | "password">) {
 	return useAwait(async () => {
@@ -24,7 +25,7 @@ export function findUser(displayName: string) {
 	});
 }
 
-export async function findUserPublic(displayName: string) {
+export async function findUserPublic(displayName: string, cuid: string | undefined) {
 	const user = await client.db.users
 		.filter("displayName", displayName)
 		.select(["createdAt", "displayName", "name", "description", "location"])
@@ -36,7 +37,8 @@ export async function findUserPublic(displayName: string) {
 		name: user.name,
 		description: user.description,
 		location: user.location,
-		createdAt: user.createdAt
+		createdAt: user.createdAt,
+		isFollowed: cuid ? await isFollowed(user.id, cuid) : false
 	};
 }
 

@@ -3,6 +3,8 @@ import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
 import { compare } from "bcrypt";
 import { isInterface, isString } from "malachite-ui/predicate";
+import { findFollow } from "./follow";
+import { isDefined } from "$lib/utils/predicate";
 
 export function isAuthRoute(pathname: string) {
 	return pathname.startsWith("/auth");
@@ -30,6 +32,12 @@ async function isDuplicateDisplayName(displayName: string) {
 async function isDuplicateEmail(email: string) {
 	const user = await client.db.users.filter("email", email).getFirst();
 	return Boolean(user);
+}
+
+export async function isFollowed(uid: string, cuid: string) {
+	const follow = await findFollow(uid, cuid);
+	if (follow.failed) return false;
+	return isDefined(follow.data);
 }
 
 export function isIncorrectPassword(password: string, password_hash: string) {
