@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Calendar, MapPin } from "lucide-svelte";
 	import { userProfileContext } from "$lib/context";
+	import { plural } from "$lib/utils";
 
 	const user = userProfileContext.getContext();
 
@@ -38,7 +39,7 @@
 			href="/{$user.displayName}/followers"
 		>
 			<b class="text-white"> {$user.followerCount} </b>
-			<span> Followers </span>
+			<span> {plural($user.followerCount, "Follower")} </span>
 		</a>
 	</div>
 </div>
