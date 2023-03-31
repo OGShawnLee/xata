@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { Count } from "$lib/components";
 	import { Calendar, MapPin } from "lucide-svelte";
 	import { userProfileContext } from "$lib/context";
-	import { plural } from "$lib/utils";
-
-	const user = userProfileContext.getContext();
 
 	const formatter = Intl.DateTimeFormat("en", { dateStyle: "full", timeStyle: "short" });
+	const user = userProfileContext.getContext();
+
+	$: path = "/" + $user.displayName;
 </script>
 
 <div class="px-8 py-4 | grid gap-3">
@@ -27,19 +28,7 @@
 		{/if}
 	</div>
 	<div class="flex gap-4.5">
-		<a
-			class="text-xs text-zinc-400 hover:underline focus:underline"
-			href="/{$user.displayName}/following"
-		>
-			<b class="text-white"> {$user.followingCount} </b>
-			<span> Following </span>
-		</a>
-		<a
-			class="text-xs text-zinc-400 hover:underline focus:underline"
-			href="/{$user.displayName}/followers"
-		>
-			<b class="text-white"> {$user.followerCount} </b>
-			<span> {plural($user.followerCount, "Follower")} </span>
-		</a>
+		<Count href="{path}/following" count={$user.followingCount} text="Following" irregular user />
+		<Count href="{path}/followers" count={$user.followerCount} text="Follower" user />
 	</div>
 </div>
