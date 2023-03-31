@@ -20,7 +20,9 @@
 	<Intersection {element} on:intersect let:intersecting>
 		<div bind:this={element} />
 		{#if intersecting && more}
-			<svelte:component this={loadingComponent} />
+			<div class="mt-4">
+				<svelte:component this={loadingComponent} />
+			</div>
 		{/if}
 	</Intersection>
 </section>
