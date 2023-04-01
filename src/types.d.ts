@@ -11,7 +11,7 @@ interface JWTPayloadState {
 interface NotificationEvent {
 	"from.id": string;
 	"to.id": string;
-	"tweet.id": string | undefined;
+	"tweet.id"?: string;
 	"reply.id"?: string;
 	type: NotificationEventType;
 }

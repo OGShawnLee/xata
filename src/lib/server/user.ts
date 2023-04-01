@@ -51,7 +51,7 @@ export async function findUserPublic(displayName: string, cuid: string | undefin
 		location: user.location,
 		name: user.name,
 		isFollowed: cuid ? await isFollowed(user.id, cuid) : false
-	} as UserProfile;
+	} satisfies UserProfile;
 }
 
 export function getUserFollowers(uid: string) {
