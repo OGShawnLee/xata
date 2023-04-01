@@ -1,3 +1,4 @@
+import type { Paginated, Tweet } from "@types";
 import client from "./client";
 import { useAwait } from "$lib/hooks";
 import { findLike } from "./like";
@@ -38,10 +39,10 @@ export function findBookmark(uid: string, tid: string) {
 	});
 }
 
-export function getBookmarks(uid: string) {
-	return useAwait(async () => {
-		const bookmarks = await client.db.bookmarks
-			.filter("user.id", uid)
+export function getBookmarks(cuid: string, after?: string) {
+	return useAwait<Paginated<Tweet>>(async () => {
+		const paginated = await client.db.bookmarks
+			.filter("user.id", cuid)
 			.select([
 				"*",
 				"tweet.*",
@@ -54,18 +55,21 @@ export function getBookmarks(uid: string) {
 				"tweet.replyOf.user"
 			])
 			.sort("createdAt", "desc")
-			.getAll();
+			.getPaginated({ pagination: { after, size: 15 } });
 
-		return Promise.all(
-			bookmarks.map(async (bookmark) => {
-				if (isNullish(bookmark.tweet)) throw TypeError("Bookmark Tweet is not defined.");
+		return {
+			page: paginated.meta.page,
+			records: await Promise.all(
+				paginated.records.map(async (bookmark) => {
+					if (isNullish(bookmark.tweet)) throw TypeError("Bookmark Tweet is not defined.");
 
-				const tweet = createTweetObject(bookmark.tweet);
-				const like = await findLike(uid, bookmark.tweet.id);
-				tweet.isBookmarked = true;
-				tweet.isLiked = like.failed ? false : isDefined(like.data);
-				return { id: bookmark.id, createdAt: bookmark.createdAt, tweet };
-			})
-		);
+					const tweet = createTweetObject(bookmark.tweet);
+					const like = await findLike(cuid, bookmark.tweet.id);
+					tweet.isBookmarked = true;
+					tweet.isLiked = like.failed ? false : isDefined(like.data);
+					return tweet;
+				})
+			)
+		};
 	});
 }
