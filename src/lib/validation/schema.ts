@@ -53,6 +53,16 @@ export const tweetSchema = z
 	.max(280, errorMessage.max("Tweet", 280))
 	.trim();
 
+export const tweetEventSchema = z.object({
+	"tweet.id": z.string(),
+	"user.id": z.string()
+});
+
+export const unfollowEventSchema = z.object({
+	"unfollowed.id": z.string(),
+	"unfollower.id": z.string()
+});
+
 export const userSchema = z.object({
 	displayName: z
 		.string({

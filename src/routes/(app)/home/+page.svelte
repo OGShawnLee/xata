@@ -17,11 +17,6 @@
 	});
 </script>
 
-<svelte:head>
-	<title>Home - Twitter</title>
-</svelte:head>
-
-<Header title="Home" />
 <TweetTextArea value={form?.text?.value} />
 <Feed
 	loadingComponent={TweetLoading}

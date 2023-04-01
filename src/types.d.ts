@@ -58,6 +58,17 @@ interface Tweet {
 	user: User;
 }
 
+// * Triggers user following feed fn
+interface TweetEvent {
+	"user.id": string;
+	"tweet.id": string;
+}
+
+interface UnfollowEvent {
+	"unfollowed.id": string;
+	"unfollower.id": string;
+}
+
 interface User {
 	id: string | undefined;
 	description: Nullable<string>;

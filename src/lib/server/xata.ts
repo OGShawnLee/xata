@@ -123,6 +123,25 @@ const tables = [
       },
     ],
   },
+  {
+    name: "feed",
+    columns: [
+      { name: "user", type: "link", link: { table: "users" } },
+      {
+        name: "updatedAt",
+        type: "datetime",
+        notNull: true,
+        defaultValue: "now",
+      },
+    ],
+  },
+  {
+    name: "feedTweet",
+    columns: [
+      { name: "tweet", type: "link", link: { table: "tweets" } },
+      { name: "feed", type: "link", link: { table: "feed" } },
+    ],
+  },
 ] as const;
 
 export type SchemaTables = typeof tables;
@@ -149,6 +168,12 @@ export type FolderRecord = Folder & XataRecord;
 export type Follow = InferredTypes["follow"];
 export type FollowRecord = Follow & XataRecord;
 
+export type Feed = InferredTypes["feed"];
+export type FeedRecord = Feed & XataRecord;
+
+export type FeedTweet = InferredTypes["feedTweet"];
+export type FeedTweetRecord = FeedTweet & XataRecord;
+
 export type DatabaseSchema = {
   users: UsersRecord;
   tweets: TweetsRecord;
@@ -157,6 +182,8 @@ export type DatabaseSchema = {
   notifications: NotificationsRecord;
   folder: FolderRecord;
   follow: FollowRecord;
+  feed: FeedRecord;
+  feedTweet: FeedTweetRecord;
 };
 
 const DatabaseClient = buildClient();

@@ -8,6 +8,7 @@ import { setAuthCookie } from "$lib/server/auth";
 import { isNullish } from "malachite-ui/predicate";
 import { findFollow, follow, unfollow } from "$lib/server/follow";
 import { triggerNotificationEvent } from "$lib/server/notification";
+import { triggerUnfollowEvent } from "$lib/server/functions";
 
 const schema = userSchema.pick({ name: true, description: true, location: true });
 
@@ -59,6 +60,7 @@ export default class {
 		if (followRecord.data) {
 			const result = await unfollow(targetUser.data.id, locals.user.data.id, followRecord.data.id);
 			if (result.failed) throw error(500, { message: "Unable to unfollow user." });
+			triggerUnfollowEvent(event, locals.user.data.id, targetUser.data.id);
 		} else {
 			const result = await follow(targetUser.data.id, locals.user.data.id);
 			if (result.failed) throw error(500, { message: "Unable to follow user." });

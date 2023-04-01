@@ -7,6 +7,7 @@ import { useCatch } from "$lib/hooks";
 import { tweetSchema } from "$lib/validation/schema";
 import { triggerNotificationEvent } from "$lib/server/notification";
 import { getHashtags } from "$lib/utils";
+import { triggerTweetEvent } from "$lib/server/functions";
 
 export default class Action {
 	static async reply(event: RequestEvent) {
@@ -35,6 +36,7 @@ export default class Action {
 		});
 		if (result.failed) throw error(500, { message: "Unable to reply." });
 
+		triggerTweetEvent(event, event.locals.user.data.id, tweet.data.id);
 		if (tweet.data.user.id && event.locals.user.data.id !== tweet.data.user.id)
 			triggerNotificationEvent(event, {
 				type: "REPLY",

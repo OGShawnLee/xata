@@ -14,6 +14,7 @@ import { createRetweet, findRetweet } from "$lib/server/retweet";
 import { quote } from "$lib/server/quote";
 import { pin, unpin } from "$lib/server/pin";
 import { getHashtags } from "$lib/utils";
+import { triggerTweetEvent } from "$lib/server/functions";
 
 export default class Action {
 	static async handleBookmark(event: RequestEvent) {
@@ -74,6 +75,7 @@ export default class Action {
 		const hashtags = getHashtags(text.data);
 		const quotedTweet = await quote({ text: text.data, user: user.id, tweet: tweet.id, hashtags });
 		if (quotedTweet.failed) return error(500, { message: "Unable to quote Tweet." });
+		triggerTweetEvent(event, user.id, tweet.id);
 	}
 
 	static async pin(event: RequestEvent) {
@@ -102,6 +104,7 @@ export default class Action {
 				"to.id": tweet.user.id,
 				"tweet.id": id
 			});
+		triggerTweetEvent(event, user.id, tweet.id);
 
 		const location = event.url.searchParams.get("redirect");
 		if (location) throw redirect(303, location);
@@ -128,6 +131,7 @@ export default class Action {
 				text: { value: text.data }
 			});
 		}
+		triggerTweetEvent(event, event.locals.user.data.id, tweet.data.id);
 	}
 
 	static async unpin(event: RequestEvent) {

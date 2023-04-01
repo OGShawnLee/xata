@@ -1,4 +1,5 @@
-import type { Hashtags, Paginated, Tweet } from "@types";
+import type { Hashtags, Paginated, Tweet, TweetEvent } from "@types";
+import type { RequestEvent } from "@sveltejs/kit";
 import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
 import { isNullish, isObject } from "malachite-ui/predicate";
@@ -6,6 +7,8 @@ import { getTweetState } from "./user";
 import { createTweetObject } from "./utils";
 import { getHashtags } from "$lib/utils";
 import { includes } from "@xata.io/client";
+import { INTERNAL_HEADER, INTERNAL_TOKEN } from "$env/static/private";
+import { stringify } from "devalue";
 
 export function createTweet(id: string, text: string) {
 	return useAwait(async () => {
