@@ -110,9 +110,9 @@ export function getUserPublicPage(displayName: string, currentUser: string | und
 	});
 }
 
-export function getUserLikes(displayName: string, cuid: string | undefined) {
-	return useAwait(async () => {
-		const likes = await client.db.likes
+export function getUserLikes(displayName: string, cuid: string | undefined, after?: string) {
+	return useAwait<Paginated<Tweet>>(async () => {
+		const paginated = await client.db.likes
 			.filter("user.displayName", displayName)
 			.select([
 				"*",
@@ -126,29 +126,31 @@ export function getUserLikes(displayName: string, cuid: string | undefined) {
 				"tweet.replyOf.user"
 			])
 			.sort("likedAt", "desc")
-			.getAll();
+			.getPaginated({ pagination: { after, size: 15 } });
 
 		if (isNullish(cuid))
-			return likes.map((like) => {
-				if (isNullish(like.tweet)) throw TypeError("Like Tweet is not defined.");
-				return {
-					id: like.id,
-					likedAt: like.likedAt,
-					tweet: createTweetObject(like.tweet)
-				};
-			});
+			return {
+				page: paginated.meta.page,
+				records: paginated.records.map((like) => {
+					if (isNullish(like.tweet)) throw TypeError("Like Tweet is not defined.");
+					return createTweetObject(like.tweet);
+				})
+			};
 
-		return Promise.all(
-			likes.map(async (like) => {
-				if (isNullish(like.tweet)) throw TypeError("Like Tweet is not defined.");
+		return {
+			page: paginated.meta.page,
+			records: await Promise.all(
+				paginated.records.map(async (like) => {
+					if (isNullish(like.tweet)) throw TypeError("Like Tweet is not defined.");
 
-				const tweet = createTweetObject(like.tweet);
-				const state = await getTweetState(cuid, like.tweet.id);
-				tweet.isBookmarked = state.isBookmarked;
-				tweet.isLiked = state.isLiked;
-				return { id: like.id, likedAt: like.likedAt, tweet };
-			})
-		);
+					const finalTweet = createTweetObject(like.tweet);
+					const state = await getTweetState(cuid, like.tweet.id);
+					finalTweet.isBookmarked = state.isBookmarked;
+					finalTweet.isLiked = state.isLiked;
+					return finalTweet;
+				})
+			)
+		};
 	});
 }
 
