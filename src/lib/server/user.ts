@@ -35,7 +35,8 @@ export async function findUserPublic(displayName: string, cuid: string | undefin
 			"followerCount",
 			"followingCount",
 			"location",
-			"name"
+			"name",
+			"tweetCount"
 		])
 		.getFirst();
 
@@ -50,7 +51,8 @@ export async function findUserPublic(displayName: string, cuid: string | undefin
 		followingCount: user.followingCount,
 		location: user.location,
 		name: user.name,
-		isFollowed: cuid ? await isFollowed(user.id, cuid) : false
+		isFollowed: cuid ? await isFollowed(user.id, cuid) : false,
+		tweetCount: user.tweetCount
 	} satisfies UserProfile;
 }
 

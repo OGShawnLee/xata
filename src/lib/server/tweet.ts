@@ -12,12 +12,16 @@ import { stringify } from "devalue";
 
 export function createTweet(id: string, text: string) {
 	return useAwait(async () => {
-		const tweet = await client.db.tweets.create({
-			text,
-			user: { id },
-			entities: { hashtags: getHashtags(text) }
-		});
-		return tweet.toSerializable();
+		const operation = await client.transactions.run([
+			{
+				insert: {
+					table: "tweets",
+					record: { text, user: id, entities: { hashtags: getHashtags(text) } }
+				}
+			},
+			{ update: { table: "users", id, fields: { tweetCount: { $increment: 1 } } } }
+		]);
+		return operation.results[0].id;
 	});
 }
 
@@ -219,7 +223,8 @@ export function reply(event: { id: string; cuid: string; hashtags: Hashtags; tex
 	return useAwait(() => {
 		return client.transactions.run([
 			{ insert: { table: "tweets", record: { text, user: cuid, replyOf: id, hashtags } } },
-			{ update: { table: "tweets", id, fields: { replyCount: { $increment: 1 } } } }
+			{ update: { table: "tweets", id, fields: { replyCount: { $increment: 1 } } } },
+			{ update: { table: "users", id: cuid, fields: { tweetCount: { $increment: 1 } } } }
 		]);
 	});
 }

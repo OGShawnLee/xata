@@ -6,7 +6,8 @@ export function createRetweet(uid: string, tid: string) {
 	return useAwait(() => {
 		return client.transactions.run([
 			{ insert: { table: "tweets", record: { user: uid, retweetOf: tid } } },
-			{ update: { table: "tweets", id: tid, fields: { retweetCount: { $increment: 1 } } } }
+			{ update: { table: "tweets", id: tid, fields: { retweetCount: { $increment: 1 } } } },
+			{ update: { table: "users", id: uid, fields: { tweetCount: { $increment: 1 } } } }
 		]);
 	});
 }

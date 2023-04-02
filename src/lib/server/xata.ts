@@ -31,6 +31,7 @@ const tables = [
       { name: "pinnedTweet", type: "link", link: { table: "tweets" } },
       { name: "followerCount", type: "int", notNull: true, defaultValue: "0" },
       { name: "followingCount", type: "int", notNull: true, defaultValue: "0" },
+      { name: "tweetCount", type: "int", notNull: true, defaultValue: "0" },
     ],
   },
   {

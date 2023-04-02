@@ -30,5 +30,6 @@
 	<div class="flex gap-4.5">
 		<Count href="{path}/following" count={$user.followingCount} text="Following" irregular user />
 		<Count href="{path}/followers" count={$user.followerCount} text="Follower" user />
+		<Count count={$user.tweetCount} text="Tweet" user />
 	</div>
 </div>

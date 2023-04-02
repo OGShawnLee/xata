@@ -88,6 +88,7 @@ interface UserProfile extends User {
 	followingCount: number;
 	location: Nullable<string>;
 	isFollowed: boolean;
+	tweetCount: number;
 }
 
 interface UserRetweet {

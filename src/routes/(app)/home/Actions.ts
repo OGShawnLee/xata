@@ -131,7 +131,7 @@ export default class Action {
 				text: { value: text.data }
 			});
 		}
-		triggerTweetEvent(event, event.locals.user.data.id, tweet.data.id);
+		triggerTweetEvent(event, event.locals.user.data.id, tweet.data);
 	}
 
 	static async unpin(event: RequestEvent) {

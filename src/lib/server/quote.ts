@@ -32,7 +32,8 @@ export function quote(event: { hashtags: Hashtags; text: string; tweet: string; 
 	return useAwait(() => {
 		return client.transactions.run([
 			{ insert: { table: "tweets", record: { user, text, quoteOf: tweet, hashtags } } },
-			{ update: { table: "tweets", id: tweet, fields: { quoteCount: { $increment: 1 } } } }
+			{ update: { table: "tweets", id: tweet, fields: { quoteCount: { $increment: 1 } } } },
+			{ update: { table: "users", id: user, fields: { tweetCount: { $increment: 1 } } } }
 		]);
 	});
 }
