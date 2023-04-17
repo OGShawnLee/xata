@@ -17,7 +17,7 @@
 </script>
 
 <Menu class="relative" infinite>
-	<MenuButton class="group | flex items-center gap-3" aria-label={label} title={label}>
+	<MenuButton class="group | flex items-center gap-3" nofocus aria-label={label} title={label}>
 		<svelte:component this={icon} class={finalIconClassName} size={iconSize} />
 		{#if isNumber(finalCount)}
 			<span class="text-sm"> {finalCount} </span>
