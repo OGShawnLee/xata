@@ -1,6 +1,12 @@
 import type { Tweet, UserLike, UserRetweet, UserState } from "@types";
 import { writable } from "svelte/store";
-import { useAwait, useAsideLayout, useComposeDialog, usePageDialog } from "$lib/hooks";
+import {
+	useAwait,
+	useAsideLayout,
+	useComposeDialog,
+	usePageDialog,
+	useWarningDialog
+} from "$lib/hooks";
 import { parse } from "devalue";
 
 export const currentUser = writable<UserState | undefined>();
@@ -26,3 +32,5 @@ export const tweetRetweetsDialog = usePageDialog((pathname) => {
 		return parse(text) as UserRetweet[];
 	});
 });
+
+export const warningDialog = useWarningDialog();

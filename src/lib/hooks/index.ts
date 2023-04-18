@@ -22,3 +22,4 @@ export { default as useAsideLayout } from "./useAsideLayout";
 export { default as useComposeDialog } from "./useComposeDialog";
 export { default as useInfiniteScrolling } from "./useInfiniteScrolling";
 export { default as usePageDialog } from "./usePageDialog";
+export { default as useWarningDialog } from "./useWarningDialog";

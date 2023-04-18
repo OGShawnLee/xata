@@ -1,10 +1,35 @@
 <script lang="ts">
-	import { enhance } from "$app/forms";
+	import type { Nullable } from "malachite-ui/types";
+	import type { SubmitFunction } from "$app/forms";
+	import { applyAction, enhance, deserialize } from "$app/forms";
+	import { warningDialog } from "$lib/state";
+	import { invalidateAll } from "$app/navigation";
 
+	export let displayName: Nullable<string>;
 	export let isFollowed: boolean;
+
+	const handleSubmit: SubmitFunction = (event) => {
+		if (isFollowed && displayName) {
+			event.cancel();
+			warningDialog.dispatch({
+				type: "UNFOLLOW",
+				displayName,
+				onContinue: async () => {
+					const response = await fetch(event.form.action, {
+						method: "POST",
+						body: new FormData(event.form.this),
+						headers: { "x-sveltekit-action": "true" }
+					});
+					const result = deserialize(await response.text());
+					if (result.type === "success") await invalidateAll();
+					applyAction(result);
+				}
+			});
+		}
+	};
 </script>
 
-<form action="?/follow-or-unfollow" method="post" use:enhance>
+<form action="?/follow-or-unfollow" method="post" use:enhance={handleSubmit}>
 	<button
 		class="group {isFollowed ? 'button-white--filled button-danger--filled' : 'button-white'}"
 		type="submit"

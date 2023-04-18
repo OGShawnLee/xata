@@ -6,7 +6,7 @@
 	import { Header } from "$lib/layout";
 	import { useSwitch } from "malachite-ui/hooks";
 	import { currentUser } from "$lib/state";
-	import { userProfileContext } from '$lib/context';
+	import { userProfileContext } from "$lib/context";
 	import { writable } from "svelte/store";
 
 	export let data;
@@ -35,7 +35,7 @@
 			{#if isOwner}
 				<button class="button-zinc" on:click={open.toggle}> Edit Profile </button>
 			{:else if $currentUser}
-				<ButtonFollow isFollowed={foundUser.isFollowed} />
+				<ButtonFollow displayName={foundUser.displayName} isFollowed={foundUser.isFollowed} />
 			{/if}
 		</svelte:fragment>
 	</Header>
