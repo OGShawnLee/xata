@@ -12,7 +12,7 @@ specifiers:
   dotenv: ^16.0.3
   jsonwebtoken: ^9.0.0
   lucide-svelte: ^0.161.0
-  malachite-ui: ^0.9.0
+  malachite-ui: ^0.9.1
   prettier: ^2.8.7
   prettier-plugin-svelte: ^2.10.0
   sanitize-html: ^2.10.0
@@ -37,7 +37,7 @@ devDependencies:
   dotenv: 16.0.3
   jsonwebtoken: 9.0.0
   lucide-svelte: 0.161.0_svelte@3.58.0
-  malachite-ui: 0.9.0
+  malachite-ui: 0.9.1
   prettier: 2.8.7
   prettier-plugin-svelte: 2.10.0_ur5pqdgn24bclu6l6i7qojopk4
   sanitize-html: 2.10.0
@@ -955,8 +955,8 @@ packages:
       semver: 6.3.0
     dev: true
 
-  /malachite-ui/0.9.0:
-    resolution: {integrity: sha512-Ah+t3H4+4gKbfB1IdycWYuXHDWpJeDFsl0XLd9w0/04bmnjjoWr5ZKI76jtJjLqIZqNRto8L7PNW5PBM9IHRJw==}
+  /malachite-ui/0.9.1:
+    resolution: {integrity: sha512-Sf0ORZY5nj8ZbQH08ddFLLh6tViMpt/xkYMvuedym7I2GKHb3hIzgXAVciyoETc8j89t7dFMBfNpIOjDA96e3A==}
     dev: true
 
   /merge2/1.4.1:
