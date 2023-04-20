@@ -19,57 +19,59 @@ function findUserObject(id: string) {
 	});
 }
 
-export function getSearchResults(query: string, target: "people" | null) {
+export function searchPeople(query: string) {
 	return useAwait(async () => {
-		if (target === "people") {
-			const results = await client.db.users.search(query, {
-				target: ["description", "displayName", "name", "location"],
-				prefix: "phrase"
-			});
-			return results.map<User>((record) => {
+		const records = await client.db.users.search(query, {
+			target: ["description", "displayName", "name", "location"],
+			prefix: "phrase"
+		});
+		return records.map<User>((record) => {
+			return {
+				id: record.id,
+				description: record.description,
+				displayName: record.displayName,
+				name: record.name
+			};
+		});
+	});
+}
+
+export function searchTweets(query: string) {
+	return useAwait(async () => {
+		const cachedUsers = new Map<string, User>();
+		const records = await client.db.tweets.search(query, {
+			target: ["text"],
+			prefix: "phrase"
+		});
+		return Promise.all(
+			records.map<Promise<Tweet>>(async (record) => {
+				if (isNullish(record.user)) throw Error("Tweet User ID not defined.");
+				let foundUser = cachedUsers.get(record.user.id);
+
+				if (isNullish(foundUser)) {
+					const user = await findUserObject(record.user.id);
+					if (user.failed || isNullish(user.data)) throw Error("Unable to Fetch User.");
+					cachedUsers.set(record.user.id, user.data);
+					foundUser = user.data;
+				}
+
 				return {
 					id: record.id,
-					description: record.description,
-					displayName: record.displayName,
-					name: record.name
+					createdAt: record.createdAt,
+					user: foundUser,
+					text: record.text,
+					bookmarkCount: record.bookmarkCount,
+					likeCount: record.likeCount,
+					quoteOf: undefined,
+					quoteCount: record.quoteCount,
+					retweetCount: record.retweetCount,
+					retweetOf: undefined,
+					replyOf: undefined,
+					replyCount: record.replyCount,
+					isBookmarked: false,
+					isLiked: false
 				};
-			});
-		} else {
-			const cachedUsers = new Map<string, User>();
-			const results = await client.db.tweets.search(query, {
-				target: ["text"],
-				prefix: "phrase"
-			});
-
-			return Promise.all(
-				results.map(async (record) => {
-					if (isNullish(record.user)) throw Error("Tweet User ID not defined.");
-					const foundUser = cachedUsers.get(record.user.id);
-					const tweet = {
-						id: record.id,
-						createdAt: record.createdAt,
-						user: foundUser,
-						text: record.text,
-						likeCount: record.likeCount,
-						quoteOf: undefined,
-						quoteCount: record.quoteCount,
-						retweetCount: record.retweetCount,
-						retweetOf: undefined,
-						replyCount: record.replyCount,
-						isBookmarked: false,
-						isLiked: false
-					};
-
-					if (tweet.user) return tweet as Tweet;
-
-					const targetUser = await findUserObject(record.user.id);
-					if (targetUser.failed || isNullish(targetUser.data)) throw Error("Unable to Fetch User.");
-
-					cachedUsers.set(record.user.id, targetUser.data);
-					tweet.user = targetUser.data;
-					return tweet as Tweet;
-				})
-			);
-		}
+			})
+		);
 	});
 }
