@@ -50,7 +50,7 @@
 					type="password"
 				/>
 			</div>
-			<button class="button button--white"> Continue </button>
+			<button class="button button--white | rounded-xl"> Continue </button>
 		</form>
 	</div>
 </main>

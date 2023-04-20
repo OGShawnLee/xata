@@ -11,15 +11,10 @@
 	import type { Nullable } from "malachite-ui/types";
 	import { isNullish, isWhitespace } from "malachite-ui/predicate";
 	import { handleExpandableArea } from "$lib/actions";
-	import { useClassNameResolver } from "malachite-ui/hooks";
 	import { enhance } from "$app/forms";
 
 	export let value: Nullable<string>;
 
-	$: buttonClassName = useClassNameResolver<"DISABLED">({
-		base: "button-small",
-		disabled: { off: "button--sky", on: "button--disabled bg-sky-600 text-white cursor-auto" }
-	})({ isDisabled: disabled });
 	$: charCount = value?.trim().length || 0;
 	$: disabled = isNullish(value) || isWhitespace(value);
 </script>
@@ -48,7 +43,13 @@
 						<span> 280 </span>
 					</div>
 				{/if}
-				<button class={buttonClassName} {disabled}> Tweet </button>
+				<button
+					class="button-sm button--sky | px-6 rounded-full"
+					class:button--disabled={disabled}
+					{disabled}
+				>
+					Tweet
+				</button>
 			</div>
 		</form>
 	</div>

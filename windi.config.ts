@@ -2,20 +2,15 @@ import { defineConfig } from "vite-plugin-windicss";
 
 export default defineConfig({
 	shortcuts: {
-		button: "px-8 py-2 | rounded-xl outline-none",
-		"button--disabled": "opacity-50 cursor-auto",
-		"button-small": "px-6 py-1.75 | rounded-full outline-none",
-		"button--sky":
-			"bg-sky-600 text-white font-medium hover:(bg-sky-500) focus:(ring-2 ring-sky-200)",
+		button: "h-10 min-h-10 outline-none border-2 font-medium focus:(ring-2 ring-white)",
+		"button-sm": "h-8.5 min-h-8.5 | outline-none border-2 font-medium focus:(ring-2 ring-white)",
+		"button-xs": "h-8 min-h-8 | outline-none border-2 font-medium focus:(ring-2 ring-white)",
+		"button--danger": "hover:(bg-rose-900/50 text-rose-400 focus:ring-rose-500)",
+		"button--disabled": "opacity-50 cursor-not-allowed",
+		"button--sky": "bg-sky-600 border-transparent text-white hover:bg-sky-500 focus:border-black",
 		"button--white":
-			"bg-white text-zinc-900 font-medium hover:(opacity-85) focus:(ring-2 ring-sky-500)",
-		"button-white":
-			"px-8 py-3 | border-2 border-white rounded-full outline-none text-white font-medium hover:(bg-white text-zinc-900) focus:border-white",
-		"button-white--filled":
-			"px-8 py-3 | bg-white text-zinc-900 rounded-full text-zinc-900 font-medium hover:(bg-white/90) focus:border-white",
-		"button-danger--filled": "hover:(bg-rose-900/30 border-2 border-rose-500 text-rose-500 outline-none focus:border-rose-400)",
-		"button-zinc":
-			"px-8 py-3 | border-2 border-zinc-800 rounded-full outline-none text-zinc-100 font-medium hover:(bg-zinc-800 text-white) focus:border-white"
+			"bg-white border-transparent text-zinc-900 hover:opacity-90 focus:border-black",
+		"button--zinc": "border-zinc-800 text-zinc-100 hover:bg-zinc-800",
 	},
 	theme: {
 		extend: {

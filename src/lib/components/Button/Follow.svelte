@@ -31,7 +31,8 @@
 
 <form action="?/follow-or-unfollow" method="post" use:enhance={handleSubmit}>
 	<button
-		class="group {isFollowed ? 'button-white--filled button-danger--filled' : 'button-white'}"
+		class="button button--white hover:opacity-100 | group px-8 rounded-full"
+		class:button--danger={isFollowed}
 		type="submit"
 	>
 		<span class:group-hover:hidden={isFollowed}>

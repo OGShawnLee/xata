@@ -5,11 +5,11 @@
 </script>
 
 <button
-	class="h-8 min-w-8 | bg-white rounded-full grid place-content-center hover:(bg-white/80 focus:bg-white)"
+	class="button-xs button--white | min-w-8 grid place-content-center rounded-full"
 	aria-label="Close Dialog"
 	title="Close Dialog"
-	on:click={close}
 	type="button"
+	on:click={close}
 >
 	<X class="stroke-zinc-900" size={20} />
 </button>

@@ -24,15 +24,15 @@
 				text="Compose"
 				on:click={(event) => {
 					event.preventDefault();
-					composeDialog.trigger("COMPOSE")
-				}} 
+					composeDialog.trigger("COMPOSE");
+				}}
 			/>
 		</div>
 	{/if}
 	{#if $currentUser}
 		<UserStatus displayName={$currentUser.displayName} name={$currentUser.name} />
 	{:else}
-		<a class="button button--sky | flex items-center justify-center gap-1.75" href="/auth/sign-in">
+		<a class="button button--sky | grid place-content-center | rounded-xl" href="/auth/sign-in">
 			<span> Sign In </span>
 		</a>
 	{/if}

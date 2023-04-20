@@ -21,7 +21,7 @@
 		</div>
 		<div class="grid gap-3">
 			<button
-				class="w-full h-10.75 min-h-10.75 | bg-white border-2 border-transparent rounded-full text-zinc-900 font-medium outline-none hover:opacity-90 focus:(border-black ring-2 ring-white)"
+				class="button button--white | w-full rounded-full"
 				on:click={() => {
 					$state?.onContinue();
 					close();
@@ -29,13 +29,7 @@
 			>
 				Unfollow
 			</button>
-			<button
-				class="w-full h-10.75 min-h-10.75 | border-2 border-zinc-800 rounded-full text-zinc-100 font-medium outline-none hover:bg-zinc-800 focus:(ring-2 ring-white)"
-				on:click={close}
-				bind:this={buttonClose}
-			>
-				Cancel
-			</button>
+			<button class="button button--zinc | w-full rounded-full" on:click={close} bind:this={buttonClose}> Cancel </button>
 		</div>
 	</div>
 </Dialog>

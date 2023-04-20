@@ -33,7 +33,7 @@
 	<Header title={foundUser.name} displayName={foundUser.displayName}>
 		<svelte:fragment slot="button">
 			{#if isOwner}
-				<button class="button-zinc" on:click={open.toggle}> Edit Profile </button>
+				<button class="button button--zinc | px-8 rounded-full" on:click={open.toggle}> Edit Profile </button>
 			{:else if $currentUser}
 				<ButtonFollow displayName={foundUser.displayName} isFollowed={foundUser.isFollowed} />
 			{/if}
