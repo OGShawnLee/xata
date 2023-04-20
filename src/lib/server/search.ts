@@ -1,7 +1,7 @@
 import type { Tweet, User } from "@types";
 import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
-import { isNullish } from "malachite-ui/predicate";
+import { isNullish, isWhitespace } from "malachite-ui/predicate";
 
 function findUserObject(id: string) {
 	return useAwait<User | undefined>(async () => {
@@ -21,6 +21,7 @@ function findUserObject(id: string) {
 
 export function searchPeople(query: string) {
 	return useAwait(async () => {
+		if (isWhitespace(query)) return [];
 		const records = await client.db.users.search(query, {
 			target: ["description", "displayName", "name", "location"],
 			prefix: "phrase"
@@ -38,6 +39,7 @@ export function searchPeople(query: string) {
 
 export function searchTweets(query: string) {
 	return useAwait(async () => {
+		if (isWhitespace(query)) return [];
 		const cachedUsers = new Map<string, User>();
 		const records = await client.db.tweets.search(query, {
 			target: ["text"],
