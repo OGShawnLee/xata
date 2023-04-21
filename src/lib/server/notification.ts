@@ -1,4 +1,4 @@
-import type { NotificationEvent } from "@types";
+import type { Notification, NotificationEvent, Paginated } from "@types";
 import type { RequestEvent } from "@sveltejs/kit";
 import client from "./client";
 import { INTERNAL_HEADER, INTERNAL_TOKEN } from "$env/static/private";
@@ -20,10 +20,10 @@ export function createNotification(event: NotificationEvent) {
 	);
 }
 
-export function getNotifications(id: string) {
-	return useAwait(async () => {
-		const notifications = await client.db.notifications
-			.filter("to", id)
+export function getNotifications(uid: string, cursor?: string) {
+	return useAwait<Paginated<Notification>>(async () => {
+		const paginated = await client.db.notifications
+			.filter("to", uid)
 			.select([
 				"*",
 				"from.displayName",
@@ -36,20 +36,25 @@ export function getNotifications(id: string) {
 				"reply.replyOf.user"
 			])
 			.sort("createdAt", "desc")
-			.getAll();
+			.getPaginated({
+				pagination: { size: 15, after: cursor }
+			});
 
-		return Promise.all(
-			notifications.map(async (notification) => {
-				if (isNullish(notification.reply)) return createNotificationObject(notification);
+		return {
+			page: paginated.meta.page,
+			records: await Promise.all(
+				paginated.records.map(async (notification) => {
+					if (isNullish(notification.reply)) return createNotificationObject(notification);
 
-				const finalTweet = createTweetObject(notification.reply);
-				const state = await getTweetState(id, notification.reply.id);
-				finalTweet.isBookmarked = state.isBookmarked;
-				finalTweet.isLiked = state.isLiked;
+					const finalTweet = createTweetObject(notification.reply);
+					const state = await getTweetState(uid, notification.reply.id);
+					finalTweet.isBookmarked = state.isBookmarked;
+					finalTweet.isLiked = state.isLiked;
 
-				return createNotificationObject(notification, finalTweet);
-			})
-		);
+					return createNotificationObject(notification, finalTweet);
+				})
+			)
+		};
 	});
 }
 
