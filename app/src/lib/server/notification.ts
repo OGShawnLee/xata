@@ -10,7 +10,7 @@ import { getTweetState } from "./user";
 
 export function createNotification(event: NotificationEvent) {
 	return useAwait(() =>
-		client.db.notifications.create({
+		client.db.notification.create({
 			type: event.type,
 			from: event["from.id"],
 			to: event["to.id"],
@@ -22,7 +22,7 @@ export function createNotification(event: NotificationEvent) {
 
 export function getNotifications(uid: string, cursor?: string) {
 	return useAwait<Paginated<Notification>>(async () => {
-		const paginated = await client.db.notifications
+		const paginated = await client.db.notification
 			.filter("to", uid)
 			.select([
 				"*",

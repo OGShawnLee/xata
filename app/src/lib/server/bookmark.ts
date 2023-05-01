@@ -9,8 +9,8 @@ import { createTweetObject } from "./utils";
 export function createBookmark(uid: string, tid: string) {
 	return useAwait(() => {
 		return client.transactions.run([
-			{ insert: { table: "bookmarks", record: { tweet: tid, user: uid } } },
-			{ update: { table: "tweets", id: tid, fields: { bookmarkCount: { $increment: 1 } } } }
+			{ insert: { table: "bookmark", record: { tweet: tid, user: uid } } },
+			{ update: { table: "tweet", id: tid, fields: { bookmarkCount: { $increment: 1 } } } }
 		]);
 	});
 }
@@ -22,15 +22,15 @@ export function createBookmarkFolder(uid: string, description: string | undefine
 export function deleteBookmark(id: string, tid: string) {
 	return useAwait(() => {
 		return client.transactions.run([
-			{ delete: { table: "bookmarks", id } },
-			{ update: { table: "tweets", id: tid, fields: { bookmarkCount: { $decrement: 1 } } } }
+			{ delete: { table: "bookmark", id } },
+			{ update: { table: "tweet", id: tid, fields: { bookmarkCount: { $decrement: 1 } } } }
 		]);
 	});
 }
 
 export function findBookmark(uid: string, tid: string) {
 	return useAwait(async () => {
-		const bookmark = await client.db.bookmarks
+		const bookmark = await client.db.bookmark
 			.filter({ "tweet.id": tid, "user.id": uid })
 			.getFirst();
 
@@ -41,7 +41,7 @@ export function findBookmark(uid: string, tid: string) {
 
 export function getBookmarks(cuid: string, after?: string) {
 	return useAwait<Paginated<Tweet>>(async () => {
-		const paginated = await client.db.bookmarks
+		const paginated = await client.db.bookmark
 			.filter("user.id", cuid)
 			.select([
 				"*",

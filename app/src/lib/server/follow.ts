@@ -11,8 +11,8 @@ export function follow(uid: string, cuid: string) {
 	return useAwait(() => {
 		return client.transactions.run([
 			{ insert: { table: "follow", record: { followed: uid, follower: cuid } } },
-			{ update: { table: "users", id: uid, fields: { followerCount: { $increment: 1 } } } },
-			{ update: { table: "users", id: cuid, fields: { followingCount: { $increment: 1 } } } }
+			{ update: { table: "user", id: uid, fields: { followerCount: { $increment: 1 } } } },
+			{ update: { table: "user", id: cuid, fields: { followingCount: { $increment: 1 } } } }
 		]);
 	});
 }
@@ -21,8 +21,8 @@ export function unfollow(uid: string, cuid: string, fid: string) {
 	return useAwait(() => {
 		return client.transactions.run([
 			{ delete: { table: "follow", id: fid } },
-			{ update: { table: "users", id: uid, fields: { followerCount: { $decrement: 1 } } } },
-			{ update: { table: "users", id: cuid, fields: { followingCount: { $decrement: 1 } } } }
+			{ update: { table: "user", id: uid, fields: { followerCount: { $decrement: 1 } } } },
+			{ update: { table: "user", id: cuid, fields: { followingCount: { $decrement: 1 } } } }
 		]);
 	});
 }

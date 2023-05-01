@@ -25,12 +25,12 @@ export function isDuplicateDisplayNameAndEmail(displayName: string, email: strin
 }
 
 async function isDuplicateDisplayName(displayName: string) {
-	const user = await client.db.users.filter("displayName", displayName).getFirst();
+	const user = await client.db.user.filter("displayName", displayName).getFirst();
 	return Boolean(user);
 }
 
 async function isDuplicateEmail(email: string) {
-	const user = await client.db.users.filter("email", email).getFirst();
+	const user = await client.db.user.filter("email", email).getFirst();
 	return Boolean(user);
 }
 

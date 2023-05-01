@@ -5,7 +5,7 @@ import { isNullish, isWhitespace } from "malachite-ui/predicate";
 
 function findUserObject(id: string) {
 	return useAwait<User | undefined>(async () => {
-		const foundUser = await client.db.users
+		const foundUser = await client.db.user
 			.filter("id", id)
 			.select(["description", "displayName", "name"])
 			.getFirst();
@@ -22,7 +22,7 @@ function findUserObject(id: string) {
 export function searchPeople(query: string) {
 	return useAwait(async () => {
 		if (isWhitespace(query)) return [];
-		const records = await client.db.users.search(query, {
+		const records = await client.db.user.search(query, {
 			target: ["description", "displayName", "name", "location"],
 			prefix: "phrase"
 		});
@@ -41,7 +41,7 @@ export function searchTweets(query: string) {
 	return useAwait(async () => {
 		if (isWhitespace(query)) return [];
 		const cachedUsers = new Map<string, User>();
-		const records = await client.db.tweets.search(query, {
+		const records = await client.db.tweet.search(query, {
 			target: ["text"],
 			prefix: "phrase"
 		});

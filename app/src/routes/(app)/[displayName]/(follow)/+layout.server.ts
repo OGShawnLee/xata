@@ -6,7 +6,7 @@ import { isNullish } from "malachite-ui/predicate";
 
 export const load: LayoutServerLoad = async ({ params: { displayName } }) => {
 	const foundUser = await useAwait(() => {
-		return client.db.users.filter("displayName", displayName).select(["name"]).getFirst();
+		return client.db.user.filter("displayName", displayName).select(["name"]).getFirst();
 	});
 
 	if (foundUser.failed) throw error(500, { message: "Unable to find user." });

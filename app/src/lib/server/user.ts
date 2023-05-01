@@ -13,20 +13,20 @@ import { isFollowed } from "./predicate";
 
 export function createUser(data: Pick<UsersRecord, "displayName" | "email" | "name" | "password">) {
 	return useAwait(async () => {
-		const user = await client.db.users.create(data);
+		const user = await client.db.user.create(data);
 		return user.toSerializable();
 	});
 }
 
 export function findUser(displayName: string) {
 	return useAwait(async () => {
-		const user = await client.db.users.filter("displayName", displayName).getFirst();
+		const user = await client.db.user.filter("displayName", displayName).getFirst();
 		return user?.toSerializable();
 	});
 }
 
 export async function findUserPublic(displayName: string, cuid: string | undefined) {
-	const user = await client.db.users
+	const user = await client.db.user
 		.filter("displayName", displayName)
 		.select([
 			"createdAt",
@@ -83,7 +83,7 @@ export function getUserFollowing(uid: string) {
 }
 
 export async function getUserPinnedTweet(displayName: string, cuid: string | undefined) {
-	const user = await client.db.users
+	const user = await client.db.user
 		.filter("displayName", displayName)
 		.select([
 			"pinnedTweet.*",
@@ -114,7 +114,7 @@ export function getUserPublicPage(displayName: string, currentUser: string | und
 
 export function getUserLikes(displayName: string, cuid: string | undefined, after?: string) {
 	return useAwait<Paginated<Tweet>>(async () => {
-		const paginated = await client.db.likes
+		const paginated = await client.db.like
 			.filter("user.displayName", displayName)
 			.select([
 				"*",
@@ -184,7 +184,7 @@ export async function getUserTweets(
 	cuid: string | undefined,
 	after?: string
 ): Promise<Paginated<Tweet>> {
-	const paginated = await client.db.tweets
+	const paginated = await client.db.tweet
 		.filter("user.displayName", displayName)
 		.filter(notExists("replyOf.id"))
 		.select([
@@ -239,6 +239,6 @@ export function updateUserProfile(
 	data: { name: string; description: string; location: string }
 ) {
 	return useAwait(() => {
-		return client.db.users.updateOrThrow(id, data);
+		return client.db.user.updateOrThrow(id, data);
 	});
 }

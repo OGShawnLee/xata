@@ -15,11 +15,11 @@ export function createTweet(id: string, text: string) {
 		const operation = await client.transactions.run([
 			{
 				insert: {
-					table: "tweets",
+					table: "tweet",
 					record: { text, user: id, entities: { hashtags: getHashtags(text) } }
 				}
 			},
-			{ update: { table: "users", id, fields: { tweetCount: { $increment: 1 } } } }
+			{ update: { table: "user", id, fields: { tweetCount: { $increment: 1 } } } }
 		]);
 		return operation.results[0].id;
 	});
@@ -27,7 +27,7 @@ export function createTweet(id: string, text: string) {
 
 export function findTweet(id: string, displayName?: string) {
 	return useAwait<Tweet | null>(async () => {
-		const tweet = await client.db.tweets
+		const tweet = await client.db.tweet
 			.filter(displayName ? { id: id, "user.displayName": displayName } : { id: id })
 			.select([
 				"*",
@@ -98,7 +98,7 @@ export function findUserTweetWithStatus({
 
 export function getTweets(after?: string) {
 	return useAwait<Paginated<Tweet>>(async () => {
-		const paginated = await client.db.tweets
+		const paginated = await client.db.tweet
 			.select([
 				"*",
 				"user.description",
@@ -131,7 +131,7 @@ export function getTweets(after?: string) {
 }
 
 export async function getTweetReplies(id: string, cuid: string | undefined) {
-	const replies = await client.db.tweets
+	const replies = await client.db.tweet
 		.filter("replyOf", id)
 		.select([
 			"*",
@@ -173,7 +173,7 @@ export async function getTweetReplies(id: string, cuid: string | undefined) {
 
 export function getTweetsByHashtag(hashtag: string, cuid?: string) {
 	return useAwait<Paginated<Tweet>>(async () => {
-		const paginated = await client.db.tweets
+		const paginated = await client.db.tweet
 			.filter("entities.hashtags", includes("#" + hashtag.toLowerCase()))
 			.select([
 				"*",
@@ -222,9 +222,9 @@ export function reply(event: { id: string; cuid: string; hashtags: Hashtags; tex
 	const { id, cuid, text, hashtags } = event;
 	return useAwait(() => {
 		return client.transactions.run([
-			{ insert: { table: "tweets", record: { text, user: cuid, replyOf: id, hashtags } } },
-			{ update: { table: "tweets", id, fields: { replyCount: { $increment: 1 } } } },
-			{ update: { table: "users", id: cuid, fields: { tweetCount: { $increment: 1 } } } }
+			{ insert: { table: "tweet", record: { text, user: cuid, replyOf: id, hashtags } } },
+			{ update: { table: "tweet", id, fields: { replyCount: { $increment: 1 } } } },
+			{ update: { table: "user", id: cuid, fields: { tweetCount: { $increment: 1 } } } }
 		]);
 	});
 }

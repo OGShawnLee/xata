@@ -7,7 +7,7 @@ import { getTweetState } from "./user";
 
 export function findTweetQuotes(id: string, cuid: string | undefined) {
 	return useAwait<Tweet[]>(async () => {
-		const tweets = await client.db.tweets
+		const tweets = await client.db.tweet
 			.filter("quoteOf.id", id)
 			.select(["*", "user.description", "user.displayName", "user.name", "user.id"])
 			.sort("createdAt", "desc")
@@ -31,9 +31,9 @@ export function quote(event: { hashtags: Hashtags; text: string; tweet: string; 
 	const { hashtags, text, tweet, user } = event;
 	return useAwait(() => {
 		return client.transactions.run([
-			{ insert: { table: "tweets", record: { user, text, quoteOf: tweet, hashtags } } },
-			{ update: { table: "tweets", id: tweet, fields: { quoteCount: { $increment: 1 } } } },
-			{ update: { table: "users", id: user, fields: { tweetCount: { $increment: 1 } } } }
+			{ insert: { table: "tweet", record: { user, text, quoteOf: tweet, hashtags } } },
+			{ update: { table: "tweet", id: tweet, fields: { quoteCount: { $increment: 1 } } } },
+			{ update: { table: "user", id: user, fields: { tweetCount: { $increment: 1 } } } }
 		]);
 	});
 }
