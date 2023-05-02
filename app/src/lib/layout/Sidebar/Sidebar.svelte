@@ -2,7 +2,7 @@
 	import Link from "./Link.svelte";
 	import Search from "./Search.svelte";
 	import UserStatus from "./UserStatus.svelte";
-	import { Bell, Bookmark, Home, PenTool, Twitter, User } from "lucide-svelte";
+	import { Bell, Bookmark, Home, LogIn, PenTool, Twitter, User } from "lucide-svelte";
 	import { composeDialog, currentUser } from "$lib/state";
 
 	let className: string;
@@ -36,7 +36,8 @@
 			class="button button--cyan | w-full | grid place-content-center | rounded-xl"
 			href="/auth/sign-in"
 		>
-			<span> Sign In </span>
+			<span class="sr-only xl:not-sr-only"> Sign In </span>
+			<LogIn class="xl:hidden" />
 		</a>
 	{/if}
 </nav>
