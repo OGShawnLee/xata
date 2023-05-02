@@ -5,8 +5,8 @@
 	export let displayName: Nullable<string> = undefined;
 </script>
 
-<header class="border-b-2 border-zinc-800 leading-3">
-	<div class="px-8 pb-4 | flex items-center justify-between">
+<header class="h-20 border-b-2 border-zinc-800">
+	<div class="h-full px-8 | flex items-center justify-between">
 		<div>
 			<h1 class="text-white text-2xl font-bold">{title}</h1>
 			{#if displayName}
