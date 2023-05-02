@@ -2,7 +2,7 @@
 	import Link from "./Link.svelte";
 	import SearchInput from "./SearchInput.svelte";
 	import UserStatus from "./UserStatus.svelte";
-	import { Bell, Bookmark, Home, PenTool, User } from "lucide-svelte";
+	import { Bell, Bookmark, Home, PenTool, Twitter, User } from "lucide-svelte";
 	import { composeDialog, currentUser } from "$lib/state";
 
 	let className: string;
@@ -10,8 +10,8 @@
 	export { className as class };
 </script>
 
-<nav class="{className} | grid gap-12">
-	<i class="bx bxl-twitter text-4xl text-white" />
+<nav class="{className} | flex flex-col gap-12">
+	<Twitter class="stroke-white fill-white"/>
 	<SearchInput />
 	{#if $currentUser}
 		<div class="grid gap-6">
