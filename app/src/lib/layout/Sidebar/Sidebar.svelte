@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Link from "./Link.svelte";
-	import SearchInput from "./SearchInput.svelte";
+	import Search from "./Search.svelte";
 	import UserStatus from "./UserStatus.svelte";
 	import { Bell, Bookmark, Home, PenTool, Twitter, User } from "lucide-svelte";
 	import { composeDialog, currentUser } from "$lib/state";
@@ -10,9 +10,9 @@
 	export { className as class };
 </script>
 
-<nav class="{className} | flex flex-col gap-12">
-	<Twitter class="mx-auto stroke-white fill-white xl:mx-0"/>
-	<SearchInput />
+<nav class="{className} | flex flex-col items-center gap-6 xl:(gap-12 items-start)">
+	<Twitter class="mx-auto stroke-white fill-white xl:mx-0" />
+	<Search />
 	{#if $currentUser}
 		<div class="flex flex-col items-center gap-6 xl:items-start">
 			<Link icon={Home} href="/home" text="Home" />
@@ -32,7 +32,10 @@
 	{#if $currentUser}
 		<UserStatus displayName={$currentUser.displayName} name={$currentUser.name} />
 	{:else}
-		<a class="button button--cyan | grid place-content-center | rounded-xl" href="/auth/sign-in">
+		<a
+			class="button button--cyan | w-full | grid place-content-center | rounded-xl"
+			href="/auth/sign-in"
+		>
 			<span> Sign In </span>
 		</a>
 	{/if}

@@ -1,12 +1,20 @@
-<script>
+<script lang="ts">
+	import type { Maybe } from "malachite-ui/types";
 	import { page } from "$app/stores";
 	import { Search } from "lucide-svelte";
+
+	let className: Maybe<string> = undefined;
+
+	export { className as class };
+	export let big = false;
 </script>
 
-<form class="hidden xl:block" action="/search">
+<form class={className} action="/search">
 	<label class="sr-only" for="query">Search Term</label>
 	<div
-		class="group pl-2 h-10 | flex items-center gap-1.75 | border-2 border-zinc-800 rounded-xl overflow-hidden"
+		class="group {big
+			? 'pl-3 h-12'
+			: 'pl-2 h-10'} | flex items-center gap-1.75 | border-2 border-zinc-800 rounded-xl overflow-hidden"
 	>
 		<Search class="group-focus-within:stroke-white" />
 		<input
