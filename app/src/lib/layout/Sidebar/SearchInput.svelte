@@ -3,7 +3,7 @@
 	import { Search } from "lucide-svelte";
 </script>
 
-<form action="/search">
+<form class="hidden xl:block" action="/search">
 	<label class="sr-only" for="query">Search Term</label>
 	<div
 		class="group pl-2 h-10 | flex items-center gap-1.75 | border-2 border-zinc-800 rounded-xl overflow-hidden"

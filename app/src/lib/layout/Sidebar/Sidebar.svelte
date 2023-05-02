@@ -11,10 +11,10 @@
 </script>
 
 <nav class="{className} | flex flex-col gap-12">
-	<Twitter class="stroke-white fill-white"/>
+	<Twitter class="mx-auto stroke-white fill-white xl:mx-0"/>
 	<SearchInput />
 	{#if $currentUser}
-		<div class="grid gap-6">
+		<div class="flex flex-col items-center gap-6 xl:items-start">
 			<Link icon={Home} href="/home" text="Home" />
 			<Link icon={Bookmark} href="/i/bookmarks" text="Bookmarks" />
 			<Link icon={Bell} href="/i/notifications" text="Notifications" />
