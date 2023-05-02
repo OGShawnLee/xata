@@ -44,7 +44,7 @@
 					</div>
 				{/if}
 				<button
-					class="button-sm button--sky | px-6 rounded-full"
+					class="button-sm button--cyan | px-6 rounded-full"
 					class:button--disabled={disabled}
 					{disabled}
 				>

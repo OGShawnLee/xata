@@ -32,7 +32,7 @@
 	{#if $currentUser}
 		<UserStatus displayName={$currentUser.displayName} name={$currentUser.name} />
 	{:else}
-		<a class="button button--sky | grid place-content-center | rounded-xl" href="/auth/sign-in">
+		<a class="button button--cyan | grid place-content-center | rounded-xl" href="/auth/sign-in">
 			<span> Sign In </span>
 		</a>
 	{/if}

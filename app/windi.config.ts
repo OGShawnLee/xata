@@ -7,10 +7,11 @@ export default defineConfig({
 		"button-xs": "h-8 min-h-8 | outline-none border-2 font-medium focus:(ring-2 ring-white)",
 		"button--danger": "hover:(bg-rose-900/50 text-rose-400 focus:ring-rose-500)",
 		"button--disabled": "opacity-50 cursor-not-allowed",
-		"button--sky": "bg-sky-600 border-transparent text-white hover:bg-sky-500 focus:border-black",
+		"button--cyan":
+			"bg-cyan-600 border-transparent text-white hover:bg-cyan-500 focus:border-black",
 		"button--white":
 			"bg-white border-transparent text-zinc-900 hover:opacity-90 focus:border-black",
-		"button--zinc": "border-zinc-800 text-zinc-100 hover:bg-zinc-800",
+		"button--zinc": "border-zinc-800 text-zinc-100 hover:bg-zinc-800"
 	},
 	theme: {
 		extend: {

@@ -22,7 +22,7 @@
 			<span class="text-sm font-roboto text-zinc-300">
 				Already have an account
 				<a
-					class="text-sky-400 font-medium outline-none focus:underline hover:text-sky-300"
+					class="text-cyan-400 font-medium outline-none focus:underline hover:text-cyan-300"
 					href="/auth/sign-in"
 				>
 					Sign in!
