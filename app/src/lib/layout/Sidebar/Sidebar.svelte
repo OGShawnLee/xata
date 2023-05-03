@@ -1,8 +1,9 @@
 <script lang="ts">
 	import Link from "./Link.svelte";
 	import Search from "./Search.svelte";
+	import SignInButton from "./SignInButton.svelte";
 	import UserStatus from "./UserStatus.svelte";
-	import { Bell, Bookmark, Home, LogIn, PenTool, Twitter, User } from "lucide-svelte";
+	import { Bell, Bookmark, Home, PenTool, Twitter, User } from "lucide-svelte";
 	import { composeDialog, currentUser } from "$lib/state";
 
 	let className: string;
@@ -32,12 +33,6 @@
 	{#if $currentUser}
 		<UserStatus displayName={$currentUser.displayName} name={$currentUser.name} />
 	{:else}
-		<a
-			class="button button--cyan | w-full | grid place-content-center | rounded-xl"
-			href="/auth/sign-in"
-		>
-			<span class="sr-only xl:not-sr-only"> Sign In </span>
-			<LogIn class="xl:hidden" />
-		</a>
+		<SignInButton />
 	{/if}
 </nav>
