@@ -1,8 +1,9 @@
-export { ButtonClose, ButtonFollow, ButtonWhite } from "./Button";
+export { ButtonClose, ButtonFollow, ButtonMessage, ButtonWhite } from "./Button";
 export { default as CardUser } from "./CardUser.svelte";
 export { default as Count } from "./Count.svelte";
 export { default as Dialog } from "./Dialog.svelte";
 export { CharCount, Input, TextArea } from "./Input";
+export { default as MessageBlob } from "./Message.svelte";
 export { default as Notification } from "./Notification.svelte";
 export { default as Time } from "./Time.svelte";
 export { Tab, TabGroup } from "./Tabs";

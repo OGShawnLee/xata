@@ -2,7 +2,7 @@
 	import DialogEditProfile from "./DialogEditProfile.svelte";
 	import TabGroup from "./TabGroup.svelte";
 	import UserInfo from "./UserInfo.svelte";
-	import { ButtonFollow } from "$lib/components";
+	import { ButtonFollow, ButtonMessage } from "$lib/components";
 	import { Header } from "$lib/layout";
 	import { useSwitch } from "malachite-ui/hooks";
 	import { currentUser } from "$lib/state";
@@ -33,9 +33,14 @@
 	<Header title={foundUser.name} displayName={foundUser.displayName}>
 		<svelte:fragment slot="button">
 			{#if isOwner}
-				<button class="button button--zinc | px-8 rounded-full" on:click={open.toggle}> Edit Profile </button>
+				<button class="button button--zinc | px-8 rounded-full" on:click={open.toggle}>
+					Edit Profile
+				</button>
 			{:else if $currentUser}
-				<ButtonFollow displayName={foundUser.displayName} isFollowed={foundUser.isFollowed} />
+				<div class="flex gap-3">
+					<ButtonMessage to={foundUser.id} />
+					<ButtonFollow displayName={foundUser.displayName} isFollowed={foundUser.isFollowed} />
+				</div>
 			{/if}
 		</svelte:fragment>
 	</Header>

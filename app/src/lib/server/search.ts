@@ -3,7 +3,7 @@ import client from "$lib/server/client";
 import { useAwait } from "$lib/hooks";
 import { isNullish, isWhitespace } from "malachite-ui/predicate";
 
-function findUserObject(id: string) {
+export function findUserObject(id: string) {
 	return useAwait<User | undefined>(async () => {
 		const foundUser = await client.db.user
 			.filter("id", id)

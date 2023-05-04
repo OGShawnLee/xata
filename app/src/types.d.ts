@@ -1,11 +1,23 @@
 import type { Nullable } from "malachite-ui/types";
 
+interface Chat {
+	id: string;
+	recipient: Recipient;
+}
+
 type Hashtags = string[] | undefined;
 
 interface JWTPayloadState {
 	id: string;
 	displayName: string;
 	name: string;
+}
+
+interface Message {
+	id: string;
+	createdAt: Date;
+	user: string | undefined;
+	text: Nullable<string>;
 }
 
 interface NotificationEvent {
@@ -40,6 +52,11 @@ type Quote = Pick<Tweet, "id" | "createdAt" | "text" | "user">;
 type Reply = Pick<Tweet, "id" | "user"> | Tweet;
 
 type Retweet = Pick<Tweet, "id" | "createdAt" | "quoteOf" | "text" | "user">;
+
+interface Recipient extends User {
+	createdAt: Date;
+	followerCount: number;
+}
 
 interface Tweet {
 	id: string;

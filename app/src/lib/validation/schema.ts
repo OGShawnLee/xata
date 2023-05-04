@@ -36,6 +36,15 @@ export const folderSchema = z.object({
 		.optional()
 });
 
+export const messageSchema = z
+	.string({
+		required_error: errorMessage.required("Message"),
+		invalid_type_error: errorMessage.invalidType("Message", "string")
+	})
+	.min(1, errorMessage.min("Message", 1))
+	.max(280, errorMessage.max("Message", 280))
+	.trim();
+
 export const notificationSchema = z.object({
 	type: z.enum(["FOLLOW", "LIKE", "REPLY", "RETWEET"]),
 	"from.id": z.string(),

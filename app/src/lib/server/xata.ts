@@ -156,6 +156,7 @@ const tables = [
       { name: "recipient", type: "link", link: { table: "user" } },
       { name: "participants", type: "multiple" },
       { name: "lastMessage", type: "link", link: { table: "message" } },
+      { name: "draft", type: "bool", notNull: true, defaultValue: "true" },
     ],
   },
   {

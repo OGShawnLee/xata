@@ -1,6 +1,6 @@
-import type { Notification, NotificationEventType, Tweet, User } from "@types";
+import type { Chat, Notification, NotificationEventType, Recipient, Tweet, User } from "@types";
 import type { SelectedPick } from "@xata.io/client";
-import type { Nullable } from "malachite-ui/types";
+import type { Nullable, NullableRecursively } from "malachite-ui/types";
 import type { NotificationsRecord, TweetsRecord } from "./xata";
 import { useAwait } from "$lib/hooks";
 import { genSalt, hash } from "bcrypt";
@@ -124,13 +124,19 @@ export function createTweetObject(tweet: QueryTweet): Tweet {
 	};
 }
 
-export function createUserObject(user: Nullable<User>): User {
-	return {
-		id: user?.id,
-		description: user?.description,
-		displayName: user?.displayName,
-		name: user?.name
-	};
+export function createUserObject<T extends boolean = true>(
+	user: Nullable<NullableRecursively<User>>,
+	description = true as T
+): [T] extends [true] ? User : Recipient {
+	if (description)
+		return {
+			id: user?.id,
+			description: user?.description,
+			displayName: user?.displayName,
+			name: user?.name
+		} as User;
+
+	return { id: user?.id, displayName: user?.displayName, name: user?.name };
 }
 
 export function response(status: number) {

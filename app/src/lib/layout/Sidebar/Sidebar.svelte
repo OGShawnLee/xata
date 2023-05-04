@@ -3,7 +3,7 @@
 	import Search from "./Search.svelte";
 	import SignInButton from "./SignInButton.svelte";
 	import UserStatus from "./UserStatus.svelte";
-	import { Bell, Bookmark, Home, PenTool, Twitter, User } from "lucide-svelte";
+	import { Bell, Bookmark, Home, Mail, PenTool, Twitter, User } from "lucide-svelte";
 	import { composeDialog, currentUser } from "$lib/state";
 
 	let className: string;
@@ -19,6 +19,7 @@
 			<Link icon={Home} href="/home" text="Home" />
 			<Link icon={Bookmark} href="/i/bookmarks" text="Bookmarks" />
 			<Link icon={Bell} href="/i/notifications" text="Notifications" />
+			<Link icon={Mail} href="/i/messages" text="Messages" />
 			<Link icon={User} href="/{$currentUser.displayName}" text="Profile" />
 			<Link
 				icon={PenTool}

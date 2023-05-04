@@ -1,6 +1,10 @@
 <script>
 	import "virtual:windi.css";
+	import { DialogCompose, DialogWarning } from "$lib/layout";
 </script>
+
+<DialogCompose />
+<DialogWarning />
 
 <slot />
 
