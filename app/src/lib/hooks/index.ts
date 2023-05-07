@@ -19,6 +19,7 @@ export function useCatch<T, E>(fn: () => T): Result<T, E> {
 }
 
 export { default as useAsideLayout } from "./useAsideLayout";
+export { default as useChatRoom } from "./useChatRoom";
 export { default as useComposeDialog } from "./useComposeDialog";
 export { default as useInfiniteScrolling } from "./useInfiniteScrolling";
 export { default as usePageDialog } from "./usePageDialog";

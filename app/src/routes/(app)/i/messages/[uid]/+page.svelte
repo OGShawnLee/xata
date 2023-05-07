@@ -1,15 +1,14 @@
 <script>
-	import ChatContext from "./ChatContext";
 	import ChatHeader from "./ChatHeader.svelte";
 	import ChatMessages from "./ChatMessages.svelte";
 	import ChatInput from "./ChatInput.svelte";
-	import { writable } from "svelte/store";
+	import { useChatRoom } from "$lib/hooks";
 
 	export let data;
 
-	const chatContext = ChatContext.setContext(writable(data));
+	const { remount } = useChatRoom(data.token, data);
 
-	$: chatContext.set(data);
+	$: remount(data.token, data);
 
 	let intersecting = true;
 </script>
@@ -22,9 +21,7 @@
 	<ChatHeader
 		class="absolute top-0 inset-x-0 | bg-zinc-900/90 transform transition duration-250 {intersecting
 			? 'opacity-0 pointer-events-none'
-			: 'opacity-100'} "
-		displayName={data.recipient.displayName}
-		name={data.recipient.name}
+			: 'opacity-100'}"
 	/>
 	<div class="h-full | flex flex-col justify-between gap-6">
 		<ChatMessages bind:intersecting />

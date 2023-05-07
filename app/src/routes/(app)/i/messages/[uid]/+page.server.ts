@@ -6,7 +6,8 @@ import { error, redirect } from "@sveltejs/kit";
 import { isNullish } from "malachite-ui/predicate";
 import { useAwait } from "$lib/hooks";
 import { findChat } from "$lib/server/chat";
-import { isDefined } from "$lib/utils/predicate";
+import { sign } from "jsonwebtoken";
+import { CHAT_TOKEN } from "$env/static/private";
 
 export const load: PageServerLoad = async ({ locals: { user }, params }) => {
 	if (user.isAnonymous) throw redirect(303, "/auth/sign-in");
@@ -20,11 +21,13 @@ export const load: PageServerLoad = async ({ locals: { user }, params }) => {
 	if (chat.data) {
 		const messages = await getChatMessages(chat.data.id);
 		if (messages.failed) throw error(500, { message: "UNABLE TO LOAD CHAT MESSAGES." });
-		return { messages: messages.data, recipient: recipient.data, user: user.data };
+		const token = createChatToken(user.data.id, chat.data.id, chat.data.draft);
+		return { messages: messages.data, recipient: recipient.data, token, user: user.data };
 	} else {
 		const chat = await createChat(user.data.id, params.uid);
 		if (chat.failed) throw error(500, { message: "UNABLE TO CRATE CHAT." });
-		return { messages: [], recipient: recipient.data, user: user.data };
+		const token = createChatToken(user.data.id, chat.data.id, chat.data.draft);
+		return { messages: [], recipient: recipient.data, token, user: user.data };
 	}
 };
 
@@ -39,8 +42,13 @@ function createChat(cuid: string, rid: string) {
 			participants: [cuid, rid],
 			recipient: rid
 		});
-		return chat.id;
+		return { id: chat.id, draft: chat.draft };
 	});
+}
+
+// no good exposing token to client but at least it is not the auth one
+function createChatToken(cuid: string, chat: string, draft: boolean) {
+	return sign({ chat, cuid, draft }, CHAT_TOKEN, { expiresIn: "8h" });
 }
 
 function findRecipient(uid: string) {
@@ -58,7 +66,7 @@ function findRecipient(uid: string) {
 			description: user.description,
 			displayName: user.displayName,
 			name: user.name,
-			followerCount: user.followerCount,
+			followerCount: user.followerCount
 		};
 	});
 }

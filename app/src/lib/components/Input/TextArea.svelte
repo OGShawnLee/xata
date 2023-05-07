@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Action } from "svelte/action";
 	import { handleExpandableArea } from "$lib/actions";
 	import { isWhitespace } from "malachite-ui/predicate";
 

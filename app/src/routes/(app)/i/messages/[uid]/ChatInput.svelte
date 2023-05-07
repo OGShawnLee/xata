@@ -1,27 +1,57 @@
 <script lang="ts">
 	import { Rocket } from "lucide-svelte";
 	import { TextArea } from "$lib/components";
-	import { enhance } from "$app/forms";
+	import { applyAction, deserialize } from "$app/forms";
+	import { invalidateAll } from "$app/navigation";
+	import { chatContext } from "$lib/context";
+	import { isNullish, isWhitespace } from "malachite-ui/predicate";
+
+	const { connected, emitMessage } = chatContext.getContext();
 
 	let form: HTMLFormElement;
+	let input: HTMLTextAreaElement;
+	let text: string | undefined = undefined;
 
-	// Submit on enter
-	function handleKeydown(event: KeyboardEvent) {
+	async function handleSubmit(this: HTMLFormElement) {
+		if (isNullish(text) || isWhitespace(text)) return;
+		if ($connected) {
+			emitMessage(text);
+			text = "";
+			return;
+		}
+
+		const data = new FormData(this);
+		text = "";
+		const response = await fetch(this.action, {
+			method: "POST",
+			body: data
+		});
+		const result = deserialize(await response.text());
+		if (result.type === "success") {
+			await invalidateAll();
+		}
+
+		applyAction(result);
+	}
+
+	function onKeydown(event: KeyboardEvent) {
 		if (event.code !== "Enter" || event.shiftKey) return;
-		form.submit();
 		event.preventDefault();
+		handleSubmit.bind(form)();
 	}
 </script>
 
-<form class="mt-auto" method="post" bind:this={form} use:enhance>
+<form class="mt-auto" method="post" bind:this={form} on:submit|preventDefault={handleSubmit}>
 	<div class="group flex items-center | bg-zinc-800 rounded-2xl overflow-hidden">
 		<TextArea
 			label="Message"
 			id="message"
 			placeholder="Start a new message"
 			padding="p-2.75"
-			on:keydown={handleKeydown}
 			required
+			bind:element={input}
+			bind:value={text}
+			on:keydown={onKeydown}
 		/>
 		<button
 			type="submit"

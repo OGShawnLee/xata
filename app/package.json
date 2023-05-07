@@ -27,6 +27,7 @@
 		"prettier": "^2.8.7",
 		"prettier-plugin-svelte": "^2.10.0",
 		"sanitize-html": "^2.10.0",
+		"socket.io-client": "^4.6.1",
 		"svelte": "^3.58.0",
 		"svelte-check": "^3.2.0",
 		"svelte-intersection-observer": "^0.10.0",

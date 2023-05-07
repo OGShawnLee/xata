@@ -1,0 +1,21 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "vite-node src/server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jsonwebtoken": "^9.0.1",
+    "@xata.io/client": "^0.23.4",
+    "devalue": "^4.3.0",
+    "dotenv": "^16.0.3",
+    "jsonwebtoken": "^9.0.0",
+    "socket.io": "^4.6.1",
+    "vite-node": "^0.31.0",
+    "zod": "^3.21.4"
+  }
+}

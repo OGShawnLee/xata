@@ -1,8 +1,21 @@
-import type { Nullable } from "malachite-ui/types";
+import type { Nullable, Ref } from "malachite-ui/types";
+import type { Action } from "svelte/action";
 
 interface Chat {
 	id: string;
 	recipient: Recipient;
+}
+
+interface ChatData {
+	recipient: Recipient;
+	messages: Message[];
+}
+
+interface ChatContext {
+	connected: Readable<boolean>;
+	messages: Ref<Message[]>;
+	recipient: Ref<Recipient>;
+	emitMessage: (text: string) => void;
 }
 
 type Hashtags = string[] | undefined;
