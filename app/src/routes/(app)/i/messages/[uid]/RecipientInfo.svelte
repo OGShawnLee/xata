@@ -1,16 +1,21 @@
-<script>
+<script lang="ts">
+	import Intersection from 'svelte-intersection-observer'
 	import { chatContext } from "$lib/context";
 	import { plural } from "$lib/utils";
 
-	const { recipient } = chatContext.getContext();
+	const { recipient, intersecting } = chatContext.getContext();
 	const formatter = Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "short" });
+
+	let element: HTMLElement
 </script>
 
-<section class="p-8 | flex flex-col gap-3 | border-b-2 border-zinc-800 text-center">
-	<header>
-		<h2 class="text-lg font-medium text-white">{$recipient.name}</h2>
-		<a class="text-sm text-zinc-500" href="/{$recipient.displayName}">@{$recipient.displayName}</a>
-	</header>
+<section class="p-8 | flex flex-col gap-3 | border-b-2 border-zinc-800 text-center lg:mt-18">
+	<Intersection {element} bind:intersecting={$intersecting}>
+		<header bind:this={element}>
+			<h2 class="text-lg font-medium text-white">{$recipient.name}</h2>
+			<a class="text-sm text-zinc-500" href="/{$recipient.displayName}">@{$recipient.displayName}</a>
+		</header>
+	</Intersection>
 	{#if $recipient.description}
 		<p>{$recipient.description}</p>
 	{/if}

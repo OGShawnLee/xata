@@ -1,5 +1,6 @@
 import type { Nullable, Ref } from "malachite-ui/types";
 import type { Action } from "svelte/action";
+import type { Writable } from "svelte/store";
 
 interface Chat {
 	id: string;
@@ -13,6 +14,7 @@ interface ChatData {
 
 interface ChatContext {
 	connected: Readable<boolean>;
+	intersecting: Writable<boolean>;
 	messages: Ref<Message[]>;
 	recipient: Ref<Recipient>;
 	emitMessage: (text: string) => void;

@@ -6,15 +6,15 @@ import { computed, ref } from "malachite-ui/utils";
 import { io } from "socket.io-client";
 import { onMount, tick } from "svelte";
 import { parse } from "devalue";
-import { applyAction, deserialize } from "$app/forms";
-import { invalidateAll } from "$app/navigation";
 import { chatContext } from "$lib/context";
+import { writable } from "svelte/store";
 
 export default function useChatRoom(initialToken: string, data: ChatData) {
 	const connected = ref(false);
 	const messages = ref(data.messages);
 	const lastMessage = computed(messages, (messages) => messages.at(-1));
 	const recipient = ref(data.recipient);
+	const intersecting = writable(true);
 
 	let socket: Socket | undefined;
 
@@ -60,7 +60,7 @@ export default function useChatRoom(initialToken: string, data: ChatData) {
 		initialToken = token;
 	}
 
-	chatContext.setContext({ connected, emitMessage, messages, recipient });
+	chatContext.setContext({ connected, emitMessage, intersecting, messages, recipient });
 
 	return { remount };
 }

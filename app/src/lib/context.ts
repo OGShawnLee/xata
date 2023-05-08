@@ -13,6 +13,7 @@ export const chatContext = useContext({
 	predicate: (context): context is ChatContext =>
 		isInterface<ChatContext>(context, {
 			connected: isStore,
+			intersecting: isWritable,
 			messages: isRef,
 			recipient: isRef,
 			emitMessage: isFunction

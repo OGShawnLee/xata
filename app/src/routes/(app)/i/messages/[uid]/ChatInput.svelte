@@ -41,8 +41,13 @@
 	}
 </script>
 
-<form class="mt-auto" method="post" bind:this={form} on:submit|preventDefault={handleSubmit}>
-	<div class="group flex items-center | bg-zinc-800 rounded-2xl overflow-hidden">
+<form
+	class="sticky bottom-0 min-h-22 mt-auto mr-4 | flex items-center | bg-zinc-900/80 backdrop-filter backdrop-blur-sm lg:(mr-0 min-h-10)"
+	method="post"
+	bind:this={form}
+	on:submit|preventDefault={handleSubmit}
+>
+	<div class="w-full | group flex items-center | bg-zinc-800 rounded-2xl overflow-hidden">
 		<TextArea
 			label="Message"
 			id="message"
