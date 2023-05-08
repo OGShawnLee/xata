@@ -20,7 +20,11 @@ export default function useChatRoom(initialToken: string, data: ChatData) {
 
 	onMount(() => {
 		connect(initialToken);
-		return useCleanup(() => socket?.disconnect(), lastMessage.subscribe(handleScrollIntoView));
+		const free = lastMessage.subscribe(handleScrollIntoView);
+		return () => {
+			free();
+			socket?.disconnect();
+		};
 	});
 
 	function connect(token: string) {
