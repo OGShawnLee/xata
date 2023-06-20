@@ -18,6 +18,7 @@ export function useCatch<T, E>(fn: () => T): Result<T, E> {
 	}
 }
 
+export { default as useAPI } from "./useAPI";
 export { default as useAsideLayout } from "./useAsideLayout";
 export { default as useChatRoom } from "./useChatRoom";
 export { default as useComposeDialog } from "./useComposeDialog";

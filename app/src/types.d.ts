@@ -14,6 +14,7 @@ interface ChatData {
 
 interface ChatContext {
 	connected: Readable<boolean>;
+	formAction: Readable<string>;
 	intersecting: Writable<boolean>;
 	messages: Ref<Message[]>;
 	recipient: Ref<Recipient>;

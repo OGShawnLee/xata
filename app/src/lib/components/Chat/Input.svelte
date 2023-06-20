@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { Rocket } from "lucide-svelte";
 	import { TextArea } from "$lib/components";
-	import { applyAction, deserialize } from "$app/forms";
-	import { invalidateAll } from "$app/navigation";
 	import { chatContext } from "$lib/context";
 	import { isNullish, isWhitespace } from "malachite-ui/predicate";
+	import { useAPI } from "$lib/hooks";
 
-	const { connected, emitMessage } = chatContext.getContext();
+	export let isChatHead = false;
+
+	const { connected, emitMessage, formAction, recipient, messages } = chatContext.getContext();
 
 	let form: HTMLFormElement;
 	let input: HTMLTextAreaElement;
@@ -17,21 +18,16 @@
 		if ($connected) {
 			emitMessage(text);
 			text = "";
-			return;
+		} else if ($recipient.id) {
+			const body = new FormData(form);
+			text = "";
+			const result = await useAPI("/messages/[uid]:POST", $recipient.id, body);
+			if (result.failed) return console.warn(result.error);
+			messages.update((messages) => {
+				messages.push(result.data);
+				return messages;
+			});
 		}
-
-		const data = new FormData(this);
-		text = "";
-		const response = await fetch(this.action, {
-			method: "POST",
-			body: data
-		});
-		const result = deserialize(await response.text());
-		if (result.type === "success") {
-			await invalidateAll();
-		}
-
-		applyAction(result);
 	}
 
 	function onKeydown(event: KeyboardEvent) {
@@ -42,12 +38,19 @@
 </script>
 
 <form
-	class="sticky bottom-0 min-h-22 mt-auto mr-4 | flex items-center | bg-zinc-900/80 backdrop-filter backdrop-blur-sm lg:(mr-0 min-h-10)"
+	class="sticky bottom-0 inset-x-0 min-h-22 mt-auto mr-4 | flex items-center | {isChatHead
+		? 'bg-transparent'
+		: 'bg-zinc-900/80 backdrop-filter backdrop-blur-sm'} lg:(mr-0 min-h-10)"
+	action={$formAction}
 	method="post"
 	bind:this={form}
 	on:submit|preventDefault={handleSubmit}
 >
-	<div class="w-full | group flex items-center | bg-zinc-800 rounded-2xl overflow-hidden">
+	<div
+		class="w-full | group flex items-center | {isChatHead
+			? 'bg-zinc-700'
+			: 'bg-zinc-800 rounded-2xl overflow-hidden'}"
+	>
 		<TextArea
 			label="Message"
 			id="message"

@@ -3,13 +3,14 @@ import type { Socket } from "socket.io-client";
 import { isNullish } from "malachite-ui/predicate";
 import { computed, ref } from "malachite-ui/utils";
 import { io } from "socket.io-client";
-import { onMount, tick } from "svelte";
+import { onDestroy, onMount, tick } from "svelte";
 import { parse } from "devalue";
 import { chatContext } from "$lib/context";
 import { writable } from "svelte/store";
 
-export default function useChatRoom(initialToken: string, data: ChatData) {
+export default function useChatRoom(initialToken: string, data: ChatData, isDOMMounted = false) {
 	const connected = ref(false);
+	const formAction = ref("/i/messages/" + data.recipient.id);
 	const messages = ref(data.messages);
 	const lastMessage = computed(messages, (messages) => messages.at(-1));
 	const recipient = ref(data.recipient);
@@ -17,14 +18,24 @@ export default function useChatRoom(initialToken: string, data: ChatData) {
 
 	let socket: Socket | undefined;
 
-	onMount(() => {
+	if (isDOMMounted) {
 		connect(initialToken);
 		const free = lastMessage.subscribe(handleScrollIntoView);
-		return () => {
+		onDestroy(() => {
 			free();
 			socket?.disconnect();
-		};
-	});
+		})
+	} else {
+		onMount(() => {
+			connect(initialToken);
+			const free = lastMessage.subscribe(handleScrollIntoView);
+			return () => {
+				free();
+				socket?.disconnect();
+			};
+		});
+	}
+
 
 	function connect(token: string) {
 		socket = io("ws://localhost:3000", { auth: { token } });
@@ -57,9 +68,10 @@ export default function useChatRoom(initialToken: string, data: ChatData) {
 		socket?.disconnect();
 		connect(token);
 		initialToken = token;
+		formAction.set("/i/messages/" + data.recipient.id);
 	}
 
-	chatContext.setContext({ connected, emitMessage, intersecting, messages, recipient });
+	chatContext.setContext({ connected, formAction, emitMessage, intersecting, messages, recipient });
 
-	return { remount };
+	return remount;
 }

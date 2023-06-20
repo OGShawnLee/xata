@@ -1,13 +1,10 @@
 import type { Actions, PageServerLoad } from "./$types";
-import type { Message, Recipient } from "@types";
 import Action from "./Actions";
 import client from "$lib/server/client";
 import { error, redirect } from "@sveltejs/kit";
 import { isNullish } from "malachite-ui/predicate";
 import { useAwait } from "$lib/hooks";
-import { findChat } from "$lib/server/chat";
-import { sign } from "jsonwebtoken";
-import { CHAT_TOKEN } from "$env/static/private";
+import { createChatToken, findChat, findRecipient, getChatMessages } from "$lib/server/chat";
 
 export const load: PageServerLoad = async ({ locals: { user }, params }) => {
 	if (user.isAnonymous) throw redirect(303, "/auth/sign-in");
@@ -43,44 +40,5 @@ function createChat(cuid: string, rid: string) {
 			recipient: rid
 		});
 		return { id: chat.id, draft: chat.draft };
-	});
-}
-
-// no good exposing token to client but at least it is not the auth one
-function createChatToken(cuid: string, chat: string, draft: boolean) {
-	return sign({ chat, cuid, draft }, CHAT_TOKEN, { expiresIn: "8h" });
-}
-
-function findRecipient(uid: string) {
-	return useAwait<Recipient | undefined>(async () => {
-		const user = await client.db.user
-			.filter("id", uid)
-			.select(["createdAt", "description", "displayName", "followerCount", "name"])
-			.getFirst();
-
-		if (isNullish(user)) return;
-
-		return {
-			id: user.id,
-			createdAt: user.createdAt,
-			description: user.description,
-			displayName: user.displayName,
-			name: user.name,
-			followerCount: user.followerCount
-		};
-	});
-}
-
-function getChatMessages(chat: string) {
-	return useAwait<Message[]>(async () => {
-		const records = await client.db.message.filter("chat", chat).getAll();
-		return records.map((record) => {
-			return {
-				id: record.id,
-				createdAt: record.createdAt,
-				user: record.user?.id,
-				text: record.text
-			};
-		});
 	});
 }

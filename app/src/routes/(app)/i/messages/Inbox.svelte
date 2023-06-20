@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Chat } from "@types";
-	import Conversation from './Conversation.svelte'	
+	import { ConversationLink } from "$lib/components";
 
 	export let inbox: Chat[];
 </script>
@@ -8,7 +8,7 @@
 {#if inbox.length}
 	<ul>
 		{#each inbox as { id, recipient } (id)}
-			<Conversation {recipient}/>
+			<ConversationLink {recipient} />
 		{/each}
 	</ul>
 {:else}
