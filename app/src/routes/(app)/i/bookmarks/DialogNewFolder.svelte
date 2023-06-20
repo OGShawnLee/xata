@@ -23,7 +23,8 @@
 		use:enhance={() => () => {
 			close();
 			description = name = "";
-		}}>
+		}}
+	>
 		<header class="px-8 pb-4 | flex items-center gap-4.5 | border-b-2 border-zinc-800">
 			<ButtonClose {close} />
 			<DialogTitle class="text-xl text-white font-medium">Create Bookmark Folder</DialogTitle>
@@ -38,7 +39,7 @@
 				id="description"
 				maxlength={120}
 				minlength={0}
-				bind:value={description} 
+				bind:value={description}
 			/>
 		</div>
 	</form>

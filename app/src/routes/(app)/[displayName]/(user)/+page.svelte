@@ -24,7 +24,8 @@
 <Feed
 	loadingComponent={TweetLoading}
 	more={data.feed.page.more}
-	on:intersect={() => fetchMoreUserTweets(data.feed.page)}>
+	on:intersect={() => fetchMoreUserTweets(data.feed.page)}
+>
 	{#if data.pinnedTweet}
 		<TweetComponent tweet={data.pinnedTweet} isPinned />
 	{/if}

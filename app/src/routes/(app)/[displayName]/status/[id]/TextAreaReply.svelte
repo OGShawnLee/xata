@@ -38,7 +38,8 @@
 					label="Reply"
 					placeholder="What is your reply?"
 					bind:charCount
-					bind:element />
+					bind:element
+				/>
 				{#if isTextAreaToRender}
 					<div class="ml-auto flex items-center gap-3">
 						<CharCount {charCount} />

@@ -5,4 +5,4 @@ export { default as Header } from "./Header.svelte";
 export { RelevantPeople } from "./Aside";
 export { default as Sidebar } from "./Sidebar";
 export { default as TweetTextArea } from "./TweetTextArea.svelte";
-export { ChatHead, RecipientInfo } from './Chat';
+export { ChatHead, RecipientInfo } from "./Chat";

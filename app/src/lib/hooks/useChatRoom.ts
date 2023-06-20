@@ -24,7 +24,7 @@ export default function useChatRoom(initialToken: string, data: ChatData, isDOMM
 		onDestroy(() => {
 			free();
 			socket?.disconnect();
-		})
+		});
 	} else {
 		onMount(() => {
 			connect(initialToken);
@@ -35,7 +35,6 @@ export default function useChatRoom(initialToken: string, data: ChatData, isDOMM
 			};
 		});
 	}
-
 
 	function connect(token: string) {
 		socket = io("ws://localhost:3000", { auth: { token } });

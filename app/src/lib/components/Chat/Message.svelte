@@ -3,7 +3,7 @@
 	import { currentUser } from "$lib/state";
 
 	export let message: Message;
-	export let lighter = false
+	export let lighter = false;
 
 	const isCurrentUser = $currentUser?.id === message.user;
 </script>

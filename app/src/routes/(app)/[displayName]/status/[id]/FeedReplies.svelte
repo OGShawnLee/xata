@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Tweet } from '@types'
+	import type { Tweet } from "@types";
 	import { Tweet as TweetComponent, TweetLoading } from "$lib/components";
 	import { range } from "$lib/utils";
 

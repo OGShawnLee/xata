@@ -29,7 +29,13 @@
 			>
 				Unfollow
 			</button>
-			<button class="button button--zinc | w-full rounded-full" on:click={close} bind:this={buttonClose}> Cancel </button>
+			<button
+				class="button button--zinc | w-full rounded-full"
+				on:click={close}
+				bind:this={buttonClose}
+			>
+				Cancel
+			</button>
 		</div>
 	</div>
 </Dialog>

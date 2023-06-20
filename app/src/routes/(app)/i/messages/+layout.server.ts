@@ -1,6 +1,6 @@
 import type { LayoutServerLoad } from "./$types";
 import { error, redirect } from "@sveltejs/kit";
-import { getInbox } from '$lib/server/chat'
+import { getInbox } from "$lib/server/chat";
 
 export const load: LayoutServerLoad = async ({ locals: { user } }) => {
 	if (user.isAnonymous) throw redirect(303, "/auth/sign-in");

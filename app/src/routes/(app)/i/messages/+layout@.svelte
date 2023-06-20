@@ -32,7 +32,9 @@
 	{/if}
 
 	{#if innerWidth > 1024 || inChatPage}
-		<main class="h-full pt-4 pl-22 | sm:pl-26 md:pl-8 lg:(max-h-screen pl-8 pb-8 col-span-7) xl:col-span-5">
+		<main
+			class="h-full pt-4 pl-22 | sm:pl-26 md:pl-8 lg:(max-h-screen pl-8 pb-8 col-span-7) xl:col-span-5"
+		>
 			<slot />
 		</main>
 	{/if}

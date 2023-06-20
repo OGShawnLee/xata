@@ -8,8 +8,8 @@
 <div>
 	<Header title={data.foundUser.name} displayName={data.foundUser.displayName} />
 	<TabGroup borderTop={false}>
-		<Tab text="Following" href="following" auto/>
-		<Tab text="Followers" href="followers" auto/>
+		<Tab text="Following" href="following" auto />
+		<Tab text="Followers" href="followers" auto />
 	</TabGroup>
 </div>
 <slot />

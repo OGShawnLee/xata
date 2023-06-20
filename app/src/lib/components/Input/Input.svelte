@@ -98,7 +98,7 @@
 			{/if}
 		</div>
 		{#if error}
-			<div class="flex items-center gap-1.5 | text-rose-400 ">
+			<div class="flex items-center gap-1.5 | text-rose-400">
 				<i class="bx bx-error" />
 				<span class="text-xs font-roboto"> {error} </span>
 			</div>

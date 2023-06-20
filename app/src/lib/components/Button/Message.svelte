@@ -2,7 +2,7 @@
 	import type { Nullable } from "malachite-ui/types";
 	import { MessageCircle } from "lucide-svelte";
 
-	export let to: { id: string, displayName: Nullable<string> };
+	export let to: { id: string; displayName: Nullable<string> };
 </script>
 
 <a

@@ -23,7 +23,8 @@
 		counter={false}
 		icon={MoreHorizontal}
 		iconClass="stroke-zinc-500"
-		iconSize={20}>
+		iconSize={20}
+	>
 		<MenuItem as="fragment" let:item let:isActive>
 			<form action="/home?/{isPinned ? 'unpin' : 'pin'}" method="post" use:enhance>
 				<input type="hidden" name="tweet-id" value={$tweet.id} />

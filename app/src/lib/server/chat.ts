@@ -35,7 +35,7 @@ export function findChat(cuid: string, rid: string) {
 			.select(["id", "draft"])
 			.getFirst();
 
-		if (chat) return { id: chat.id, draft: chat.draft }
+		if (chat) return { id: chat.id, draft: chat.draft };
 	});
 }
 
@@ -76,8 +76,8 @@ export function getChatMessages(chat: string) {
 export function getInbox(cuid: string, after?: string) {
 	return useAwait<Paginated<Chat>>(async () => {
 		const paginated = await client.db.chat
-		.filter({
-			$any: [{ createdBy: cuid }, { recipient: cuid, draft: false }]
+			.filter({
+				$any: [{ createdBy: cuid }, { recipient: cuid, draft: false }]
 			})
 			.select([
 				"*",
