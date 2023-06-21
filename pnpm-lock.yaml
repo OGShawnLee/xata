@@ -35,8 +35,8 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0
       lucide-svelte:
-        specifier: ^0.161.0
-        version: 0.161.0(svelte@3.59.1)
+        specifier: ^0.248.0
+        version: 0.248.0(svelte@3.59.1)
       malachite-ui:
         specifier: ^0.9.1
         version: 0.9.1
@@ -1032,8 +1032,8 @@ packages:
     dependencies:
       yallist: 4.0.0
 
-  /lucide-svelte@0.161.0(svelte@3.59.1):
-    resolution: {integrity: sha512-efBeGqa52b75/smouzM0t3ly7VRKLpBds3R3sum5sjV0mvgA/cq0DPgOsXtZjQuS81qTTEEh8Fi6ootqa/2hFg==}
+  /lucide-svelte@0.248.0(svelte@3.59.1):
+    resolution: {integrity: sha512-w7z60EeRa/oCXKiB/D0QBigkBONAKW+AQNaBaDtm/hQeY/4J71MPHEn/RJlr99yO/BwiDfOwsE2s2EMMySJ+Xw==}
     peerDependencies:
       svelte: ^3.49.0
     dependencies:
