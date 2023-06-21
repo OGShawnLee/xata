@@ -1,3 +1,4 @@
+import type { PaginationQueryMeta } from "@xata.io/client";
 import type { Nullable, Ref } from "malachite-ui/types";
 import type { Action } from "svelte/action";
 import type { Writable } from "svelte/store";
@@ -56,10 +57,7 @@ interface Notification {
 }
 
 interface Paginated<T> {
-	page: {
-		cursor: string;
-		more: boolean;
-	};
+	page: PaginationQueryMeta["page"];
 	records: T[];
 }
 

@@ -32,6 +32,14 @@
 			Likes
 		</span>
 	</NavigableItem>
+	<NavigableItem class={className} as="a" href="/{displayName}/highlights">
+		<span
+			class="relative h-full | grid place-content-center after:bg-cyan-500"
+			data-item-active={getItemState(false, "/highlights", pathname)}
+		>
+			Highlights
+		</span>
+	</NavigableItem>
 </Navigable>
 
 <style>

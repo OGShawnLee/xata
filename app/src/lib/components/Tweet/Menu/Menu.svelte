@@ -24,7 +24,7 @@
 		{/if}
 	</MenuButton>
 	<MenuItems
-		class="absolute top-0 -right-3 w-56 | bg-zinc-800 rounded-xl shadow-lg overflow-hidden outline-none"
+		class="absolute top-0 -right-3 w-70 z-10 | bg-zinc-800 rounded-xl shadow-lg overflow-hidden outline-none"
 	>
 		<slot />
 	</MenuItems>

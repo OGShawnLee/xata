@@ -168,6 +168,13 @@ const tables = [
 			{ name: "chat", type: "link", link: { table: "chat" } },
 			{ name: "text", type: "string" }
 		]
+	},
+	{
+		name: "highlight",
+		columns: [
+			{ name: "user", type: "link", link: { table: "user" } },
+			{ name: "tweet", type: "link", link: { table: "tweet" } }
+		]
 	}
 ] as const;
 
@@ -207,6 +214,9 @@ export type ChatRecord = Chat & XataRecord;
 export type Message = InferredTypes["message"];
 export type MessageRecord = Message & XataRecord;
 
+export type Highlight = InferredTypes["highlight"];
+export type HighlightRecord = Highlight & XataRecord;
+
 export type DatabaseSchema = {
 	user: UserRecord;
 	tweet: TweetRecord;
@@ -219,6 +229,7 @@ export type DatabaseSchema = {
 	feedTweet: FeedTweetRecord;
 	chat: ChatRecord;
 	message: MessageRecord;
+	highlight: HighlightRecord;
 };
 
 const DatabaseClient = buildClient();

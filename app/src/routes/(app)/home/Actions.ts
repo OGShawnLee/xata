@@ -1,5 +1,6 @@
 import type { ZodError } from "zod";
 import type { RequestEvent } from "@sveltejs/kit";
+import client from "$lib/server/client";
 import { string } from "zod";
 import { error, fail, redirect } from "@sveltejs/kit";
 import { useAwait, useCatch } from "$lib/hooks";
@@ -28,6 +29,23 @@ export default class Action {
 		} else {
 			const createdBookmark = await createBookmark(user.id, id);
 			if (createdBookmark.failed) throw error(500, { message: "Unable to Bookmark Tweet." });
+		}
+
+		const location = event.url.searchParams.get("redirect");
+		if (location) throw redirect(303, location);
+	}
+
+	static async handleHighlight(event: RequestEvent) {
+		const { id, user } = await handleActionValidation(event);
+		const highlight = await findHighlight(user.id, id);
+		if (highlight.failed) throw error(500, { message: "Unable to like Tweet." });
+
+		if (highlight.data) {
+			const deleted = await deleteHighlight(highlight.data.id);
+			if (deleted.failed) throw error(500, { message: "Unable to delete highlight Tweet." });
+		} else {
+			const created = await createHighlight(user.id, id);
+			if (created.failed) throw error(500, { message: "Unable to highlight Tweet." });
 		}
 
 		const location = event.url.searchParams.get("redirect");
@@ -155,4 +173,22 @@ async function handleActionValidation({ locals: { user }, request }: RequestEven
 	if (isNullish(tweet.data)) throw error(400, { message: "Tweet does not exist." });
 
 	return { id: id.data, user: user.data, tweet: tweet.data, data };
+}
+
+function createHighlight(uid: string, tid: string) {
+	return useAwait(() => {
+		return client.db.highlight.create({ user: uid, tweet: tid });
+	});
+}
+
+function deleteHighlight(id: string) {
+	return useAwait(() => {
+		return client.db.highlight.delete(id);
+	});
+}
+
+function findHighlight(uid: string, tid: string) {
+	return useAwait(() => {
+		return client.db.highlight.filter({ user: uid, tweet: tid }).getFirst();
+	});
 }

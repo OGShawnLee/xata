@@ -13,6 +13,7 @@ export const load: PageServerLoad = async ({ locals: { user } }) => {
 export const actions: Actions = {
 	"bookmark-or-unbookmark": Action.handleBookmark,
 	"like-or-unlike": Action.handleLike,
+	"highlight-or-unhighlight": Action.handleHighlight,
 	pin: Action.pin,
 	"quote-tweet": Action.quote,
 	retweet: Action.retweet,
