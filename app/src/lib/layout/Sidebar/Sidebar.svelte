@@ -11,7 +11,9 @@
 	export { className as class };
 </script>
 
-<nav class="{className} | flex flex-col items-center gap-6 xl:(gap-12 items-start)">
+<nav
+	class="{className} | flex flex-col items-center gap-6 | border-r-2 border-zinc-800 xl:(gap-12 items-start)"
+>
 	<Twitter class="mx-auto stroke-white fill-white xl:mx-0" />
 	<Search />
 	{#if $currentUser}

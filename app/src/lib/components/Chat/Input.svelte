@@ -38,9 +38,9 @@
 </script>
 
 <form
-	class="sticky bottom-0 inset-x-0 min-h-22 mt-auto mr-4 | flex items-center | {isChatHead
+	class="sticky bottom-0 inset-x-0 min-h-22 mt-auto | flex items-center | {isChatHead
 		? 'bg-transparent'
-		: 'bg-zinc-900/80 backdrop-filter backdrop-blur-sm'} lg:(mr-0 min-h-10)"
+		: 'pl-6 bg-zinc-900/80 backdrop-filter backdrop-blur-sm'} lg:(min-h-10)"
 	action={$formAction}
 	method="post"
 	bind:this={form}
@@ -49,7 +49,7 @@
 	<div
 		class="w-full | group flex items-center | {isChatHead
 			? 'bg-zinc-700'
-			: 'bg-zinc-800 rounded-2xl overflow-hidden'}"
+			: 'bg-zinc-800 rounded-xl overflow-hidden'}"
 	>
 		<TextArea
 			label="Message"

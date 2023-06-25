@@ -48,7 +48,7 @@
 
 {#if $currentUser && !isMessagesPage}
 	<div
-		class="fixed bottom-0 right-8 w-88 h-128 h-128 | hidden | bg-zinc-800 rounded-t-xl overflow-y-auto transform transition duration-250 {isOpen
+		class="fixed bottom-0 right-4.5 w-88 h-128 h-128 | hidden | bg-zinc-800 rounded-t-xl overflow-y-auto transform transition duration-250 {isOpen
 			? 'translate-y-0'
 			: 'translate-y-114'} xl:(flex flex-col)"
 	>
