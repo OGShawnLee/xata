@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Notification } from "@types";
 	import { Feed, Header } from "$lib/layout";
-	import { Notification as NotificationComponent } from "$lib/components";
+	import { Notification as NotificationComponent, NotificationLoading } from "$lib/components";
 	import { useInfiniteScrolling } from "$lib/hooks";
 
 	export let data;
@@ -21,7 +21,11 @@
 </svelte:head>
 
 <Header title="Notifications" displayName={data.user.displayName} />
-<Feed more={data.feed.page.more} on:intersect={() => fetchMoreNotifications(data.feed.page)}>
+<Feed
+	loadingComponent={NotificationLoading}
+	more={data.feed.page.more}
+	on:intersect={() => fetchMoreNotifications(data.feed.page)}
+>
 	{#each data.feed.records as notification (notification.id)}
 		<NotificationComponent {notification} />
 	{/each}
