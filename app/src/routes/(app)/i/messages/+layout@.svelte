@@ -17,9 +17,7 @@
 <div
 	class="relative max-w-2xl min-h-screen w-full mx-auto | flex items-start | md:(max-w-2xl) lg:(max-w-4xl grid grid-cols-12) xl:(max-w-6xl)"
 >
-	<Sidebar
-		class="fixed top-0 min-h-screen min-w-18 pt-10 pb-8 | md:(sticky w-auto col-span-1) xl:(pr-8 col-span-3)"
-	/>
+	<Sidebar class="md:(sticky w-auto col-span-1) xl:(pr-8 col-span-3)" />
 
 	{#if innerWidth > 1024 || !inChatPage}
 		<svelte:element
