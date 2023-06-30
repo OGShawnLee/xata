@@ -8,12 +8,15 @@ import {
 	useWarningDialog
 } from "$lib/hooks";
 import { parse } from "devalue";
+import { useSwitch } from "malachite-ui/hooks";
 
 export const currentUser = writable<UserState | undefined>();
 
 export const currentTweet = writable<Tweet | undefined>();
 
 export const composeDialog = useComposeDialog();
+
+export const newMessageDialog = useSwitch(false);
 
 export const layout = useAsideLayout();
 

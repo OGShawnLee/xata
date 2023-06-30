@@ -9,6 +9,7 @@
 	class:button--disabled={disabled}
 	{disabled}
 	{type}
+	on:click
 >
 	<slot>{text}</slot>
 </button>

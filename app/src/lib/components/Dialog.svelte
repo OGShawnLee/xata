@@ -13,7 +13,7 @@
 	<DialogContent
 		class="z-10 {padding ? 'py-8' : 'py-0'} | w-sm {small
 			? 'md:w-sm'
-			: 'sm:w-lg md:w-xl'} bg-zinc-900 rounded-3xl"
+			: 'sm:w-lg md:w-xl'} bg-zinc-900 rounded-3xl overflow-hidden"
 		use={[hideScrollbar]}
 		let:close
 	>

@@ -9,7 +9,7 @@
 	$: activeClassName = isActive ? "bg-zinc-800 hover:bg-zinc-800/50" : "hover:bg-zinc-800";
 </script>
 
-<li>
+<li class="list-none">
 	{#if as === "a"}
 		<a
 			class="px-8 py-4 | flex items-baseline gap-3 {activeClassName}"
@@ -21,7 +21,7 @@
 		</a>
 	{:else}
 		<button
-			class="w-full px-6 py-4 | flex items-baseline gap-3 hover:bg-zinc-700"
+			class="w-full px-8 py-4 | flex items-baseline gap-3 hover:bg-zinc-700"
 			aria-label="View Conversation"
 			title="View Conversation"
 			on:click

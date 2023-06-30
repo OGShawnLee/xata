@@ -1,3 +1,7 @@
+<script>
+	import { newMessageDialog } from "$lib/state";
+</script>
+
 <svelte:head>
 	<title>Messages - Twitter</title>
 </svelte:head>
@@ -7,5 +11,7 @@
 	<p class="mb-8">
 		Choose from your existing conversations, start a new one, or just keep swimming.
 	</p>
-	<button class="button button--cyan | px-8 rounded-full"> New Message </button>
+	<button class="button button--cyan | px-8 rounded-full" on:click={newMessageDialog.toggle}>
+		New Message
+	</button>
 </div>

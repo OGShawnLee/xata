@@ -24,6 +24,7 @@
 	export let icon: typeof SvelteComponent | undefined = undefined;
 	export let id: string;
 	export let label = id;
+	export let nolabel = false;
 	export let maxlength: number | undefined = undefined;
 	export let minlength: number | undefined = 0;
 	export let name = id;
@@ -48,7 +49,7 @@
 
 <div class="w-full | grid gap-1.5">
 	<div class="flex items-center justify-between">
-		<label class="w-[fit-content] | capitalize" for={id}>{label}</label>
+		<label class="w-[fit-content] | capitalize" class:hidden={nolabel} for={id}>{label}</label>
 		{#if isNumber(maxlength) && isNumber(minlength)}
 			<div class="text-sm font-victor">
 				<span class="font-medium {getCharCountColour(charCount, minlength, maxlength)}">
