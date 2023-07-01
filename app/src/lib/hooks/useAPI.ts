@@ -1,4 +1,4 @@
-import type { Chat, ChatData, Message, Paginated, Recipient } from "@types";
+import type { Chat, ChatData, Message, MessageSearch, Paginated, Recipient } from "@types";
 import type { Result } from "malachite-ui/types";
 import { parse } from "devalue";
 import { useAwait } from ".";
@@ -8,6 +8,7 @@ interface APIEndpoints {
 	"/messages/[uid]": ChatData & { token: string };
 	"/messages/[uid]:POST": Message;
 	"/messages/search/user/[query]": Recipient[];
+	"/chat/search?query={}": Paginated<MessageSearch>;
 }
 
 export default function useAPI(
@@ -26,6 +27,11 @@ export default function useAPI(
 	body: FormData
 ): Promise<Result<APIEndpoints["/messages/[uid]:POST"]>>;
 
+export default function useAPI(
+	endpoint: "/chat/search?query={}",
+	query: string
+): Promise<Result<APIEndpoints["/chat/search?query={}"]>>;
+
 export default function useAPI<T extends keyof APIEndpoints>(
 	endpoint: T
 ): Promise<Result<APIEndpoints[T]>>;
@@ -41,7 +47,7 @@ export default function useAPI<T extends keyof APIEndpoints>(
 			pathname = pathname.substring(0, pathname.indexOf(":"));
 		}
 		if (endpoint.includes("/search") && uid) {
-			pathname = pathname.replace("[query]", uid);
+			pathname = pathname.replace("[query]", uid).replace("{}", uid);
 		}
 		const response = await fetch(uid ? pathname.replace("[uid]", uid) : pathname, {
 			body,

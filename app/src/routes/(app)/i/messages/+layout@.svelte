@@ -1,6 +1,10 @@
 <script lang="ts">
+	import type { Maybe } from "malachite-ui/types";
+	import type { MessageSearch } from "@types";
 	import Inbox from "./Inbox.svelte";
 	import DialogNewMessage from "./DialogNewMessage.svelte";
+	import SearchForm from "./SearchForm.svelte";
+	import SearchResults from "./SearchResults.svelte";
 	import { Header, Sidebar } from "$lib/layout";
 	import { MailPlus } from "lucide-svelte";
 	import { currentUser, newMessageDialog } from "$lib/state";
@@ -11,6 +15,8 @@
 	currentUser.set(data.user);
 
 	let innerWidth: number;
+	let messages: Maybe<MessageSearch[]>;
+
 	$: inChatPage = $page.params.uid !== undefined;
 </script>
 
@@ -39,13 +45,18 @@
 					<MailPlus />
 				</button>
 			</Header>
-			<Inbox inbox={data.inbox.records} />
+			<SearchForm bind:messages />
+			{#if messages}
+				<SearchResults bind:messages on:reset={() => (messages = undefined)} />
+			{:else}
+				<Inbox inbox={data.inbox.records} />
+			{/if}
 		</svelte:element>
 	{/if}
 
 	{#if innerWidth > 1024 || inChatPage}
 		<main
-			class="h-full pt-4 pl-22 | sm:pl-26 md:pl-0 lg:(max-h-screen pb-8 col-span-7) xl:col-span-5"
+			class="h-full pt-4 pl-22 | sm:pl-26 md:pl-0 lg:(sticky top-0 max-h-screen pb-8 col-span-7) xl:col-span-5"
 		>
 			<slot />
 		</main>

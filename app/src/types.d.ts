@@ -37,6 +37,11 @@ interface Message {
 	text: Nullable<string>;
 }
 
+interface MessageSearch extends Message {
+	user: Nullable<string>;
+	recipient?: Nullable<string>;
+}
+
 interface NotificationEvent {
 	"from.id": string;
 	"to.id": string;
