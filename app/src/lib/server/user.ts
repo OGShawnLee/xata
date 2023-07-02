@@ -36,7 +36,8 @@ export async function findUserPublic(displayName: string, cuid: string | undefin
 			"followingCount",
 			"location",
 			"name",
-			"tweetCount"
+			"tweetCount",
+			"hasPublicMessagingEnabled"
 		])
 		.getFirst();
 
@@ -52,7 +53,8 @@ export async function findUserPublic(displayName: string, cuid: string | undefin
 		location: user.location,
 		name: user.name,
 		isFollowed: cuid ? await isFollowed(user.id, cuid) : false,
-		tweetCount: user.tweetCount
+		tweetCount: user.tweetCount,
+		hasPublicMessagingEnabled: user.hasPublicMessagingEnabled
 	} satisfies UserProfile;
 }
 

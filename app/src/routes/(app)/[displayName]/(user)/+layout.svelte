@@ -38,7 +38,9 @@
 				</button>
 			{:else if $currentUser}
 				<div class="flex gap-3">
-					<ButtonMessage to={foundUser} />
+					{#if data.foundUser.hasPublicMessagingEnabled}
+						<ButtonMessage to={foundUser} />
+					{/if}
 					<ButtonFollow displayName={foundUser.displayName} isFollowed={foundUser.isFollowed} />
 				</div>
 			{/if}

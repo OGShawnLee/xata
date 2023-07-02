@@ -125,6 +125,7 @@ interface UserProfile extends User {
 	location: Nullable<string>;
 	isFollowed: boolean;
 	tweetCount: number;
+	hasPublicMessagingEnabled: boolean
 }
 
 interface UserRetweet {
