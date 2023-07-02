@@ -21,10 +21,25 @@ export const load: PageServerLoad = async ({ locals: { user }, params }) => {
 		const token = createChatToken(user.data.id, chat.data.id, chat.data.draft);
 		return { messages: messages.data, recipient: recipient.data, token, user: user.data };
 	} else {
-		const chat = await createChat(user.data.id, params.uid);
-		if (chat.failed) throw error(500, { message: "UNABLE TO CRATE CHAT." });
-		const token = createChatToken(user.data.id, chat.data.id, chat.data.draft);
-		return { messages: [], recipient: recipient.data, token, user: user.data };
+		if (recipient.data.hasPublicMessagingEnabled) {
+			const chat = await createChat(user.data.id, params.uid);
+			if (chat.failed) throw error(500, { message: "UNABLE TO CRATE CHAT." });
+			const token = createChatToken(user.data.id, chat.data.id, chat.data.draft);
+			return { messages: [], recipient: recipient.data, token, user: user.data };
+		} else {
+			// if recipient does not follow the request user then we throw
+			const isFollowed = await isFollowedBy(user.data.id, params.uid);
+			if (isFollowed.failed) throw error(500, { message: "Unable to create chat." });
+			if (!isFollowed.data)
+				throw error(403, {
+					message: "Recipient does not allow message requests from users they don't follow."
+				});
+
+			const chat = await createChat(user.data.id, params.uid);
+			if (chat.failed) throw error(500, { message: "UNABLE TO CRATE CHAT." });
+			const token = createChatToken(user.data.id, chat.data.id, chat.data.draft);
+			return { messages: [], recipient: recipient.data, token, user: user.data };
+		}
 	}
 };
 
@@ -40,5 +55,12 @@ function createChat(cuid: string, rid: string) {
 			recipient: rid
 		});
 		return { id: chat.id, draft: chat.draft };
+	});
+}
+
+function isFollowedBy(uid: string, cuid: string) {
+	return useAwait(async () => {
+		const follow = await client.db.follow.filter({ followed: uid, follower: cuid }).getFirst();
+		return Boolean(follow);
 	});
 }

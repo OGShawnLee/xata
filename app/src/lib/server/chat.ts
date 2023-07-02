@@ -40,10 +40,17 @@ export function findChat(cuid: string, rid: string) {
 }
 
 export function findRecipient(uid: string) {
-	return useAwait<Recipient | undefined>(async () => {
+	return useAwait<(Recipient & { hasPublicMessagingEnabled: boolean }) | undefined>(async () => {
 		const user = await client.db.user
 			.filter("id", uid)
-			.select(["createdAt", "description", "displayName", "followerCount", "name"])
+			.select([
+				"createdAt",
+				"description",
+				"displayName",
+				"followerCount",
+				"name",
+				"hasPublicMessagingEnabled"
+			])
 			.getFirst();
 
 		if (isNullish(user)) return;
@@ -54,7 +61,8 @@ export function findRecipient(uid: string) {
 			description: user.description,
 			displayName: user.displayName,
 			name: user.name,
-			followerCount: user.followerCount
+			followerCount: user.followerCount,
+			hasPublicMessagingEnabled: user.hasPublicMessagingEnabled
 		};
 	});
 }
