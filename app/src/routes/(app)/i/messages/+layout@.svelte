@@ -6,7 +6,7 @@
 	import SearchForm from "./SearchForm.svelte";
 	import SearchResults from "./SearchResults.svelte";
 	import { Header, Sidebar } from "$lib/layout";
-	import { MailPlus } from "lucide-svelte";
+	import { MailPlus, Settings } from "lucide-svelte";
 	import { currentUser, newMessageDialog } from "$lib/state";
 	import { page } from "$app/stores";
 
@@ -35,15 +35,24 @@
 			class="min-h-screen w-full pl-18 pt-4 | flex flex-col | border-r-2 border-zinc-800 md:pl-0 lg:col-span-4 xl:(col-span-4)"
 		>
 			<Header as={innerWidth > 1024 ? "h2" : "h1"} title="Messages">
-				<button
-					class="grid place-content-center"
-					slot="button"
-					aria-label="New Message"
-					title="New Message"
-					on:click={newMessageDialog.toggle}
-				>
-					<MailPlus />
-				</button>
+				<div class="flex gap-3" slot="button">
+					<button
+						class="grid place-content-center"
+						aria-label="New Message"
+						title="New Message"
+						on:click={newMessageDialog.toggle}
+					>
+						<MailPlus />
+					</button>
+					<a
+						class="grid place-content-center"
+						href="/i/messages/settings"
+						aria-label="Settings"
+						title="Settings"
+					>
+						<Settings />
+					</a>
+				</div>
 			</Header>
 			<SearchForm bind:messages />
 			{#if messages}

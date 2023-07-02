@@ -11,9 +11,11 @@
 </script>
 
 <section>
-	<header class="px-8 py-3 | flex items-center gap-3 | border-b-2 border-zinc-800">
-		<Mail />
-		<h2 class="mr-auto | text-lg text-white font-medium">Messages</h2>
+	<header class="px-8 py-3 | flex items-center justify-between | border-b-2 border-zinc-800">
+		<div class="flex items-center gap-3">
+			<Mail />
+			<h2 class="text-lg text-white font-medium">Messages</h2>
+		</div>
 		<ButtonBack label="Show Conversations" on:click={() => dispatch("reset")} />
 	</header>
 	<ul>

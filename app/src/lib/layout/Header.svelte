@@ -4,10 +4,11 @@
 	export let as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" = "h1";
 	export let title: Nullable<string> = undefined;
 	export let displayName: Nullable<string> = undefined;
+	export let padding: "px-8" | "px-6" = "px-8";
 </script>
 
 <header class="h-20 border-b-2 border-zinc-800">
-	<div class="h-full px-8 | flex items-center justify-between">
+	<div class="h-full {padding} | flex items-center justify-between">
 		<div>
 			<svelte:element this={as} class="text-white text-2xl font-bold">
 				{title}
